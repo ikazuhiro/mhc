@@ -87,7 +87,9 @@
 (defvar make-mhc/lisp-directory
   (expand-file-name
    (concat (cond
-	    ((featurep 'meadow) "")
+	    ((and (boundp 'system-type)
+		  (eq system-type 'windows-nt))
+	     "")
 	    ((and (not (featurep 'xemacs))
 		  (or (>= emacs-major-version 20)
 		      (and (= emacs-major-version 19)
@@ -97,13 +99,16 @@
 	   (cond
 	    ((featurep 'xemacs) (if (featurep 'mule) "xmule/" "xemacs/"))
 	    ((boundp 'MULE) "mule/")
-	    ((featurep 'meadow) "")
+	    ((and (boundp 'system-type)
+		  (eq system-type 'windows-nt))
+	     "")
 	    (t "emacs/"))
 	   "site-lisp/"
 	   make-mhc/module-prefix)
    (cond
-    ((featurep 'meadow)
-     (expand-file-name "../.." exec-directory))
+    ((and (boundp 'system-type)
+	  (eq system-type 'windows-nt))
+     (expand-file-name ".." exec-directory))
     ((or (<= emacs-major-version 18)
 	 (featurep 'xemacs)
 	 (and (boundp 'system-configuration-options) ; 19.29 or later
