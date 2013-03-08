@@ -255,7 +255,23 @@
      (make-mhc/install-file
       (expand-file-name (concat module ".elc") make-mhc/source-directory)
       (expand-file-name (concat module ".elc") make-mhc/lisp-directory)))
-   (mapcar 'car make-mhc/module-alist)))
+   (mapcar 'car make-mhc/module-alist))
+
+  ;; Install icons.
+  (let ((icon-dir (cond ((fboundp 'locate-data-directory)
+			 (locate-data-directory "mhc"))
+			((boundp 'data-directory)
+			 (expand-file-name "mhc" data-directory)))))
+    (when icon-dir
+      (or make-mhc/debug
+	  (make-mhc/make-directory icon-dir))
+      (mapcar
+       (lambda (icon)
+	 (make-mhc/install-file
+	  icon
+	  (expand-file-name
+	   (file-name-nondirectory icon) icon-dir)))
+       (directory-files make-mhc/icon-source-directory t "^.*\\.xpm$")))))
 
 ;; For XEmacs package system.
 (defun make-mhc-compile-package ()
