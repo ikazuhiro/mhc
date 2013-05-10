@@ -7,7 +7,7 @@
 
 require 'rbconfig'
 require 'mkmf'
-require 'ftools'
+require 'fileutils'
 require 'kconv'
 require 'getoptlong'
 
@@ -110,8 +110,9 @@ module MhcMake
     else
       INSTALL_FILES .each{|filename_mode_dir|
 	filename, mode, dir = filename_mode_dir .split(':')
-	File .makedirs(dir) if ! File .directory?(dir)
-	File .install(filename, dir, mode .oct, true)
+	FileUtils .makedirs(dir) if ! File .directory?(dir)
+	FileUtils .install(filename, dir,
+                           {:mode => mode .oct, :verbose => true})
       }
     end
     process_subdirs()
@@ -139,7 +140,12 @@ module MhcMake
 end
 
 class MhcConfigTable
-  include Config
+  if RUBY_VERSION[0..2] >= "1.9" 
+    include RbConfig
+  else
+    include Config
+  end
+
   # ['--kcode', '@@MHC_KCODE@@', GetoptLong::OPTIONAL_ARGUMENT, usage, default]
 
   DEFAULT_CONFIG_TABLE = [
@@ -236,7 +242,11 @@ class MhcConfigTable
 end
 
 class MhcConfigure
-  include Config
+  if RUBY_VERSION[0..2] >= "1.9" 
+    include RbConfig
+  else
+    include Config
+  end
 
   def initialize(local_config_table = [])
     @macros = {}
@@ -250,7 +260,7 @@ class MhcConfigure
 
     ## set useful macros.
     @macros['@@MHC_RUBY_VERSION@@'] = 
-      VERSION .split('.') .collect{|i| format("%02d", i)} .join('')
+      RUBY_VERSION .split('.') .collect{|i| format("%02d", i)} .join('')
     @macros['@@MHC_TOPDIR@@'] = Dir .pwd
   end
 
@@ -413,8 +423,8 @@ class MhcConfigure
   end
 
   def replace_keywords1(src_file_name, dst_file_name, keywords, mode = nil)
-    src_file  = File .open(src_file_name, "r") or die "#{$!}\n"
-    dst_file  = File .open(dst_file_name, "w") or die "#{$!}\n"
+    src_file  = File .open(src_file_name, "rb") or die "#{$!}\n"
+    dst_file  = File .open(dst_file_name, "wb") or die "#{$!}\n"
 
     src_contents = src_file .gets(nil); src_file .close
     keywords .each{|key, val| src_contents .gsub!(key, val)}
@@ -425,7 +435,7 @@ class MhcConfigure
 
     dst_file << src_contents
     dst_file .close 
-    File .chmod(mode, dst_file_name) if mode
+    FileUtils .chmod(mode, dst_file_name) if mode
   end
 
 end
