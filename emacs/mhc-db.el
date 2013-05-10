@@ -1,4 +1,4 @@
-;;; -*- mode: Emacs-Lisp; coding: euc-japan -*-
+;;; -*- mode: Emacs-Lisp; coding: utf-8 -*-
 
 ;; Author:  Yoshinari Nomura <nom@quickhack.net>,
 ;;          TSUCHIYA Masatoshi <tsuchiya@namazu.org>
@@ -19,63 +19,63 @@
 (require 'mhc-schedule)
 
 (defun mhc-db/get-sexp-list-for-month (year month)
-  "ªÿƒÍ§µ§Ï§ø∑Ó§Œ•π•±•∏•Â°º•Î§Ú√µ∫˜§π§Î§»§≠§À°¢…æ≤¡§π§Î§Ÿ§≠Sº∞§Œ•Í•π•»§Ú∆¿§Î"
+  "ÊåáÂÆö„Åï„Çå„ÅüÊúà„ÅÆ„Çπ„Ç±„Ç∏„É•„Éº„É´„ÇíÊé¢Á¥¢„Åô„Çã„Å®„Åç„Å´„ÄÅË©ï‰æ°„Åô„Çã„Åπ„ÅçSÂºè„ÅÆ„É™„Çπ„Éà„ÇíÂæó„Çã"
   (mapcar
    (lambda (f) (mhc-record-sexp f))
    (apply (function nconc)
-	  (delq nil
-		(mapcar (lambda (x)
-			  (and x
-			       (setq x (mhc-slot-records x))
-			       (copy-sequence x)))
-			(list
-			 (mhc-slot-get-month-schedule (cons year month))
-			 (mhc-slot-get-intersect-schedule)
-			 (mhc-slot-get-constant-schedule)))))))
+          (delq nil
+                (mapcar (lambda (x)
+                          (and x
+                               (setq x (mhc-slot-records x))
+                               (copy-sequence x)))
+                        (list
+                         (mhc-slot-get-month-schedule (cons year month))
+                         (mhc-slot-get-intersect-schedule)
+                         (mhc-slot-get-constant-schedule)))))))
 
 
 (defun mhc-db/eval-for-duration (from to &optional todo) "\
-§¢§Î¥¸¥÷ FROM°¡TO §À¬–§∑§∆•π•±•∏•Â°º•Î§Ú√µ∫˜§π§Î
-FROM, TO §œ 1970/01/01 §´§È§Œ∑–≤·∆¸øÙ§ÚÕ—§§§∆ªÿƒÍ"
+„ÅÇ„ÇãÊúüÈñì FROM„ÄúTO „Å´ÂØæ„Åó„Å¶„Çπ„Ç±„Ç∏„É•„Éº„É´„ÇíÊé¢Á¥¢„Åô„Çã
+FROM, TO „ÅØ 1970/01/01 „Åã„Çâ„ÅÆÁµåÈÅéÊó•Êï∞„ÇíÁî®„ÅÑ„Å¶ÊåáÂÆö"
   (let (list new)
     (mhc-day-let from
       (let* ((day from)
-	     (week-of-month (/ (1- day-of-month) 7))
-	     ;; FIXME: mhc-date.el §Œ∆‚…Ù¥ÿøÙ§Ú∏∆§”Ω–§∑§∆§§§Î°£
-	     (last-day-of-month (mhc-date/last-day-of-month year month))
-	     (last-week (> 7 (- last-day-of-month day-of-month)))
-	     (sexp-list (mhc-db/get-sexp-list-for-month year month)))
-	(while (<= day to)
-	  (setq new (mhc-day-new day year month day-of-month day-of-week))
-	  (mhc-day-set-schedules new (delq nil
-					   (mapcar (lambda (sexp) 
-						     (and sexp
-							  (funcall sexp)))
-						   sexp-list)))
-	  (setq list (cons new list)
-		day (1+ day)
-		day-of-month (1+ day-of-month)
-		day-of-week (% (1+ day-of-week) 7))
-	  (if (> day-of-month last-day-of-month)
-	      ;; 1•ˆ∑Ó§Úƒ∂§®§∆œ¢¬≥§∑§ø√µ∫˜§Úπ‘§¶æÏπÁ
-	      (setq month (1+ (% month 12))
-		    year (if (= 1 month) (1+ year) year)
-		    day-of-month 1
-		    week-of-month 0
-		    last-week nil
-		    ;; FIXME: mhc-date.el §Œ∆‚…Ù¥ÿøÙ§Ú∏∆§”Ω–§∑§∆§§§Î°£
-		    last-day-of-month (mhc-date/last-day-of-month year month)
-		    sexp-list (mhc-db/get-sexp-list-for-month year month))
-	    ;; ΩµÀˆÀË§ŒΩËÕ˝
-	    (setq week-of-month (/ (1- day-of-month) 7))
-	    (and (not last-week)
-		 (> 7 (- last-day-of-month day-of-month))
-		 (setq last-week t)))))
+             (week-of-month (/ (1- day-of-month) 7))
+             ;; FIXME: mhc-date.el „ÅÆÂÜÖÈÉ®Èñ¢Êï∞„ÇíÂëº„Å≥Âá∫„Åó„Å¶„ÅÑ„Çã„ÄÇ
+             (last-day-of-month (mhc-date/last-day-of-month year month))
+             (last-week (> 7 (- last-day-of-month day-of-month)))
+             (sexp-list (mhc-db/get-sexp-list-for-month year month)))
+        (while (<= day to)
+          (setq new (mhc-day-new day year month day-of-month day-of-week))
+          (mhc-day-set-schedules new (delq nil
+                                           (mapcar (lambda (sexp)
+                                                     (and sexp
+                                                          (funcall sexp)))
+                                                   sexp-list)))
+          (setq list (cons new list)
+                day (1+ day)
+                day-of-month (1+ day-of-month)
+                day-of-week (% (1+ day-of-week) 7))
+          (if (> day-of-month last-day-of-month)
+              ;; 1„É∂Êúà„ÇíË∂Ö„Åà„Å¶ÈÄ£Á∂ö„Åó„ÅüÊé¢Á¥¢„ÇíË°å„ÅÜÂ†¥Âêà
+              (setq month (1+ (% month 12))
+                    year (if (= 1 month) (1+ year) year)
+                    day-of-month 1
+                    week-of-month 0
+                    last-week nil
+                    ;; FIXME: mhc-date.el „ÅÆÂÜÖÈÉ®Èñ¢Êï∞„ÇíÂëº„Å≥Âá∫„Åó„Å¶„ÅÑ„Çã„ÄÇ
+                    last-day-of-month (mhc-date/last-day-of-month year month)
+                    sexp-list (mhc-db/get-sexp-list-for-month year month))
+            ;; ÈÄ±Êú´ÊØé„ÅÆÂá¶ÁêÜ
+            (setq week-of-month (/ (1- day-of-month) 7))
+            (and (not last-week)
+                 (> 7 (- last-day-of-month day-of-month))
+                 (setq last-week t)))))
       (nreverse list))))
 
 
 (defun mhc-db/eval-for-month (year month &optional todo)
-  "ªÿƒÍ§µ§Ï§ø∑Ó§Œ•π•±•∏•Â°º•Î§Ú√µ∫˜"
+  "ÊåáÂÆö„Åï„Çå„ÅüÊúà„ÅÆ„Çπ„Ç±„Ç∏„É•„Éº„É´„ÇíÊé¢Á¥¢"
   (let ((from (mhc-date-new year month 1)))
     (mhc-db/eval-for-duration from (mhc-date-mm-last from) todo)))
 
@@ -83,41 +83,41 @@ FROM, TO §œ 1970/01/01 §´§È§Œ∑–≤·∆¸øÙ§ÚÕ—§§§∆ªÿƒÍ"
   (catch 'holiday
     (let ((schedules (mhc-day-schedules dayinfo)))
       (while schedules
-	(if (mhc-schedule-in-category-p (car schedules) "holiday")
-	    (throw 'holiday t))
-	(setq schedules (cdr schedules))))))
+        (if (mhc-schedule-in-category-p (car schedules) "holiday")
+            (throw 'holiday t))
+        (setq schedules (cdr schedules))))))
 
 
 (defun mhc-db/sort-schedules-by-time (dayinfo)
   (if (mhc-day-schedules dayinfo)
       (let (time)
-	(mapcar
-	 (function cdr)
-	 (sort (mapcar
-		(lambda (schedule)
-		  (cons (cond
-			 ((setq time (mhc-schedule-time-begin schedule)) time)
-			 ((mhc-schedule-in-category-p schedule "holiday")
-			  (mhc-day-set-holiday dayinfo t)
-			  -1)
-			 (t 0))
-			schedule))
-		(mhc-day-schedules dayinfo))
-	       (lambda (a b) (< (car a) (car b))))))))
+        (mapcar
+         (function cdr)
+         (sort (mapcar
+                (lambda (schedule)
+                  (cons (cond
+                         ((setq time (mhc-schedule-time-begin schedule)) time)
+                         ((mhc-schedule-in-category-p schedule "holiday")
+                          (mhc-day-set-holiday dayinfo t)
+                          -1)
+                         (t 0))
+                        schedule))
+                (mhc-day-schedules dayinfo))
+               (lambda (a b) (< (car a) (car b))))))))
 
 
 (defun mhc-db-scan (from to &optional nosort)
   (let ((list (mhc-db/eval-for-duration from to)))
     (let ((days list))
       (if nosort
-	  ;; ΩÍÕ—§Œ≥´ªœª˛¥÷§À¥§≈§Ø ¬§Ÿ¬ÿ§®§œπ‘§Ô§∫§À°¢ΩÀ∆¸§Œ•¡•ß•√•Ø§Œ§ﬂ§Úπ‘§¶
-	  (while days
-	    (mhc-day-set-holiday (car days) (mhc-db/holiday-p (car days)))
-	    (setq days (cdr days)))
-	;; ΩÍÕ—§Œ≥´ªœª˛¥÷§À¥§≈§Ø ¬§Ÿ¬ÿ§®§‚∆±ª˛§Àπ‘§¶
-	(while days
-	  (mhc-day-set-schedules (car days) (mhc-db/sort-schedules-by-time (car days)))
-	  (setq days (cdr days)))))
+          ;; ÊâÄÁî®„ÅÆÈñãÂßãÊôÇÈñì„Å´Âü∫„Å•„Åè‰∏¶„ÅπÊõø„Åà„ÅØË°å„Çè„Åö„Å´„ÄÅÁ•ùÊó•„ÅÆ„ÉÅ„Çß„ÉÉ„ÇØ„ÅÆ„Åø„ÇíË°å„ÅÜ
+          (while days
+            (mhc-day-set-holiday (car days) (mhc-db/holiday-p (car days)))
+            (setq days (cdr days)))
+        ;; ÊâÄÁî®„ÅÆÈñãÂßãÊôÇÈñì„Å´Âü∫„Å•„Åè‰∏¶„ÅπÊõø„Åà„ÇÇÂêåÊôÇ„Å´Ë°å„ÅÜ
+        (while days
+          (mhc-day-set-schedules (car days) (mhc-db/sort-schedules-by-time (car days)))
+          (setq days (cdr days)))))
     list))
 
 
@@ -125,145 +125,145 @@ FROM, TO §œ 1970/01/01 §´§È§Œ∑–≤·∆¸øÙ§ÚÕ—§§§∆ªÿƒÍ"
   (let ((list (mhc-db/eval-for-month year month)))
     (let ((days list))
       (if nosort
-	  ;; ΩÍÕ—§Œ≥´ªœª˛¥÷§À¥§≈§Ø ¬§Ÿ¬ÿ§®§œπ‘§Ô§∫§À°¢ΩÀ∆¸§Œ•¡•ß•√•Ø§Œ§ﬂ§Úπ‘§¶
-	  (while days
-	    (mhc-day-set-holiday (car days) (mhc-db/holiday-p (car days)))
-	    (setq days (cdr days)))
-	;; ΩÍÕ—§Œ≥´ªœª˛¥÷§À¥§≈§Ø ¬§Ÿ¬ÿ§®§‚∆±ª˛§Àπ‘§¶
-	(while days
-	  (mhc-day-set-schedules (car days) (mhc-db/sort-schedules-by-time (car days)))
-	  (setq days (cdr days)))))
+          ;; ÊâÄÁî®„ÅÆÈñãÂßãÊôÇÈñì„Å´Âü∫„Å•„Åè‰∏¶„ÅπÊõø„Åà„ÅØË°å„Çè„Åö„Å´„ÄÅÁ•ùÊó•„ÅÆ„ÉÅ„Çß„ÉÉ„ÇØ„ÅÆ„Åø„ÇíË°å„ÅÜ
+          (while days
+            (mhc-day-set-holiday (car days) (mhc-db/holiday-p (car days)))
+            (setq days (cdr days)))
+        ;; ÊâÄÁî®„ÅÆÈñãÂßãÊôÇÈñì„Å´Âü∫„Å•„Åè‰∏¶„ÅπÊõø„Åà„ÇÇÂêåÊôÇ„Å´Ë°å„ÅÜ
+        (while days
+          (mhc-day-set-schedules (car days) (mhc-db/sort-schedules-by-time (car days)))
+          (setq days (cdr days)))))
     list))
 
 
 (defun mhc-db-scan-todo (day)
   (mapcar 'cdr
-	  (sort (mapcar
-		 (lambda (schedule)
-		   (cons (mhc-schedule-priority schedule)
-			 schedule))
-		 (sort (mhc-day-schedules
-			(mhc-logic-eval-for-date
-			 (mhc-day-let day
-			   (mhc-db/get-sexp-list-for-month year month))
-			 day 'todo))
-		       (lambda (x y)
-			 (< (or (mhc-schedule-todo-deadline x) 65535)
-			    (or (mhc-schedule-todo-deadline y) 65535)))))
-		(lambda (a b)
-		  (if (and (null (car a)) (car b))
-		      nil
-		    (if (and (null (car b)) (car a))
-			t
-		      (if (and (null (car b)) (null (car a)))
-			  nil
-			(> (car a) (car b)))))))))
+          (sort (mapcar
+                 (lambda (schedule)
+                   (cons (mhc-schedule-priority schedule)
+                         schedule))
+                 (sort (mhc-day-schedules
+                        (mhc-logic-eval-for-date
+                         (mhc-day-let day
+                           (mhc-db/get-sexp-list-for-month year month))
+                         day 'todo))
+                       (lambda (x y)
+                         (< (or (mhc-schedule-todo-deadline x) 65535)
+                            (or (mhc-schedule-todo-deadline y) 65535)))))
+                (lambda (a b)
+                  (if (and (null (car a)) (car b))
+                      nil
+                    (if (and (null (car b)) (car a))
+                        t
+                      (if (and (null (car b)) (null (car a)))
+                          nil
+                        (> (car a) (car b)))))))))
 
 (defun mhc-db-scan-memo (day)
-  "π‘ ˝…‘Ã¿§Œ schedule §ŒºË∆¿"
+  "Ë°åÊñπ‰∏çÊòé„ÅÆ schedule „ÅÆÂèñÂæó"
   (let ((schedules (mapcar
-		    (lambda (f) (car (mhc-record-schedules f)))
-		    (apply (function nconc)
-			   (delq nil
-				 (mapcar (lambda (x)
-					   (and x
-						(setq x (mhc-slot-records x))
-						(copy-sequence x)))
-					 (list (mhc-slot-get-intersect-schedule)))))))
-	schedule memos)
+                    (lambda (f) (car (mhc-record-schedules f)))
+                    (apply (function nconc)
+                           (delq nil
+                                 (mapcar (lambda (x)
+                                           (and x
+                                                (setq x (mhc-slot-records x))
+                                                (copy-sequence x)))
+                                         (list (mhc-slot-get-intersect-schedule)))))))
+        schedule memos)
     (while (setq schedule (car schedules))
       (unless (or (mhc-logic/day (mhc-schedule-condition schedule))
-		  (mhc-logic/and (mhc-schedule-condition schedule))
-		  (and mhc-insert-todo-list
-		       (mhc-schedule-in-category-p schedule "todo")))
-	(setq memos (cons schedule memos)))
+                  (mhc-logic/and (mhc-schedule-condition schedule))
+                  (and mhc-insert-todo-list
+                       (mhc-schedule-in-category-p schedule "todo")))
+        (setq memos (cons schedule memos)))
       (setq schedules (cdr schedules)))
     (mapcar 'cdr
-	    (sort (mapcar (lambda (x)
-			    (cons (mhc-schedule-priority x) x))
-			  memos)
-		  (lambda (a b)
-		    (if (and (null (car a)) (car b))
-			nil
-		      (if (and (null (car b)) (car a))
-			  t
-			(if (and (null (car b)) (null (car a)))
-			    nil
-			  (> (car a) (car b))))))))))
+            (sort (mapcar (lambda (x)
+                            (cons (mhc-schedule-priority x) x))
+                          memos)
+                  (lambda (a b)
+                    (if (and (null (car a)) (car b))
+                        nil
+                      (if (and (null (car b)) (car a))
+                          t
+                        (if (and (null (car b)) (null (car a)))
+                            nil
+                          (> (car a) (car b))))))))))
 
 
 (defun mhc-db-add-record-from-buffer (record buffer &optional force-refile)
   (let* ((slot (mhc-logic-record-to-slot record))
-	 (directory (and slot (mhc-slot-key-to-directory slot)))
-	 (old-record))
+         (directory (and slot (mhc-slot-key-to-directory slot)))
+         (old-record))
     (unless slot (error "Cannot get schedule slot"))
     (if (mhc-record-name record)
-	;; ¥˚¬∏§Œ•π•±•∏•Â°º•Î§Ú ‘Ω∏§∑§øæÏπÁ
-	(if (string= directory
-		     (file-name-directory
-		      (directory-file-name
-		       (mhc-record-name record))))
-	    (setq old-record record)
-	  ;; •π•±•∏•Â°º•Î —ππ§À§Ë§√§∆°¢•«•£•Ï•Ø•»•Í§Œ —ππ§¨…¨Õ◊§ æÏπÁ
-	  (setq old-record (mhc-record-copy record))
-	  (mhc-record-set-name record (mhc-misc-get-new-path directory)))
-      ;; ø∑µ¨§Œ•π•±•∏•Â°º•Î§Ú ›¬∏§π§ÎæÏπÁ
+        ;; Êó¢Â≠ò„ÅÆ„Çπ„Ç±„Ç∏„É•„Éº„É´„ÇíÁ∑®ÈõÜ„Åó„ÅüÂ†¥Âêà
+        (if (string= directory
+                     (file-name-directory
+                      (directory-file-name
+                       (mhc-record-name record))))
+            (setq old-record record)
+          ;; „Çπ„Ç±„Ç∏„É•„Éº„É´Â§âÊõ¥„Å´„Çà„Å£„Å¶„ÄÅ„Éá„Ç£„É¨„ÇØ„Éà„É™„ÅÆÂ§âÊõ¥„ÅåÂøÖË¶Å„Å™Â†¥Âêà
+          (setq old-record (mhc-record-copy record))
+          (mhc-record-set-name record (mhc-misc-get-new-path directory)))
+      ;; Êñ∞Ë¶è„ÅÆ„Çπ„Ç±„Ç∏„É•„Éº„É´„Çí‰øùÂ≠ò„Åô„ÇãÂ†¥Âêà
       (mhc-record-set-name record (mhc-misc-get-new-path directory)))
     (if (or force-refile
-	    (y-or-n-p (format
-		       "Refile %s to %s "
-		       (mhc-misc-sub (if old-record
-					 (mhc-record-name old-record) "")
-				     mhc-mail-path "+")
-		       (mhc-misc-sub (mhc-record-name record)
-				     mhc-mail-path "+"))))
-	(progn
-	  (mhc-record-write-buffer record buffer old-record)
-	  (if (and old-record
-		   (not (eq record old-record)))
-	      (let* ((dir (file-name-directory
-			   (directory-file-name
-			    (mhc-record-name old-record))))
-		     (slot (mhc-slot-directory-to-key dir)))
-		(mhc-misc-touch-directory dir)
-		(mhc-slot-update-cache slot 'remove old-record)))
-	  (mhc-misc-touch-directory directory)
-	  (mhc-slot-update-cache slot 'add record)
-	  t))))
+            (y-or-n-p (format
+                       "Refile %s to %s "
+                       (mhc-misc-sub (if old-record
+                                         (mhc-record-name old-record) "")
+                                     mhc-mail-path "+")
+                       (mhc-misc-sub (mhc-record-name record)
+                                     mhc-mail-path "+"))))
+        (progn
+          (mhc-record-write-buffer record buffer old-record)
+          (if (and old-record
+                   (not (eq record old-record)))
+              (let* ((dir (file-name-directory
+                           (directory-file-name
+                            (mhc-record-name old-record))))
+                     (slot (mhc-slot-directory-to-key dir)))
+                (mhc-misc-touch-directory dir)
+                (mhc-slot-update-cache slot 'remove old-record)))
+          (mhc-misc-touch-directory directory)
+          (mhc-slot-update-cache slot 'add record)
+          t))))
 
 
 (defun mhc-db-delete-file (record)
   (let* ((dir (file-name-directory (directory-file-name (mhc-record-name record))))
-	 (slot (mhc-slot-directory-to-key dir)))
+         (slot (mhc-slot-directory-to-key dir)))
     (mhc-record-delete record)
     (mhc-misc-touch-directory dir)
     (mhc-slot-update-cache slot 'remove record)))
 
 
-;; FIXME: X-SC-Schedule •ÿ•√•¿§À§Ë§√§∆ªÿƒÍ§µ§Ï§øª“•π•±•∏•Â°º•Î§À¬–§π§Î
-;; Œ„≥∞µ¨¬ß§Œƒ…≤√§¨∆∞∫Ó§∑§ §§°£
+;; FIXME: X-SC-Schedule „Éò„ÉÉ„ÉÄ„Å´„Çà„Å£„Å¶ÊåáÂÆö„Åï„Çå„ÅüÂ≠ê„Çπ„Ç±„Ç∏„É•„Éº„É´„Å´ÂØæ„Åô„Çã
+;; ‰æãÂ§ñË¶èÂâá„ÅÆËøΩÂä†„ÅåÂãï‰Ωú„Åó„Å™„ÅÑ„ÄÇ
 (defun mhc-db-add-exception-rule (original-record except-day)
   (let ((date-string (mhc-day-let except-day
-		       (format "%04d%02d%02d" year month day-of-month))))
+                       (format "%04d%02d%02d" year month day-of-month))))
     (with-temp-buffer
       (mhc-draft-reedit-file (mhc-record-name original-record))
       (let (record dayinfo schedule)
-	(while (setq record (mhc-parse-buffer)
-		     dayinfo (mhc-logic-eval-for-date (list (mhc-record-sexp record)) except-day)
-		     schedule (car (mhc-day-schedules dayinfo)))
-	  (save-restriction
-	    (narrow-to-region (mhc-schedule-region-start schedule)
-			      (mhc-schedule-region-end schedule))
-	    (mhc-header-put-value
-	     "x-sc-day"
-	     (mapconcat 'identity
-			(cons (format "!%s" date-string)
-			      (delete date-string
-				      (mhc-logic-day-as-string-list
-				       (mhc-schedule-condition schedule))))
-			" "))))
-	(mhc-record-set-name record (mhc-record-name original-record))
-	(mhc-db-add-record-from-buffer record (current-buffer))))))
+        (while (setq record (mhc-parse-buffer)
+                     dayinfo (mhc-logic-eval-for-date (list (mhc-record-sexp record)) except-day)
+                     schedule (car (mhc-day-schedules dayinfo)))
+          (save-restriction
+            (narrow-to-region (mhc-schedule-region-start schedule)
+                              (mhc-schedule-region-end schedule))
+            (mhc-header-put-value
+             "x-sc-day"
+             (mapconcat 'identity
+                        (cons (format "!%s" date-string)
+                              (delete date-string
+                                      (mhc-logic-day-as-string-list
+                                       (mhc-schedule-condition schedule))))
+                        " "))))
+        (mhc-record-set-name record (mhc-record-name original-record))
+        (mhc-db-add-record-from-buffer record (current-buffer))))))
 
 
 
@@ -277,7 +277,7 @@ FROM, TO §œ 1970/01/01 §´§È§Œ∑–≤·∆¸øÙ§ÚÕ—§§§∆ªÿƒÍ"
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
 ;; are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright
 ;;    notice, this list of conditions and the following disclaimer.
 ;; 2. Redistributions in binary form must reproduce the above copyright
@@ -286,7 +286,7 @@ FROM, TO §œ 1970/01/01 §´§È§Œ∑–≤·∆¸øÙ§ÚÕ—§§§∆ªÿƒÍ"
 ;; 3. Neither the name of the team nor the names of its contributors
 ;;    may be used to endorse or promote products derived from this software
 ;;    without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ;; LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS

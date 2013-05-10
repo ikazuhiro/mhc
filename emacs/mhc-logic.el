@@ -1,4 +1,4 @@
-;;; -*- mode: Emacs-Lisp; coding: euc-japan -*-
+;;; -*- mode: Emacs-Lisp; coding: utf-8 -*-
 
 ;; Author:  TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 ;; Created: 2000/04/30
@@ -9,13 +9,13 @@
 
 ;; This file is a part of MHC.
 
-;; •π•±•∏•Â°º•Î§ŒæÚ∑Ô§Ú…Ω§π•ÿ•√•¿§Ú°¢§Ω§ŒæÚ∑Ô§»≈˘§∑§§Sº∞§À —¥π§π§Î§ø§·
-;; §Œ•È•§•÷•È•Í°£
+;; „Çπ„Ç±„Ç∏„É•„Éº„É´„ÅÆÊù°‰ª∂„ÇíË°®„Åô„Éò„ÉÉ„ÉÄ„Çí„ÄÅ„Åù„ÅÆÊù°‰ª∂„Å®Á≠â„Åó„ÅÑSÂºè„Å´Â§âÊèõ„Åô„Çã„Åü„ÇÅ
+;; „ÅÆ„É©„Ç§„Éñ„É©„É™„ÄÇ
 
-;; Sº∞§œ°¢∞ ≤º§Œ§Ë§¶§ •Ì°º•´•Î —øÙ§Œ¬´«˚§Œ≤º§«…æ≤¡§µ§Ï§Î°£
+;; SÂºè„ÅØ„ÄÅ‰ª•‰∏ã„ÅÆ„Çà„ÅÜ„Å™„É≠„Éº„Ç´„É´Â§âÊï∞„ÅÆÊùüÁ∏õ„ÅÆ‰∏ã„ÅßË©ï‰æ°„Åï„Çå„Çã„ÄÇ
 
 ;;     (let ((month 4)
-;;           (day 11048) ; 1970/1/1 §´§È§Œ∆¸øÙ
+;;           (day 11048) ; 1970/1/1 „Åã„Çâ„ÅÆÊó•Êï∞
 ;;           (day-of-month 1)
 ;;           (day-of-week 6) ; 0 = Sun, 1 = Mon, ...
 ;;           (week-of-month 0) ; 0 = 1st, 1 = 2nd, 2 = 3rd, 3 = 4th, 4 = 5th
@@ -23,25 +23,25 @@
 ;;           (todo nil))
 ;;       (eval sexp))
 
-;; ∂Ò¬Œ≈™§ …æ≤¡§Œ∑¡º∞§œ°¢mhc-logic-eval-for-date, mhc-db/eval-for-duration
-;; ¥ÿøÙ§ŒƒÍµ¡§ §…§Úª≤æ»°£
+;; ÂÖ∑‰ΩìÁöÑ„Å™Ë©ï‰æ°„ÅÆÂΩ¢Âºè„ÅØ„ÄÅmhc-logic-eval-for-date, mhc-db/eval-for-duration
+;; Èñ¢Êï∞„ÅÆÂÆöÁæ©„Å™„Å©„ÇíÂèÇÁÖß„ÄÇ
 
-;; æÚ∑Ô§¨°¢Emacs-Lisp §ŒΩ“∏Ï§Œ§ﬂ§´§È§ §ÎSº∞§À —¥π§µ§Ï§Î§»°¢∏µ°π§ŒæÚ∑Ô
-;; §Œ∞’Ã£§¨ ¨§´§Í§≈§È§Ø§ §Î§ø§·°¢∞Ï√∂°¢∏µ°π§Œ•ÿ•√•¿§»§€§»§Û§…∆±§∏∑¡º∞
-;; §Œ•ﬁ•Ø•Ì§ÚÕ—§§§øº∞§À —¥π§π§Î°£
+;; Êù°‰ª∂„Åå„ÄÅEmacs-Lisp „ÅÆËø∞Ë™û„ÅÆ„Åø„Åã„Çâ„Å™„ÇãSÂºè„Å´Â§âÊèõ„Åï„Çå„Çã„Å®„ÄÅÂÖÉ„ÄÖ„ÅÆÊù°‰ª∂
+;; „ÅÆÊÑèÂë≥„ÅåÂàÜ„Åã„Çä„Å•„Çâ„Åè„Å™„Çã„Åü„ÇÅ„ÄÅ‰∏ÄÊó¶„ÄÅÂÖÉ„ÄÖ„ÅÆ„Éò„ÉÉ„ÉÄ„Å®„Åª„Å®„Çì„Å©Âêå„ÅòÂΩ¢Âºè
+;; „ÅÆ„Éû„ÇØ„É≠„ÇíÁî®„ÅÑ„ÅüÂºè„Å´Â§âÊèõ„Åô„Çã„ÄÇ
 
-;; §≥§Œ√Ê¥÷º∞§Úª≤æ»§π§Î§≥§»§À§Ë§√§∆°¢∏µ°π§ŒæÚ∑Ô§À¬–§π§Î∞’Ã£œ¿≈™§ …æ≤¡
-;; §¨≤ƒ«Ω§»§ §Î(mhc-logic-file-to-slot)°£
+;; „Åì„ÅÆ‰∏≠ÈñìÂºè„ÇíÂèÇÁÖß„Åô„Çã„Åì„Å®„Å´„Çà„Å£„Å¶„ÄÅÂÖÉ„ÄÖ„ÅÆÊù°‰ª∂„Å´ÂØæ„Åô„ÇãÊÑèÂë≥Ë´ñÁöÑ„Å™Ë©ï‰æ°
+;; „ÅåÂèØËÉΩ„Å®„Å™„Çã(mhc-logic-file-to-slot)„ÄÇ
 
-;; §ﬁ§ø°¢ƒÃæÔ§Œ…æ≤¡§Úπ‘§¶æÏπÁ§œ°¢√Ê¥÷º∞§À¥ﬁ§ﬁ§Ï§Î•ﬁ•Ø•Ì§Ú¥∞¡¥§À≈∏≥´§∑
-;; §∆§´§Èπ‘§¶§ø§·(mhc-logic-compile-file)°¢•π•‘°º•…§œπ‚¬Æ§À ›§ø§Ï§Î°£
+;; „Åæ„Åü„ÄÅÈÄöÂ∏∏„ÅÆË©ï‰æ°„ÇíË°å„ÅÜÂ†¥Âêà„ÅØ„ÄÅ‰∏≠ÈñìÂºè„Å´Âê´„Åæ„Çå„Çã„Éû„ÇØ„É≠„ÇíÂÆåÂÖ®„Å´Â±ïÈñã„Åó
+;; „Å¶„Åã„ÇâË°å„ÅÜ„Åü„ÇÅ(mhc-logic-compile-file)„ÄÅ„Çπ„Éî„Éº„Éâ„ÅØÈ´òÈÄü„Å´‰øù„Åü„Çå„Çã„ÄÇ
 
 ;;; Definition:
 (require 'mhc-date)
 (require 'bytecomp)
 
 ;;----------------------------------------------------------------------
-;;		MHC-LOGIC πΩ¬§¬Œ
+;;              MHC-LOGIC ÊßãÈÄ†‰Ωì
 ;;----------------------------------------------------------------------
 
 ;; MHC-LOGIC    ::= [ DAY AND TODO INTERMEDIATE SEXP ]
@@ -52,11 +52,11 @@
 ;; INTERMEDIATE ::= macro expression
 ;; SEXP         ::= full expanded expression
 
-;; mhc-logic/day          = ∆¸…’(X-SC-Day)§À§Ë§ÎæÚ∑Ô
-;; mhc-logic/and          = §Ω§Ï∞ ≥∞§Œ•ÿ•√•¿§À¥§≈§ØæÚ∑Ô
-;; mhc-logic/todo         = TODO§ŒΩÁ∞Ã
-;; mhc-logic/intermediate = æÚ∑Ô§ÚSº∞§À —¥π§π§Î§ø§·§Œ√Ê¥÷∑¡º∞
-;; mhc-logic-sexp         = ¥∞¡¥§À≈∏≥´§µ§Ï§øSº∞
+;; mhc-logic/day          = Êó•‰ªò(X-SC-Day)„Å´„Çà„ÇãÊù°‰ª∂
+;; mhc-logic/and          = „Åù„Çå‰ª•Â§ñ„ÅÆ„Éò„ÉÉ„ÉÄ„Å´Âü∫„Å•„ÅèÊù°‰ª∂
+;; mhc-logic/todo         = TODO„ÅÆÈ†Ü‰Ωç
+;; mhc-logic/intermediate = Êù°‰ª∂„ÇíSÂºè„Å´Â§âÊèõ„Åô„Çã„Åü„ÇÅ„ÅÆ‰∏≠ÈñìÂΩ¢Âºè
+;; mhc-logic-sexp         = ÂÆåÂÖ®„Å´Â±ïÈñã„Åï„Çå„ÅüSÂºè
 
 (defun mhc-logic-new ()
   (make-vector 5 nil))
@@ -85,42 +85,42 @@
 
 (defun mhc-logic-day-as-string-list (logicinfo)
   (mapcar (lambda (day)
-	    (if (consp day)
-		(mhc-date-format (car day) "!%04d%02d%02d" yy mm dd)
-	      (mhc-date-format day "%04d%02d%02d" yy mm dd)))
-	  (mhc-logic/day logicinfo)))
+            (if (consp day)
+                (mhc-date-format (car day) "!%04d%02d%02d" yy mm dd)
+              (mhc-date-format day "%04d%02d%02d" yy mm dd)))
+          (mhc-logic/day logicinfo)))
 
 
 
 ;;----------------------------------------------------------------------
-;;		æÚ∑Ôº∞§Ú…æ≤¡§π§Î¥ÿøÙ
+;;              Êù°‰ª∂Âºè„ÇíË©ï‰æ°„Åô„ÇãÈñ¢Êï∞
 ;;----------------------------------------------------------------------
 
 (defun mhc-logic-eval-for-date (sexp-list day &optional todo)
-  "ªÿƒÍ§µ§Ï§ø∆¸§Œ•π•±•∏•Â°º•Î§Ú√µ∫˜"
+  "ÊåáÂÆö„Åï„Çå„ÅüÊó•„ÅÆ„Çπ„Ç±„Ç∏„É•„Éº„É´„ÇíÊé¢Á¥¢"
   (mhc-day-let day
     (let ((week-of-month (/ (+ day-of-month
-			       (mhc-date-ww (mhc-date-mm-first day))
-			       -8)
-			    7))
-	  (last-week (> 7 (- (mhc-date/last-day-of-month year month)
-			     day-of-month)))
-	  (new (mhc-day-new year month day-of-month day-of-week)))
+                               (mhc-date-ww (mhc-date-mm-first day))
+                               -8)
+                            7))
+          (last-week (> 7 (- (mhc-date/last-day-of-month year month)
+                             day-of-month)))
+          (new (mhc-day-new year month day-of-month day-of-week)))
       (mhc-day-set-schedules new (delq nil
-				       (mapcar
-					(lambda (sexp)
-					  (and sexp
-					       (funcall sexp))) sexp-list)))
+                                       (mapcar
+                                        (lambda (sexp)
+                                          (and sexp
+                                               (funcall sexp))) sexp-list)))
       new)))
 
 
 
 ;;----------------------------------------------------------------------
-;;		æÚ∑Ôº∞§Ú¿∏¿Æ§π§Î§ø§·§Œ¥ÿøÙ∑≤
+;;              Êù°‰ª∂Âºè„ÇíÁîüÊàê„Åô„Çã„Åü„ÇÅ„ÅÆÈñ¢Êï∞Áæ§
 ;;----------------------------------------------------------------------
 
-;; Sº∞§Ú…Ω∏Ω§π§Î√Ê¥÷∑¡º∞§Œ•ﬁ•Ø•Ì
-;; §≥§Ï§È§œ°¢æÚ∑Ôº∞§Œ∞’Ã£œ¿≈™…Ωº®§»§∑§∆Õ—§§§È§Ï§Î°£
+;; SÂºè„ÇíË°®Áèæ„Åô„Çã‰∏≠ÈñìÂΩ¢Âºè„ÅÆ„Éû„ÇØ„É≠
+;; „Åì„Çå„Çâ„ÅØ„ÄÅÊù°‰ª∂Âºè„ÅÆÊÑèÂë≥Ë´ñÁöÑË°®Á§∫„Å®„Åó„Å¶Áî®„ÅÑ„Çâ„Çå„Çã„ÄÇ
 (defmacro mhc-logic/condition-month (n) `(eq month ,n))
 (defmacro mhc-logic/condition-day (n) `(eq day ,n))
 (defmacro mhc-logic/condition-day-of-month (n) `(eq day-of-month ,n))
@@ -132,18 +132,18 @@
 (defmacro mhc-logic/condition-duration-end (end) `(<= day ,end))
 
 (defconst mhc-logic/space-regexp "[,| \t\n]+"
-  "πΩ ∏Õ◊¡«§Œ∂Ë¿⁄§Í§À∞Ï√◊§π§Î¿µµ¨…Ω∏Ω")
+  "ÊßãÊñáË¶ÅÁ¥†„ÅÆÂå∫Âàá„Çä„Å´‰∏ÄËá¥„Åô„ÇãÊ≠£Ë¶èË°®Áèæ")
 
 (defconst mhc-logic/not-regexp "\\(!\\)?[ \t]*"
-  "πΩ ∏Õ◊¡«§Œ»›ƒÍ§À∞Ï√◊§π§Î¿µµ¨…Ω∏Ω")
+  "ÊßãÊñáË¶ÅÁ¥†„ÅÆÂê¶ÂÆö„Å´‰∏ÄËá¥„Åô„ÇãÊ≠£Ë¶èË°®Áèæ")
 
 (defconst mhc-logic/day-regexp
   "\\([0-9][0-9][0-9][0-9]\\)\\([0-9][0-9]\\)\\([0-9][0-9]\\)"
-  "πΩ ∏Õ◊¡«§Œ∆¸…’§À∞Ï√◊§π§Î¿µµ¨…Ω∏Ω")
+  "ÊßãÊñáË¶ÅÁ¥†„ÅÆÊó•‰ªò„Å´‰∏ÄËá¥„Åô„ÇãÊ≠£Ë¶èË°®Áèæ")
 
 (defconst mhc-logic/day-of-month-regexp
   "0*\\([1-9]\\|[1-2][0-9]\\|3[01]\\)"
-  "πΩ ∏Õ◊¡«§Œ≥∫≈ˆ∑Ó§Œ≤ø∆¸Ã‹§´§Ú…Ω§πΩ¯øÙ§À∞Ï√◊§π§Î¿µµ¨…Ω∏Ω")
+  "ÊßãÊñáË¶ÅÁ¥†„ÅÆË©≤ÂΩìÊúà„ÅÆ‰ΩïÊó•ÁõÆ„Åã„ÇíË°®„ÅôÂ∫èÊï∞„Å´‰∏ÄËá¥„Åô„ÇãÊ≠£Ë¶èË°®Áèæ")
 
 (defconst mhc-logic/week-of-month-alist
   '(("1st" 0 (mhc-logic/condition-week-of-month 0))
@@ -152,21 +152,21 @@
     ("4th" 3 (mhc-logic/condition-week-of-month 3))
     ("5th" 4 (mhc-logic/condition-week-of-month 4))
     ("last" 5 (mhc-logic/condition-last-week)))
-  "πΩ ∏Õ◊¡«§Œ≥∫≈ˆ∑Ó§Œ≤øΩµÃ‹§´§Ú…Ω§πΩ¯øÙ§Œœ¢¡€«€ŒÛ")
+  "ÊßãÊñáË¶ÅÁ¥†„ÅÆË©≤ÂΩìÊúà„ÅÆ‰ΩïÈÄ±ÁõÆ„Åã„ÇíË°®„ÅôÂ∫èÊï∞„ÅÆÈÄ£ÊÉ≥ÈÖçÂàó")
 
 (defconst mhc-logic/week-of-month-regexp
   (mhc-regexp-opt (mapcar (function car) mhc-logic/week-of-month-alist) 'paren)
-  "πΩ ∏Õ◊¡«§Œ≤øΩµÃ‹§´§Ú…Ω§πΩ¯øÙ§À∞Ï√◊§π§Î¿µµ¨…Ω∏Ω")
+  "ÊßãÊñáË¶ÅÁ¥†„ÅÆ‰ΩïÈÄ±ÁõÆ„Åã„ÇíË°®„ÅôÂ∫èÊï∞„Å´‰∏ÄËá¥„Åô„ÇãÊ≠£Ë¶èË°®Áèæ")
 
 (defconst mhc-logic/day-of-week-alist
   '(("sun" . 0) ("mon" . 1) ("tue" . 2) ("wed" . 3) ("thu" . 4) ("fri" . 5) ("sat" . 6)
     ("sunday" . 0) ("monday" . 1) ("tuesday" . 2) ("wednesday" . 3) ("thursday" . 4)
     ("friday" . 5) ("saturday" . 6))
-  "πΩ ∏Õ◊¡«§ŒÕÀ∆¸§Œœ¢¡€«€ŒÛ")
+  "ÊßãÊñáË¶ÅÁ¥†„ÅÆÊõúÊó•„ÅÆÈÄ£ÊÉ≥ÈÖçÂàó")
 
 (defconst mhc-logic/day-of-week-regexp
   (mhc-regexp-opt (mapcar (function car) mhc-logic/day-of-week-alist) 'paren)
-  "πΩ ∏Õ◊¡«§ŒÕÀ∆¸§À∞Ï√◊§π§Î¿µµ¨…Ω∏Ω")
+  "ÊßãÊñáË¶ÅÁ¥†„ÅÆÊõúÊó•„Å´‰∏ÄËá¥„Åô„ÇãÊ≠£Ë¶èË°®Áèæ")
 
 (defconst mhc-logic/month-alist
   '(("jan" . 1) ("feb" . 2) ("mar" . 3) ("apr" . 4) ("may" . 5) ("jun" . 6)
@@ -174,221 +174,221 @@
     ("january" . 1) ("february" . 2) ("march" . 3) ("april" . 4) ("june" . 6)
     ("july" . 7) ("august" . 8) ("september" . 9) ("october" .10) ("november" . 11)
     ("december" . 12))
-  "πΩ ∏Õ◊¡«§Œ∑Ó§Œœ¢¡€«€ŒÛ")
+  "ÊßãÊñáË¶ÅÁ¥†„ÅÆÊúà„ÅÆÈÄ£ÊÉ≥ÈÖçÂàó")
 
 (defconst mhc-logic/month-regexp
   (mhc-regexp-opt (mapcar (function car) mhc-logic/month-alist) 'paren)
-  "πΩ ∏Õ◊¡«§Œ∑Ó§À∞Ï√◊§π§Î¿µµ¨…Ω∏Ω")
+  "ÊßãÊñáË¶ÅÁ¥†„ÅÆÊúà„Å´‰∏ÄËá¥„Åô„ÇãÊ≠£Ë¶èË°®Áèæ")
 
 (defconst mhc-logic/old-style-date-regexp
   "\\([0-9]+\\)[\t ]+\\([A-Z][a-z][a-z]\\)[\t ]+\\([0-9]+\\)"
-  "πΩ ∏Õ◊¡«§ŒµÏ∑¡º∞§Œ∆¸…’ªÿƒÍ§À∞Ï√◊§π§Î¿µµ¨…Ω∏Ω")
+  "ÊßãÊñáË¶ÅÁ¥†„ÅÆÊóßÂΩ¢Âºè„ÅÆÊó•‰ªòÊåáÂÆö„Å´‰∏ÄËá¥„Åô„ÇãÊ≠£Ë¶èË°®Áèæ")
 
 
 (defmacro mhc-logic/looking-at (&rest regexp)
-  "¿µµ¨…Ω∏Ω§À∞Ï√◊§π§ÎπΩ ∏Õ◊¡«§Ú»Ø∏´§π§Î•ﬁ•Ø•Ì"
+  "Ê≠£Ë¶èË°®Áèæ„Å´‰∏ÄËá¥„Åô„ÇãÊßãÊñáË¶ÅÁ¥†„ÇíÁô∫Ë¶ã„Åô„Çã„Éû„ÇØ„É≠"
   `(looking-at (concat ,@regexp mhc-logic/space-regexp)))
 
 
 (defun mhc-logic-parse-day (logicinfo)
-  "X-SC-Day: •ÿ•√•¿§Ú≤Ú¿œ§π§Î¥ÿøÙ"
+  "X-SC-Day: „Éò„ÉÉ„ÉÄ„ÇíËß£Êûê„Åô„ÇãÈñ¢Êï∞"
   (let ((d) (days (mhc-logic/day logicinfo)))
     (if (looking-at mhc-logic/space-regexp)
-	(goto-char (match-end 0)))
+        (goto-char (match-end 0)))
     (while (not (eobp))
       (or (mhc-logic/looking-at mhc-logic/not-regexp mhc-logic/day-regexp)
-	  (error "Parse ERROR !!! (at X-SC-Day:)"))
+          (error "Parse ERROR !!! (at X-SC-Day:)"))
       (setq d (mhc-date-new (string-to-number (match-string 2))
-			    (string-to-number (match-string 3))
-			    (string-to-number (match-string 4)))
-	    days (cons (if (match-string 1) (cons d nil) d) days))
+                            (string-to-number (match-string 3))
+                            (string-to-number (match-string 4)))
+            days (cons (if (match-string 1) (cons d nil) d) days))
       (goto-char (match-end 0)))
     (mhc-logic/set-day logicinfo (nreverse days)))) ;; xxxxx
 
 
 (defun mhc-logic-parse-old-style-date (logicinfo)
-  "X-SC-Date: •ÿ•√•¿§Œ∆¸…’…Ù ¨§Ú≤Ú¿œ§π§Î¥ÿøÙ"
+  "X-SC-Date: „Éò„ÉÉ„ÉÄ„ÅÆÊó•‰ªòÈÉ®ÂàÜ„ÇíËß£Êûê„Åô„ÇãÈñ¢Êï∞"
   (if (looking-at mhc-logic/space-regexp)
       (goto-char (match-end 0)))
   (let (month)
     (if (and (mhc-logic/looking-at mhc-logic/old-style-date-regexp)
-	     (setq month (cdr (assoc (downcase (match-string 2))
-				     mhc-logic/month-alist))))
-	(let ((year (string-to-number (match-string 3))))
-	  (mhc-logic/set-day 
-	   logicinfo
-	   (cons (mhc-date-new (cond ((< year 69)
-				      (+ year 2000))
-				     ((< year 1000)
-				      (+ year 1900))
-				     (t year))
-			       month
-			       (string-to-number (match-string 1)))
-		 (mhc-logic/day logicinfo)))
-	  (goto-char (match-end 0)))
+             (setq month (cdr (assoc (downcase (match-string 2))
+                                     mhc-logic/month-alist))))
+        (let ((year (string-to-number (match-string 3))))
+          (mhc-logic/set-day
+           logicinfo
+           (cons (mhc-date-new (cond ((< year 69)
+                                      (+ year 2000))
+                                     ((< year 1000)
+                                      (+ year 1900))
+                                     (t year))
+                               month
+                               (string-to-number (match-string 1)))
+                 (mhc-logic/day logicinfo)))
+          (goto-char (match-end 0)))
       (error "Parse ERROR !!!(at X-SC-Date:)"))))
 
 
 (defun mhc-logic-parse-cond (logicinfo)
-  "X-SC-Cond: •ÿ•√•¿§Ú≤Ú¿œ§π§Î¥ÿøÙ"
+  "X-SC-Cond: „Éò„ÉÉ„ÉÄ„ÇíËß£Êûê„Åô„ÇãÈñ¢Êï∞"
   (let (sexp day-of-month week-of-month day-of-week month)
     (if (looking-at mhc-logic/space-regexp)
-	(goto-char (match-end 0)))
+        (goto-char (match-end 0)))
     (while (not (eobp))
       (cond
-       ;; ≤ø∆¸Ã‹
+       ;; ‰ΩïÊó•ÁõÆ
        ((mhc-logic/looking-at mhc-logic/day-of-month-regexp)
-	(setq day-of-month
-	      (cons (list 'mhc-logic/condition-day-of-month (string-to-number (match-string 1)))
-		    day-of-month)))
-       ;; ≤øΩµÃ‹
+        (setq day-of-month
+              (cons (list 'mhc-logic/condition-day-of-month (string-to-number (match-string 1)))
+                    day-of-month)))
+       ;; ‰ΩïÈÄ±ÁõÆ
        ((mhc-logic/looking-at mhc-logic/week-of-month-regexp)
-	(setq week-of-month
-	      (cons (nth 2 (assoc (downcase (match-string 1))
-				  mhc-logic/week-of-month-alist))
-		    week-of-month)))
-       ;; ÕÀ∆¸
+        (setq week-of-month
+              (cons (nth 2 (assoc (downcase (match-string 1))
+                                  mhc-logic/week-of-month-alist))
+                    week-of-month)))
+       ;; ÊõúÊó•
        ((mhc-logic/looking-at mhc-logic/day-of-week-regexp)
-	(setq day-of-week
-	      (cons (list 'mhc-logic/condition-day-of-week
-			  (cdr (assoc (downcase (match-string 1))
-				      mhc-logic/day-of-week-alist)))
-		    day-of-week)))
-       ;; ∑Ó
+        (setq day-of-week
+              (cons (list 'mhc-logic/condition-day-of-week
+                          (cdr (assoc (downcase (match-string 1))
+                                      mhc-logic/day-of-week-alist)))
+                    day-of-week)))
+       ;; Êúà
        ((mhc-logic/looking-at mhc-logic/month-regexp)
-	(setq month
-	      (cons (list 'mhc-logic/condition-month
-			  (cdr (assoc (downcase (match-string 1))
-				      mhc-logic/month-alist)))
-		    month)))
-       (t ;; ≤Úº·§«§≠§ §§Õ◊¡«§ŒæÏπÁ
-	(error "Parse ERROR !!!(at X-SC-Cond:)")))
+        (setq month
+              (cons (list 'mhc-logic/condition-month
+                          (cdr (assoc (downcase (match-string 1))
+                                      mhc-logic/month-alist)))
+                    month)))
+       (t ;; Ëß£Èáà„Åß„Åç„Å™„ÅÑË¶ÅÁ¥†„ÅÆÂ†¥Âêà
+        (error "Parse ERROR !!!(at X-SC-Cond:)")))
       (goto-char (match-end 0)))
     (mapcar (lambda (s)
-	      (set s (if (symbol-value s)
-			 (if (= 1 (length (symbol-value s)))
-			     (car (symbol-value s))
-			   (cons 'or (nreverse (symbol-value s)))))))
-	    '(day-of-month week-of-month day-of-week month))
+              (set s (if (symbol-value s)
+                         (if (= 1 (length (symbol-value s)))
+                             (car (symbol-value s))
+                           (cons 'or (nreverse (symbol-value s)))))))
+            '(day-of-month week-of-month day-of-week month))
     (setq sexp (cond
-		((and week-of-month day-of-week) `(and ,week-of-month ,day-of-week))
-		(week-of-month week-of-month)
-		(day-of-week day-of-week)))
+                ((and week-of-month day-of-week) `(and ,week-of-month ,day-of-week))
+                (week-of-month week-of-month)
+                (day-of-week day-of-week)))
     (if day-of-month (setq sexp (if sexp (list 'or day-of-month sexp) day-of-month)))
     (if month (setq sexp (if sexp (list 'and month sexp) month)))
     (if sexp (mhc-logic/set-and logicinfo (cons sexp (mhc-logic/and logicinfo))))))
 
 
 (defun mhc-logic-parse-duration (logicinfo)
-  "X-SC-Duration: •ÿ•√•¿§Ú≤Ú¿œ§π§Î¥ÿøÙ"
+  "X-SC-Duration: „Éò„ÉÉ„ÉÄ„ÇíËß£Êûê„Åô„ÇãÈñ¢Êï∞"
   (let (sexp)
     (if (looking-at mhc-logic/space-regexp)
-	(goto-char (match-end 0)))
+        (goto-char (match-end 0)))
     (while (not (eobp))
       (setq sexp
-	    (cons (cond
-		   ((mhc-logic/looking-at mhc-logic/day-regexp
-					  "-" mhc-logic/day-regexp)
-		    (list 'mhc-logic/condition-duration
-			  (mhc-date-new (string-to-number (match-string 1))
-					(string-to-number (match-string 2))
-					(string-to-number (match-string 3)))
-			  (mhc-date-new (string-to-number (match-string 4))
-					(string-to-number (match-string 5))
-					(string-to-number (match-string 6)))))
-		   ((mhc-logic/looking-at mhc-logic/day-regexp "-")
-		    (list 'mhc-logic/condition-duration-begin
-			  (mhc-date-new (string-to-number (match-string 1))
-					(string-to-number (match-string 2))
-					(string-to-number (match-string 3)))))
-		   ((mhc-logic/looking-at "-" mhc-logic/day-regexp)
-		    (list 'mhc-logic/condition-duration-end
-			  (mhc-date-new (string-to-number (match-string 1))
-					(string-to-number (match-string 2))
-					(string-to-number (match-string 3)))))
-		   (t ; §Ω§Ï∞ ≥∞§ŒæÏπÁ
-		    (error "Parse ERROR !!!(at X-SC-Duration:)")))
-		  sexp))
+            (cons (cond
+                   ((mhc-logic/looking-at mhc-logic/day-regexp
+                                          "-" mhc-logic/day-regexp)
+                    (list 'mhc-logic/condition-duration
+                          (mhc-date-new (string-to-number (match-string 1))
+                                        (string-to-number (match-string 2))
+                                        (string-to-number (match-string 3)))
+                          (mhc-date-new (string-to-number (match-string 4))
+                                        (string-to-number (match-string 5))
+                                        (string-to-number (match-string 6)))))
+                   ((mhc-logic/looking-at mhc-logic/day-regexp "-")
+                    (list 'mhc-logic/condition-duration-begin
+                          (mhc-date-new (string-to-number (match-string 1))
+                                        (string-to-number (match-string 2))
+                                        (string-to-number (match-string 3)))))
+                   ((mhc-logic/looking-at "-" mhc-logic/day-regexp)
+                    (list 'mhc-logic/condition-duration-end
+                          (mhc-date-new (string-to-number (match-string 1))
+                                        (string-to-number (match-string 2))
+                                        (string-to-number (match-string 3)))))
+                   (t ; „Åù„Çå‰ª•Â§ñ„ÅÆÂ†¥Âêà
+                    (error "Parse ERROR !!!(at X-SC-Duration:)")))
+                  sexp))
       (goto-char (match-end 0)))
     (if sexp
-	(mhc-logic/set-and logicinfo (cons (if (= 1 (length sexp))
-					       (car sexp)
-					     (cons 'or (nreverse sexp)))
-					   (mhc-logic/and logicinfo))))))
+        (mhc-logic/set-and logicinfo (cons (if (= 1 (length sexp))
+                                               (car sexp)
+                                             (cons 'or (nreverse sexp)))
+                                           (mhc-logic/and logicinfo))))))
 
 ;; Need to be deleted.
 (defun mhc-logic-parse-todo (logicinfo)
   (if (looking-at mhc-logic/space-regexp)
       (goto-char (match-end 0)))
   (let ((content (buffer-substring
-		  (point) (progn (skip-chars-forward "0-9") (point)))))
+                  (point) (progn (skip-chars-forward "0-9") (point)))))
     (if (looking-at mhc-logic/space-regexp)
-	(goto-char (match-end 0)))
+        (goto-char (match-end 0)))
     (if (eobp)
-	(mhc-logic/set-todo logicinfo (string-to-number content))
+        (mhc-logic/set-todo logicinfo (string-to-number content))
       (error "Parse ERROR !!!(at X-SC-Todo:)"))))
 
 
 (defun mhc-logic-compile-file (record)
-  "∆¸…’§ÚªÿƒÍ§µ§Ï§ø§»§≠§À°¢¥ÿ∑∏§π§Î•π•±•∏•Â°º•Î§Ú¡™§”§¿§π§ø§·§ŒSº∞§Ú¿∏¿Æ§π§Î"
+  "Êó•‰ªò„ÇíÊåáÂÆö„Åï„Çå„Åü„Å®„Åç„Å´„ÄÅÈñ¢‰øÇ„Åô„Çã„Çπ„Ç±„Ç∏„É•„Éº„É´„ÇíÈÅ∏„Å≥„Å†„Åô„Åü„ÇÅ„ÅÆSÂºè„ÇíÁîüÊàê„Åô„Çã"
   (let ((sexp) (schedules (mhc-record-schedules record))
-	(byte-compile-warnings))
+        (byte-compile-warnings))
     (while schedules
       (setq sexp (cons (mhc-logic/compile-schedule (car schedules)) sexp)
-	    schedules (cdr schedules)))
+            schedules (cdr schedules)))
     (setq sexp (delq nil sexp))
     (mhc-record-set-sexp
      record
      (if sexp
-	 (let (year month day day-of-month day-of-week week-of-month last-week todo)
-	   (byte-compile
-	    (list 'lambda ()
-		  (if (= 1 (length sexp))
-		      (car sexp)
-		    (cons 'or (nreverse sexp))))))))))
+         (let (year month day day-of-month day-of-week week-of-month last-week todo)
+           (byte-compile
+            (list 'lambda ()
+                  (if (= 1 (length sexp))
+                      (car sexp)
+                    (cons 'or (nreverse sexp))))))))))
 
 
 (defun mhc-logic/compile-schedule (schedule)
-  "mhc-logic-compile-file §Œ≤º¿¡§±¥ÿøÙ"
+  "mhc-logic-compile-file „ÅÆ‰∏ãË´ã„ÅëÈñ¢Êï∞"
   (let* ((logicinfo (mhc-schedule-condition schedule)) sexp)
-    ;; ∆¸…’§À§Ë§ÎŒ„≥∞æÚ∑Ô§»§Ω§Ï∞ ≥∞§ŒæÚ∑Ô§Ú∑ÎπÁ§∑§øœ¿Õ˝º∞§Ú¿∏¿Æ§π§Î
+    ;; Êó•‰ªò„Å´„Çà„Çã‰æãÂ§ñÊù°‰ª∂„Å®„Åù„Çå‰ª•Â§ñ„ÅÆÊù°‰ª∂„ÇíÁµêÂêà„Åó„ÅüË´ñÁêÜÂºè„ÇíÁîüÊàê„Åô„Çã
     (setq sexp
-	  (nreverse
-	   (delq nil
-		 (cons (let ((and (mhc-logic/and logicinfo)))
-			 (if and
-			     (if (= 1 (length and))
-				 (list (car and) t)
-			       (list (cons 'and (reverse and)) t))))
-		       (mapcar (lambda (day)
-				 (if (consp day)
-				     `((mhc-logic/condition-day ,(car day)) nil)
-				   `((mhc-logic/condition-day ,day) t)))
-			       (mhc-logic/day logicinfo))))))
+          (nreverse
+           (delq nil
+                 (cons (let ((and (mhc-logic/and logicinfo)))
+                         (if and
+                             (if (= 1 (length and))
+                                 (list (car and) t)
+                               (list (cons 'and (reverse and)) t))))
+                       (mapcar (lambda (day)
+                                 (if (consp day)
+                                     `((mhc-logic/condition-day ,(car day)) nil)
+                                   `((mhc-logic/condition-day ,day) t)))
+                               (mhc-logic/day logicinfo))))))
     (if sexp
-	(progn
-	  ;; æÚ∑Ô§ŒøÙ§À§Ë§√§∆°¢æÚ∑Ôº∞§Ú∫«≈¨≤Ω§∑§∆§™§Ø
- 	  (setq sexp (if (= 1 (length sexp))
- 			 (if (nth 1 (car sexp))
- 			     (car (car sexp))
- 			   `(not ,(car (car sexp))))
- 		       (cons 'cond sexp)))
-	  ;; TODO§À¥§≈§ØæÚ∑Ô§Ú≤√§®§Î
-	  (setq sexp (if (mhc-logic-todo logicinfo)
-			 `(if todo t ,sexp)
-		       `(if todo nil ,sexp))))
+        (progn
+          ;; Êù°‰ª∂„ÅÆÊï∞„Å´„Çà„Å£„Å¶„ÄÅÊù°‰ª∂Âºè„ÇíÊúÄÈÅ©Âåñ„Åó„Å¶„Åä„Åè
+          (setq sexp (if (= 1 (length sexp))
+                         (if (nth 1 (car sexp))
+                             (car (car sexp))
+                           `(not ,(car (car sexp))))
+                       (cons 'cond sexp)))
+          ;; TODO„Å´Âü∫„Å•„ÅèÊù°‰ª∂„ÇíÂä†„Åà„Çã
+          (setq sexp (if (mhc-logic-todo logicinfo)
+                         `(if todo t ,sexp)
+                       `(if todo nil ,sexp))))
       (if (mhc-logic-todo logicinfo)
-	  (setq sexp 'todo)))
-    ;; §≥§Œ√Ê¥÷∑¡º∞§Ú ›¬∏§∑§∆§™§Ø
+          (setq sexp 'todo)))
+    ;; „Åì„ÅÆ‰∏≠ÈñìÂΩ¢Âºè„Çí‰øùÂ≠ò„Åó„Å¶„Åä„Åè
     (mhc-logic/set-intermediate logicinfo sexp)
-    ;; √Ê¥÷∑¡º∞§Ú≈∏≥´§π§Î
+    ;; ‰∏≠ÈñìÂΩ¢Âºè„ÇíÂ±ïÈñã„Åô„Çã
     (mhc-logic/set-sexp logicinfo
-			(if sexp (mhc-logic/macroexpand
-				  `(if ,sexp ,schedule))))))
+                        (if sexp (mhc-logic/macroexpand
+                                  `(if ,sexp ,schedule))))))
 
 
 (defun mhc-logic/macroexpand (sexp)
-  "…Ù ¨º∞§À¡Ã§√§∆•ﬁ•Ø•Ì§Ú≈∏≥´§π§Î¥ÿøÙ"
+  "ÈÉ®ÂàÜÂºè„Å´ÈÅ°„Å£„Å¶„Éû„ÇØ„É≠„ÇíÂ±ïÈñã„Åô„ÇãÈñ¢Êï∞"
   (macroexpand
    (if (listp sexp)
        (mapcar (function mhc-logic/macroexpand) sexp)
@@ -397,21 +397,21 @@
 
 
 ;;----------------------------------------------------------------------
-;;		mhc-logic-record-to-slot
+;;              mhc-logic-record-to-slot
 ;;----------------------------------------------------------------------
 
 (defun mhc-logic-record-to-slot (record)
   "Return appropriate slot key, ( YEAR . MONTH ), for RECORD."
   (let ((schedules (mhc-record-schedules record))
-	pre-month cur-month)
+        pre-month cur-month)
     (while (and schedules
-		(not (mhc-logic-todo (mhc-schedule-condition (car schedules))))
-		(setq cur-month
-		      (mhc-logic/check-sexp-range 
-		       (mhc-schedule-condition (car schedules))))
-		(if pre-month
-		    (equal pre-month cur-month)
-		  (setq pre-month cur-month)))
+                (not (mhc-logic-todo (mhc-schedule-condition (car schedules))))
+                (setq cur-month
+                      (mhc-logic/check-sexp-range
+                       (mhc-schedule-condition (car schedules))))
+                (if pre-month
+                    (equal pre-month cur-month)
+                  (setq pre-month cur-month)))
       (setq schedules (cdr schedules)))
     (if schedules (cons nil nil) cur-month)))
 
@@ -426,24 +426,24 @@
   (let (duration-begin duration-end day-list month-list require-duration)
     (mhc-logic/check-sexp-range-internal (mhc-logic/intermediate logicinfo))
     (if (or (> (length month-list) 1)
-	    (if require-duration
-		(or (not duration-begin)
-		    (not duration-end)))
-	    (progn
-	      (if day-list (setq day-list (sort day-list '<)))
-	      (not (equal
-		    (setq duration-begin
-			  (if day-list
-			      (mhc-logic/day-to-slot
-			       (if duration-begin
-				   (min (car day-list) duration-begin)
-				 (car day-list)))))
-		    (if day-list
-			(mhc-logic/day-to-slot
-			 (if duration-end
-			     (max (nth (1- (length day-list)) day-list) duration-end)
-			   (nth (1- (length day-list)) day-list))))))))
-	'(nil . nil)
+            (if require-duration
+                (or (not duration-begin)
+                    (not duration-end)))
+            (progn
+              (if day-list (setq day-list (sort day-list '<)))
+              (not (equal
+                    (setq duration-begin
+                          (if day-list
+                              (mhc-logic/day-to-slot
+                               (if duration-begin
+                                   (min (car day-list) duration-begin)
+                                 (car day-list)))))
+                    (if day-list
+                        (mhc-logic/day-to-slot
+                         (if duration-end
+                             (max (nth (1- (length day-list)) day-list) duration-end)
+                           (nth (1- (length day-list)) day-list))))))))
+        '(nil . nil)
       duration-begin)))
 
 
@@ -459,34 +459,34 @@
   (if (listp sexp)
       (cond
        ((eq (car sexp) 'mhc-logic/condition-duration)
-	(if (or (not duration-begin)
-		(< (nth 1 sexp) duration-begin))
-	    (setq duration-begin (nth 1 sexp)))
-	(if (or (not duration-end)
-		(> (nth 1 sexp) duration-end))
-	    (setq duration-end (nth 2 sexp))))
+        (if (or (not duration-begin)
+                (< (nth 1 sexp) duration-begin))
+            (setq duration-begin (nth 1 sexp)))
+        (if (or (not duration-end)
+                (> (nth 1 sexp) duration-end))
+            (setq duration-end (nth 2 sexp))))
        ((eq (car sexp) 'mhc-logic/condition-duration-begin)
-	(if (or (not duration-begin)
-		(< (nth 1 sexp) duration-begin))
-	    (setq duration-begin (nth 1 sexp))))
+        (if (or (not duration-begin)
+                (< (nth 1 sexp) duration-begin))
+            (setq duration-begin (nth 1 sexp))))
        ((eq (car sexp) 'mhc-logic/condition-duration-end)
-	(if (or (not duration-end)
-		(> (nth 1 sexp) duration-end))
-	    (setq duration-end (nth 1 sexp))))
+        (if (or (not duration-end)
+                (> (nth 1 sexp) duration-end))
+            (setq duration-end (nth 1 sexp))))
        ((eq (car sexp) 'mhc-logic/condition-day)
-	(setq day-list (cons (nth 1 sexp) day-list)))
+        (setq day-list (cons (nth 1 sexp) day-list)))
        ((eq (car sexp) 'mhc-logic/condition-month)
-	(or (memq (nth 1 sexp) month-list)
-	    (setq month-list (cons (nth 1 sexp) month-list)))
-	(setq require-duration t))
+        (or (memq (nth 1 sexp) month-list)
+            (setq month-list (cons (nth 1 sexp) month-list)))
+        (setq require-duration t))
        ((eq (car sexp) 'mhc-logic/condition-day-of-week)
-	(setq require-duration t))
+        (setq require-duration t))
        ((eq (car sexp) 'mhc-logic/condition-day-of-month)
-	(setq require-duration t))
+        (setq require-duration t))
        (t
-	(while sexp
-	  (mhc-logic/check-sexp-range-internal (car sexp))
-	  (setq sexp (cdr sexp)))))))
+        (while sexp
+          (mhc-logic/check-sexp-range-internal (car sexp))
+          (setq sexp (cdr sexp)))))))
 
 
 ; (defun mhc-logic-occur-multiple-p (logicinfo)
@@ -494,16 +494,16 @@
 ;   (let (duration-begin duration-end day-list month-list require-duration)
 ;     (mhc-logic/check-sexp-range-internal (mhc-logic/intermediate logicinfo))
 ;     (if (or duration-begin
-; 	    duration-end
-; 	    month-list
-; 	    (> (length day-list) 1))
-; 	t)))
+;           duration-end
+;           month-list
+;           (> (length day-list) 1))
+;       t)))
 
 ;; rough (but safety) check  -- nom
 (defun mhc-logic-occur-multiple-p (logicinfo)
   "If LOGICINFO occurs multiple times, return t."
   (if (or (mhc-logic/and logicinfo)
-	  (> (length (mhc-logic/day logicinfo)) 1))
+          (> (length (mhc-logic/day logicinfo)) 1))
       t))
 
 (provide 'mhc-logic)
@@ -516,7 +516,7 @@
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
 ;; are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright
 ;;    notice, this list of conditions and the following disclaimer.
 ;; 2. Redistributions in binary form must reproduce the above copyright
@@ -525,7 +525,7 @@
 ;; 3. Neither the name of the team nor the names of its contributors
 ;;    may be used to endorse or promote products derived from this software
 ;;    without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ;; LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS

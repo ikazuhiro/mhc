@@ -1,4 +1,4 @@
-;;; -*- mode: Emacs-Lisp; coding: euc-japan -*-
+;;; -*- mode: Emacs-Lisp; coding: utf-8 -*-
 
 ;; Author:  Yoshinari Nomura <nom@quickhack.net>,
 ;;          TSUCHIYA Masatoshi <tsuchiya@namazu.org>
@@ -21,15 +21,15 @@
 (defvar mhc-parse/strict nil)
 
 (defun mhc-parse/continuous-lines ()
-  "¥Ø¥Ã¥À¤Î·ÑÂ³¹Ô¤ò½èÍı¤·¤Æ¡¢ÆâÍÆ¤Î¤ß¤ò¼è¤ê½Ğ¤¹´Ø¿ô"
+  "ãƒ˜ãƒƒãƒ€ã®ç¶™ç¶šè¡Œã‚’å‡¦ç†ã—ã¦ã€å†…å®¹ã®ã¿ã‚’å–ã‚Šå‡ºã™é–¢æ•°"
   (let (list)
     (skip-chars-forward " \t\n")
     (while (not (eobp))
       (setq list
-	    (cons (buffer-substring-no-properties
-		   (point)
-		   (progn (end-of-line) (skip-chars-backward " \t") (point)))
-		  list))
+            (cons (buffer-substring-no-properties
+                   (point)
+                   (progn (end-of-line) (skip-chars-backward " \t") (point)))
+                  list))
       (end-of-line)
       (skip-chars-forward " \t\n"))
     (mapconcat 'identity (nreverse list) " ")))
@@ -46,7 +46,7 @@
   (mhc-logic-parse-duration (mhc-schedule-condition schedule))
   schedule)
 
-;; FIXME: Need to be deleted. 
+;; FIXME: Need to be deleted.
 (defun mhc-parse/todo (record schedule)
   (mhc-logic-parse-todo (mhc-schedule-condition schedule))
   schedule)
@@ -55,15 +55,15 @@
   (if (looking-at mhc-logic/space-regexp)
       (goto-char (match-end 0)))
   (let ((content (buffer-substring
-		  (point)
-		  (progn (skip-chars-forward "0-9") (point)))))
+                  (point)
+                  (progn (skip-chars-forward "0-9") (point)))))
     (if (looking-at mhc-logic/space-regexp)
-	(goto-char (match-end 0)))
+        (goto-char (match-end 0)))
     (if (eobp)
-	(mhc-schedule/set-priority schedule
-				   (if (eq (length content) 0)
-				       nil
-				     (string-to-number content)))
+        (mhc-schedule/set-priority schedule
+                                   (if (eq (length content) 0)
+                                       nil
+                                     (string-to-number content)))
       (error "Parse ERROR !!!(at X-SC-Priority:)")))
   schedule)
 
@@ -74,8 +74,8 @@
   schedule)
 
 (defun mhc-parse/location (record schedule)
-  (mhc-schedule/set-location 
-   schedule 
+  (mhc-schedule/set-location
+   schedule
    (mhc-eword-decode-string (mhc-parse/continuous-lines)))
   schedule)
 
@@ -83,19 +83,19 @@
 
 (defun mhc-parse/time (record schedule)
   (let ((time (mhc-parse/continuous-lines))
-	begin end)
+        begin end)
     (cond
      ((string-match (concat "^" mhc-parse/time-regexp "-" mhc-parse/time-regexp "$") time)
       (setq begin (+ (* 60 (string-to-number (match-string 1 time)))
-		     (string-to-number (match-string 2 time)))
-	    end (+ (* 60 (string-to-number (match-string 3 time)))
-		   (string-to-number (match-string 4 time)))))
+                     (string-to-number (match-string 2 time)))
+            end (+ (* 60 (string-to-number (match-string 3 time)))
+                   (string-to-number (match-string 4 time)))))
      ((string-match (concat "^" mhc-parse/time-regexp "-?$") time)
       (setq begin (+ (* 60 (string-to-number (match-string 1 time)))
-		     (string-to-number (match-string 2 time)))))
+                     (string-to-number (match-string 2 time)))))
      ((string-match (concat "^-" mhc-parse/time-regexp "$") time)
       (setq end (+ (* 60 (string-to-number (match-string 1 time)))
-		   (string-to-number (match-string 2 time)))))
+                   (string-to-number (match-string 2 time)))))
      ((and mhc-parse/strict (not (string= "" time)))
       (error "Parse ERROR!!!(at X-SC-Time:)")))
     (mhc-schedule/set-time schedule begin end))
@@ -111,8 +111,8 @@
 (defun mhc-parse/alarm (record schedule)
   (let ((alarm (mhc-parse/continuous-lines)))
     (unless (or (not mhc-parse/strict)
-		(string-match mhc-parse/alarm-regexp alarm)
-		(string= "" alarm))
+                (string-match mhc-parse/alarm-regexp alarm)
+                (string= "" alarm))
       (error "Parse ERROR!!! (at X-SC-Alarm:)"))
     (mhc-schedule/set-alarm schedule alarm))
   schedule)
@@ -122,84 +122,91 @@
     (mhc-schedule/set-categories
      schedule
      (nconc (delq nil
-		  (mapcar
-		   (lambda (str)
-		     (and (stringp str) (downcase str)))
-		   (mhc-misc-split
-		    (mhc-eword-decode-string category)
-		    "[ \t]+")))
-	    (mhc-schedule-categories schedule))))
+                  (mapcar
+                   (lambda (str)
+                     (and (stringp str) (downcase str)))
+                   (mhc-misc-split
+                    (mhc-eword-decode-string category)
+                    "[ \t]+")))
+            (mhc-schedule-categories schedule))))
   (mhc-logic/set-todo (mhc-schedule-condition schedule)
-		      (mhc-schedule-in-category-p schedule "todo"))
+                      (mhc-schedule-in-category-p schedule "todo"))
   schedule)
 
-;; FIXME: Í×ºï½ü
+
+(defun mhc-parse/recurrence-tag (record schedule)
+  (mhc-schedule/set-recurrence-tag
+   schedule
+   (mhc-eword-decode-string (mhc-parse/continuous-lines)))
+  schedule)
+
+;; FIXME: è¦å‰Šé™¤
 (defun mhc-parse/next (record schedule)
   (let ((new (mhc-schedule-new record)))
     (if schedule (mhc-schedule/set-region-end schedule (point-min)))
     (mhc-schedule/set-region-start new (point-min))
     new))
 
-;; FIXME: X-SC-Schedule ¤ÎÆş¤ì»Ò¹½Â¤¤Ï¡¢(mhc-db-add-exception-rule) ¤Î
-;; ¼ÂÁõ¤ÎÅÔ¹ç¾å¼õ¤±Æş¤ì¤é¤ì¤Ê¤¤¤Î¤Ç¡¢top level °Ê³°¤Î X-SC-Schedule ¤Ï
-;; °ÂÁ´¤ËÌµ»ë¤µ¤ì¤ëÉ¬Í×¤¬¤¢¤ë¡£
+;; FIXME: X-SC-Schedule ã®å…¥ã‚Œå­æ§‹é€ ã¯ã€(mhc-db-add-exception-rule) ã®
+;; å®Ÿè£…ã®éƒ½åˆä¸Šå—ã‘å…¥ã‚Œã‚‰ã‚Œãªã„ã®ã§ã€top level ä»¥å¤–ã® X-SC-Schedule ã¯
+;; å®‰å…¨ã«ç„¡è¦–ã•ã‚Œã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
 (defun mhc-parse/schedule (record schedule)
   (let ((buffer (current-buffer))
-	(start (point))
-	(end (point-max))
-	(schedule (mhc-schedule-new record)))
+        (start (point))
+        (end (point-max))
+        (schedule (mhc-schedule-new record)))
     (mhc-schedule/set-region-start schedule start)
     (mhc-schedule/set-region-start schedule end)
     (with-temp-buffer
       (insert-buffer-substring buffer start end)
       (goto-char (point-min))
       (while (not (eobp))
-	(let ((start (point)))
-	  (if (skip-chars-forward " \t\n")
-	      (delete-region start (point))))
-	(while (if (eobp)
-		   nil
-		 (eq ?\\ (progn (end-of-line) (preceding-char))))
-	  (delete-char -1)
-	  (forward-line))
-	(forward-line))
+        (let ((start (point)))
+          (if (skip-chars-forward " \t\n")
+              (delete-region start (point))))
+        (while (if (eobp)
+                   nil
+                 (eq ?\\ (progn (end-of-line) (preceding-char))))
+          (delete-char -1)
+          (forward-line))
+        (forward-line))
       (goto-char (point-min))
       (mhc-parse/internal-parser record schedule)))
   schedule)
 
-;; FIXME: top level °Ê³°¤Î¾ì½ê¤Çµ­½Ò¤µ¤ì¤¿ X-SC-Record-Id: ¤Ï°ÂÁ´¤ËÌµ
-;; »ë¤µ¤ì¤ëÉ¬Í×¤¬¤¢¤ë¤¬¡¢¸½ºß¤Î¼ÂÁõ¤Ç¤Ï²¿¤â¹Í¤¨¤º¤Ë¾å½ñ¤­¤·¤Æ¤·¤Ş¤¦¡£
+;; FIXME: top level ä»¥å¤–ã®å ´æ‰€ã§è¨˜è¿°ã•ã‚ŒãŸ X-SC-Record-Id: ã¯å®‰å…¨ã«ç„¡
+;; è¦–ã•ã‚Œã‚‹å¿…è¦ãŒã‚ã‚‹ãŒã€ç¾åœ¨ã®å®Ÿè£…ã§ã¯ä½•ã‚‚è€ƒãˆãšã«ä¸Šæ›¸ãã—ã¦ã—ã¾ã†ã€‚
 (defun mhc-parse/record-id (record schedule)
   (mhc-record-set-id record (mhc-parse/continuous-lines))
   schedule)
 
-;; FIXME: top level ¤È¤½¤ì°Ê³°¤Î¾ì½ê¤Çµö¤µ¤ì¤ë header ¤¬°Û¤Ê¤ë¤Î¤Ç¡¢
-;; multi pass parser ¤ËÁÈ¤ßÂØ¤¨¤ë¤Ù¤­¤«¤âÃÎ¤ì¤Ê¤¤¡£
+;; FIXME: top level ã¨ãã‚Œä»¥å¤–ã®å ´æ‰€ã§è¨±ã•ã‚Œã‚‹ header ãŒç•°ãªã‚‹ã®ã§ã€
+;; multi pass parser ã«çµ„ã¿æ›¿ãˆã‚‹ã¹ãã‹ã‚‚çŸ¥ã‚Œãªã„ã€‚
 (defun mhc-parse/internal-parser (record &optional schedule strict)
   "Internal parseser of schedule headers in this narrowed buffer."
   (let ((mhc-parse/strict strict)
-	(case-fold-search t)
-	func)
+        (case-fold-search t)
+        func)
     (while (not (eobp))
       (if (looking-at "\\([^ \t:]+\\):")
-	  (progn
-	    (setq func (mhc-header-parse-function
-			(format "%s" (match-string 1))))
-	    (mhc-header-goto-end)
-	    (if (fboundp func)
-		(save-restriction
-		  (narrow-to-region (match-beginning 0) (point))
-		  (goto-char (match-end 0))
-		  (setq schedule
-			(funcall func
-				 record
-				 (or schedule
-				     (if (memq func '(mhc-parse/schedule mhc-parse/next))
-					 nil
-				       (mhc-parse/next record nil)))))
-		  (goto-char (point-max)))))
-	;; Always skip non-header lines.
-	(forward-line 1))))
+          (progn
+            (setq func (mhc-header-parse-function
+                        (format "%s" (match-string 1))))
+            (mhc-header-goto-end)
+            (if (fboundp func)
+                (save-restriction
+                  (narrow-to-region (match-beginning 0) (point))
+                  (goto-char (match-end 0))
+                  (setq schedule
+                        (funcall func
+                                 record
+                                 (or schedule
+                                     (if (memq func '(mhc-parse/schedule mhc-parse/next))
+                                         nil
+                                       (mhc-parse/next record nil)))))
+                  (goto-char (point-max)))))
+        ;; Always skip non-header lines.
+        (forward-line 1))))
   schedule)
 
 (defun mhc-parse-buffer (&optional record strict)
@@ -209,16 +216,16 @@
   (mhc-header-narrowing
     (let ((schedule (mhc-parse/internal-parser record nil strict)))
       (if schedule (mhc-schedule/set-region-end schedule (point)))))
-  ;; ÆÀ¤é¤ì¤¿¹½Â¤¤òÀ°Íı¤¹¤ë
+  ;; å¾—ã‚‰ã‚ŒãŸæ§‹é€ ã‚’æ•´ç†ã™ã‚‹
   (let (schedules sexp)
-    ;; ¸½¤ì¤¿½ç½ø¤ËÄ¾¤·¤Æ¤ª¤¯
+    ;; ç¾ã‚ŒãŸé †åºã«ç›´ã—ã¦ãŠã
     (mhc-record-set-schedules record (nreverse (mhc-record-schedules record)))
-    ;; ÀèÆ¬¤Î¥¹¥±¥¸¥å¡¼¥ë¤ò¥Ç¥Õ¥©¥ë¥È¤È¤·¤Æ»²¾È¤·¤Æ¡¢·ç¤±¤Æ¤¤¤ëÍ×ÁÇ¤òËä¤á¤Æ¤ª¤¯
+    ;; å…ˆé ­ã®ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¨ã—ã¦å‚ç…§ã—ã¦ã€æ¬ ã‘ã¦ã„ã‚‹è¦ç´ ã‚’åŸ‹ã‚ã¦ãŠã
     (setq schedules (cdr (mhc-record-schedules record)))
     (while schedules
       (mhc-schedule-append-default (car schedules) (car (mhc-record-schedules record)))
       (setq schedules (cdr schedules)))
-    ;; ³Æ¥¹¥±¥¸¥å¡¼¥ë¤Î¾ò·ï¼°¤òÀ¸À®¤¹¤ë
+    ;; å„ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«ã®æ¡ä»¶å¼ã‚’ç”Ÿæˆã™ã‚‹
     (mhc-logic-compile-file record))
   record)
 
@@ -242,7 +249,7 @@
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
 ;; are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright
 ;;    notice, this list of conditions and the following disclaimer.
 ;; 2. Redistributions in binary form must reproduce the above copyright
@@ -251,7 +258,7 @@
 ;; 3. Neither the name of the team nor the names of its contributors
 ;;    may be used to endorse or promote products derived from this software
 ;;    without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ;; LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS

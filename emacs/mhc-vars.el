@@ -1,4 +1,4 @@
-;;; -*- mode: Emacs-Lisp; coding: euc-japan -*-
+;;; -*- mode: Emacs-Lisp; coding: utf-8 -*-
 
 ;; Author:  Yoshinari Nomura <nom@quickhack.net>,
 ;; Created: 2000/04/30
@@ -28,8 +28,8 @@
   "*Variable to set your favorite mailer."
   :group 'mhc
   :type '(radio (const :tag "Mew" mew)
-		(const :tag "Wanderlust" wl)
-		(const :tag "Gnus" gnus)))
+                (const :tag "Wanderlust" wl)
+                (const :tag "Gnus" gnus)))
 
 (defcustom mhc-base-folder "+schedule"
   "*Base foler of MHC"
@@ -52,12 +52,12 @@
   "*Day of the week as the start of the week."
   :group 'mhc
   :type '(choice (const :tag "Sunday" 0)
-		 (const :tag "Monday" 1)
-		 (const :tag "Tuesday" 2)
-		 (const :tag "Wednesday" 3)
-		 (const :tag "Thursday" 4)
-		 (const :tag "Friday" 5)
-		 (const :tag "Saturday" 6)))
+                 (const :tag "Monday" 1)
+                 (const :tag "Tuesday" 2)
+                 (const :tag "Wednesday" 3)
+                 (const :tag "Thursday" 4)
+                 (const :tag "Friday" 5)
+                 (const :tag "Saturday" 6)))
 
 (defcustom mhc-insert-calendar t
   "*If non nil value, display vertical calender."
@@ -68,8 +68,8 @@
   "*Length of vertical calendar in summary buffer."
   :group 'mhc
   :type '(radio (integer :tag "Show length (current month is center)" 3)
-		(cons (integer :tag "             Show length" 3)
-		      (integer :tag "Length of before current" 1))))
+                (cons (integer :tag "             Show length" 3)
+                      (integer :tag "Length of before current" 1))))
 
 (defcustom mhc-insert-todo-list t
   "*If non nil value, display TODO list."
@@ -82,7 +82,7 @@
   :type 'boolean)
 
 (defcustom mhc-default-coding-system
-  (if (>= emacs-major-version 20) 'iso-2022-7bit-ss2-unix '*iso-2022-ss2-7*)
+  (if (>= emacs-major-version 20) 'utf-8 '*iso-2022-ss2-7*)
   "*Default coding system for MHC schedule files."
   :group 'mhc
   :type 'symbol)
@@ -111,16 +111,16 @@
   "*Flag to decide whether to use cache or not."
   :group 'mhc
   :type '(radio (const :tag "Use" t)
-		(const :tag "Lazy check" 0)
-		(const :tag "No use" nil)))
+                (const :tag "Lazy check" 0)
+                (const :tag "No use" nil)))
 
 (defcustom mhc-use-wide-scope nil
   "*Wide scope method in summary mode."
   :group 'mhc
   :type '(radio (const :tag "No use" nil)
-		(const :tag "Complete week scope" week)
-		(const :tag "Wide week scope" wide)
-		(integer :tag "Scope wide size (>=0)" 3)))
+                (const :tag "Complete week scope" week)
+                (const :tag "Wide week scope" wide)
+                (integer :tag "Scope wide size (>=0)" 3)))
 
 (defcustom mhc-default-alarm "5 minute"
   "*Default alarm string in making draft."
@@ -142,7 +142,7 @@
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
 ;; are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright
 ;;    notice, this list of conditions and the following disclaimer.
 ;; 2. Redistributions in binary form must reproduce the above copyright
@@ -151,7 +151,7 @@
 ;; 3. Neither the name of the team nor the names of its contributors
 ;;    may be used to endorse or promote products derived from this software
 ;;    without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ;; LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS

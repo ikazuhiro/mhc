@@ -1,4 +1,4 @@
-;;; -*- mode: Emacs-Lisp; coding: euc-japan -*-
+;;; -*- mode: Emacs-Lisp; coding: utf-8 -*-
 
 ;; Author:  TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 ;; Created: 2000/05/17
@@ -48,59 +48,59 @@
       (set-buffer nntp-server-buffer)
       (delete-region (point-min) (point-max))
       (let ((pathname-coding-system 'binary) file begin)
-	(dolist (article sequence)
-	  (when (and
-		 (setq file (nnmhc-get-article article))
-		 (file-exists-p file)
-		 (not (file-directory-p file)))
-	    (insert (format "221 %d Article retrieved.\n" article))
-	    (setq begin (point))
-	    (nnheader-insert-head file)
-	    (goto-char begin)
-	    (if (search-forward "\n\n" nil t)
-		(forward-char -1)
-	      (goto-char (point-max))
-	      (insert "\n\n"))
-	    (insert ".\n")
-	    (delete-region (point) (point-max))))
-	(nnheader-fold-continuation-lines)
-	'headers))))
+        (dolist (article sequence)
+          (when (and
+                 (setq file (nnmhc-get-article article))
+                 (file-exists-p file)
+                 (not (file-directory-p file)))
+            (insert (format "221 %d Article retrieved.\n" article))
+            (setq begin (point))
+            (nnheader-insert-head file)
+            (goto-char begin)
+            (if (search-forward "\n\n" nil t)
+                (forward-char -1)
+              (goto-char (point-max))
+              (insert "\n\n"))
+            (insert ".\n")
+            (delete-region (point) (point-max))))
+        (nnheader-fold-continuation-lines)
+        'headers))))
 
 (deffoo nnmhc-request-close ()
   t)
 
 (deffoo nnmhc-request-article (id &optional group server buffer)
   (let ((nntp-server-buffer (or buffer nntp-server-buffer))
-	(pathname-coding-system 'binary)
-	path)
+        (pathname-coding-system 'binary)
+        path)
     (when (integerp id)
       (setq path (nnmhc-get-article id))
       (cond
        ((not path)
-	(nnheader-report 'nnmhc "No such article: %s" id))
+        (nnheader-report 'nnmhc "No such article: %s" id))
        ((not (file-exists-p path))
-	(nnheader-report 'nnmhc "No such file: %s" path))
+        (nnheader-report 'nnmhc "No such file: %s" path))
        ((file-directory-p path)
-	(nnheader-report 'nnmhc "File is a directory: %s" path))
+        (nnheader-report 'nnmhc "File is a directory: %s" path))
        ((not (save-excursion
-	       (let ((nnmail-file-coding-system
-		      nnmhc-file-coding-system))
-		 (nnmail-find-file path))))
-	(nnheader-report 'nnmhc "Couldn't read file: %s" path))
+               (let ((nnmail-file-coding-system
+                      nnmhc-file-coding-system))
+                 (nnmail-find-file path))))
+        (nnheader-report 'nnmhc "Couldn't read file: %s" path))
        (t
-	(save-excursion
-	  (set-buffer nntp-server-buffer)
-	  (goto-char (mhc-header-narrowing
-		       (unless (mhc-header-get-value "subject")
-			 (insert "Subject: " (nnmhc-get-subject id) "\n"))
-		       (mhc-header-delete-header "xref")
-		       (insert (format "Xref: %s %s\n" (system-name) path))
-		       (point-max)))
-	  ;; Hack for (gnus-bbdb/update-record), which doesn't accept
-	  ;; an article consisting of only headers.
-	  (if (eobp) (insert "\n")))
-	(nnheader-report 'nnmhc "Article %s retrieved" id)
-	(cons group id))))))
+        (save-excursion
+          (set-buffer nntp-server-buffer)
+          (goto-char (mhc-header-narrowing
+                       (unless (mhc-header-get-value "subject")
+                         (insert "Subject: " (nnmhc-get-subject id) "\n"))
+                       (mhc-header-delete-header "xref")
+                       (insert (format "Xref: %s %s\n" (system-name) path))
+                       (point-max)))
+          ;; Hack for (gnus-bbdb/update-record), which doesn't accept
+          ;; an article consisting of only headers.
+          (if (eobp) (insert "\n")))
+        (nnheader-report 'nnmhc "Article %s retrieved" id)
+        (cons group id))))))
 
 (deffoo nnmhc-request-group (group &optional server fast)
   (nnheader-report 'nnmhc "Selected group %s" group)
@@ -120,7 +120,7 @@
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
 ;; are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright
 ;;    notice, this list of conditions and the following disclaimer.
 ;; 2. Redistributions in binary form must reproduce the above copyright
@@ -129,7 +129,7 @@
 ;; 3. Neither the name of the team nor the names of its contributors
 ;;    may be used to endorse or promote products derived from this software
 ;;    without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ;; LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS

@@ -1,4 +1,4 @@
-;;; -*- mode: Emacs-Lisp; coding: euc-japan -*-
+;;; -*- mode: Emacs-Lisp; coding: utf-8 -*-
 
 ;; Author:  Yoshinari Nomura <nom@quickhack.net>,
 ;;          TSUCHIYA Masatoshi <tsuchiya@namazu.org>
@@ -36,7 +36,7 @@
 
 (defcustom mhc-record-log-file
   (expand-file-name ".mhc-db-log" (mhc-summary-folder-to-path mhc-base-folder))
-  "*•π•±•∏•Â°º•Î•’•°•§•Î§Œ¡‡∫ÓÕ˙ŒÚ•Ì•∞"
+  "*„Çπ„Ç±„Ç∏„É•„Éº„É´„Éï„Ç°„Ç§„É´„ÅÆÊìç‰ΩúÂ±•Ê≠¥„É≠„Ç∞"
   :group 'mhc
   :type 'file)
 
@@ -51,18 +51,18 @@
 (defun mhc-record-create-id ()
   "Return unique ID string."
   (let ((uid (user-login-name))
-	(time (format-time-string "%Y%m%d%H%M%S" (current-time)))
-	(sequence (format "%04d" mhc-record/id-counter))
-	(host (system-name)))
+        (time (format-time-string "%Y%m%d%H%M%S" (current-time)))
+        (sequence (format "%04d" mhc-record/id-counter))
+        (host (system-name)))
     (setq mhc-record/id-counter (1+ mhc-record/id-counter))
     (concat "<" time sequence "." uid "@" host ">")))
 
 (defun mhc-record-new (name &optional id schedules sexp)
   "Constructer of MHC-RECORD structure."
   (cons name
-	(vector (or id (mhc-record-create-id))
-		schedules
-		sexp)))
+        (vector (or id (mhc-record-create-id))
+                schedules
+                sexp)))
 
 (defmacro mhc-record/key (record)
   `(car ,record))
@@ -89,15 +89,15 @@
 
 (defun mhc-record-copy (record)
   (cons (copy-sequence (mhc-record/key record))
-	(copy-sequence (mhc-record/value record))))
+        (copy-sequence (mhc-record/value record))))
 
 (defun mhc-record-subject (record)
   (catch 'found
     (let ((schedules (mhc-record-schedules record)))
       (while schedules
-	(if (mhc-schedule-subject (car schedules))
-	    (throw 'found (mhc-schedule-subject (car schedules))))
-	(setq schedules (cdr schedules))))))
+        (if (mhc-schedule-subject (car schedules))
+            (throw 'found (mhc-schedule-subject (car schedules))))
+        (setq schedules (cdr schedules))))))
 
 (defun mhc-record-subject-as-string (record)
   (or (mhc-record-subject record)
@@ -107,7 +107,7 @@
   "Return t if RECORD occurs multiple times."
   (let ((schedules (mhc-record-schedules record)))
     (or (> (length schedules) 1)
-	(mhc-logic-occur-multiple-p (mhc-schedule-condition (car schedules))))))
+        (mhc-logic-occur-multiple-p (mhc-schedule-condition (car schedules))))))
 
 (defun mhc-record-write-buffer (record buffer &optional old-record)
   "Write BUFFER to RECORD."
@@ -116,23 +116,23 @@
       (set-buffer buffer)
       (mhc-draft-translate)
       (mhc-write-region-as-coding-system mhc-default-coding-system
-					 (point-min)
-					 (point-max)
-					 (mhc-record-name record)
-					 nil 'nomsg)
+                                         (point-min)
+                                         (point-max)
+                                         (mhc-record-name record)
+                                         nil 'nomsg)
       (set-buffer-modified-p nil)
       (if modify
-	  (prog1
-	      (mhc-file-modify (mhc-record-name record))
-	    (mhc-record/append-log record 'modify))
-	(if old-record
-	    (prog2
-		(mhc-file-remove (mhc-record-name old-record))
-		(mhc-file-add (mhc-record-name record))
-	      (mhc-record/append-log record 'modify))
-	  (prog1 
-	      (mhc-file-add (mhc-record-name record))
-	    (mhc-record/append-log record 'add)))))))
+          (prog1
+              (mhc-file-modify (mhc-record-name record))
+            (mhc-record/append-log record 'modify))
+        (if old-record
+            (prog2
+                (mhc-file-remove (mhc-record-name old-record))
+                (mhc-file-add (mhc-record-name record))
+              (mhc-record/append-log record 'modify))
+          (prog1
+              (mhc-file-add (mhc-record-name record))
+            (mhc-record/append-log record 'add)))))))
 
 (defun mhc-record-delete (record)
   (prog1 (mhc-file-remove (mhc-record-name record))
@@ -141,25 +141,25 @@
 (defun mhc-record/append-log (record status)
   (if mhc-record-log-file
       (let ((tmp-buffer (mhc-get-buffer-create " *mhc-record-append-log*")))
-	(save-excursion
-	  (set-buffer tmp-buffer)
-	  (delete-region (point-min) (point-max))
-	  (insert (format "%c %s %s %s %s\n"
-			  (cond
-			   ((eq status 'add) ?A)
-			   ((eq status 'delete) ?D)
-			   ((eq status 'modify) ?M)
-			   (t ??))
-			  (format-time-string "%Y-%m-%d %T")
-			  (mhc-record-id record)
-			  (mhc-record-name record)
-			  (mhc-record-subject-as-string record)))
-	  (mhc-write-region-as-coding-system mhc-default-coding-system
-					     (point-min)
-					     (point-max)
-					     mhc-record-log-file
-					     'append
-					     'nomsg)))))
+        (save-excursion
+          (set-buffer tmp-buffer)
+          (delete-region (point-min) (point-max))
+          (insert (format "%c %s %s %s %s\n"
+                          (cond
+                           ((eq status 'add) ?A)
+                           ((eq status 'delete) ?D)
+                           ((eq status 'modify) ?M)
+                           (t ??))
+                          (format-time-string "%Y-%m-%d %T")
+                          (mhc-record-id record)
+                          (mhc-record-name record)
+                          (mhc-record-subject-as-string record)))
+          (mhc-write-region-as-coding-system mhc-default-coding-system
+                                             (point-min)
+                                             (point-max)
+                                             mhc-record-log-file
+                                             'append
+                                             'nomsg)))))
 
 
 
@@ -173,7 +173,7 @@
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
 ;; are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright
 ;;    notice, this list of conditions and the following disclaimer.
 ;; 2. Redistributions in binary form must reproduce the above copyright
@@ -182,7 +182,7 @@
 ;; 3. Neither the name of the team nor the names of its contributors
 ;;    may be used to endorse or promote products derived from this software
 ;;    without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ;; LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS

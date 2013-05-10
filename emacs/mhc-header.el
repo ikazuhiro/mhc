@@ -1,4 +1,4 @@
-;;; -*- mode: Emacs-Lisp; coding: euc-japan -*-
+;;; -*- mode: Emacs-Lisp; coding: utf-8 -*-
 
 ;; Author:  Yoshinari Nomura <nom@quickhack.net>,
 ;;          TSUCHIYA Masatoshi <tsuchiya@namazu.org>
@@ -17,22 +17,23 @@
 ;; Global Variable:
 
 (defconst mhc-header-table
-  '(("x-sc-day"		"X-SC-Day:"		mhc-parse/day)
-    ("x-sc-cond"	"X-SC-Cond:"		mhc-parse/cond)
-    ("x-sc-duration"	"X-SC-Duration:"	mhc-parse/duration)
-    ("x-sc-subject"	"X-SC-Subject:"		mhc-parse/subject)
-    ("x-sc-location"	"X-SC-Location:"	mhc-parse/location)
-    ("x-sc-time"	"X-SC-Time:"		mhc-parse/time)
-    ("x-sc-alarm"	"X-SC-Alarm:"		mhc-parse/alarm)
-    ("x-sc-category"	"X-SC-Category:"	mhc-parse/category)
-;    ("x-sc-todo"	"X-SC-ToDo:"		mhc-parse/todo)
-    ("x-sc-priority"	"X-SC-Priority:"	mhc-parse/priority)
-    ("x-sc-record-id"	"X-SC-Record-Id:"	mhc-parse/record-id)
-    ("x-sc-schedule"	"X-SC-Schdule:"		mhc-parse/schedule)
+  '(("x-sc-day"         "X-SC-Day:"             mhc-parse/day)
+    ("x-sc-cond"        "X-SC-Cond:"            mhc-parse/cond)
+    ("x-sc-duration"    "X-SC-Duration:"        mhc-parse/duration)
+    ("x-sc-subject"     "X-SC-Subject:"         mhc-parse/subject)
+    ("x-sc-location"    "X-SC-Location:"        mhc-parse/location)
+    ("x-sc-time"        "X-SC-Time:"            mhc-parse/time)
+    ("x-sc-alarm"       "X-SC-Alarm:"           mhc-parse/alarm)
+    ("x-sc-category"    "X-SC-Category:"        mhc-parse/category)
+    ("x-sc-recurrence-tag" "X-SC-Recurrence-Tag:" mhc-parse/recurrence-tag)
+;    ("x-sc-todo"       "X-SC-ToDo:"            mhc-parse/todo)
+    ("x-sc-priority"    "X-SC-Priority:"        mhc-parse/priority)
+    ("x-sc-record-id"   "X-SC-Record-Id:"       mhc-parse/record-id)
+    ("x-sc-schedule"    "X-SC-Schdule:"         mhc-parse/schedule)
     ;; For backward compatibility
-    ("x-sc-date"	"X-SC-Date:"		mhc-parse/old-style-date)
-    ;; FIXME: Õ◊∫ÔΩ¸
-    ("x-sc-next"	"X-SC-Next:"		mhc-parse/next)))
+    ("x-sc-date"        "X-SC-Date:"            mhc-parse/old-style-date)
+    ;; FIXME: Ë¶ÅÂâäÈô§
+    ("x-sc-next"        "X-SC-Next:"            mhc-parse/next)))
 
 
 (defmacro mhc-header-list ()
@@ -51,7 +52,7 @@
      (save-restriction
        (goto-char (point-min))
        (re-search-forward
-	(concat "^" (regexp-quote mail-header-separator) "$\\|^$") nil t)
+        (concat "^" (regexp-quote mail-header-separator) "$\\|^$") nil t)
        (narrow-to-region (point-min) (match-beginning 0))
        (goto-char (point-min))
        ,@form)))
@@ -62,8 +63,8 @@
 (defsubst mhc-header-goto-end ()
   "Move point at end of this header."
   (while (and
-	  (forward-line 1)
-	  (memq (following-char) '(?  ?\t)))))
+          (forward-line 1)
+          (memq (following-char) '(?  ?\t)))))
 
 
 (defun mhc-header-delete-header (header &optional regexp) "\
@@ -71,42 +72,42 @@ Remove HEADER in the narrowed buffer.
 If REGEXP, HEADER is a regular expression."
   (save-excursion
     (let ((case-fold-search t)
-	  (regexp (if regexp header (concat "^" (regexp-quote header) ":"))))
+          (regexp (if regexp header (concat "^" (regexp-quote header) ":"))))
       (goto-char (point-min))
       (while (re-search-forward regexp nil t)
-	(mhc-header-goto-end)
-	(delete-region (match-beginning 0) (point))))))
+        (mhc-header-goto-end)
+        (delete-region (match-beginning 0) (point))))))
 
 
 (defun mhc-header-put-value (header value)
   "Overwrite VALUE of HEADER in the narrowed buffer."
   (if (assoc (downcase header) mhc-header-table)
       (setq header
-	    (substring (nth 1 (assoc (downcase header) mhc-header-table)) 0 -1)))
+            (substring (nth 1 (assoc (downcase header) mhc-header-table)) 0 -1)))
   (let ((case-fold-search t)
-	(regexp (concat "^" (regexp-quote header) ":")))
+        (regexp (concat "^" (regexp-quote header) ":")))
     (save-excursion
       (goto-char (point-min))
       (if (re-search-forward regexp nil t)
-	  (save-restriction
-	    (mhc-header-goto-end)
-	    (delete-region (match-beginning 0) (point))
-	    (insert (format "%s: %s\n" header value))
-	    (narrow-to-region (point) (point-max))
-	    (mhc-header-delete-header header))
-	(goto-char (point-max))
-	(insert (format "%s: %s\n" header value))))))
+          (save-restriction
+            (mhc-header-goto-end)
+            (delete-region (match-beginning 0) (point))
+            (insert (format "%s: %s\n" header value))
+            (narrow-to-region (point) (point-max))
+            (mhc-header-delete-header header))
+        (goto-char (point-max))
+        (insert (format "%s: %s\n" header value))))))
 
 
 (defun mhc-header-get-value (header &optional repeat)
   "Return value of HEADER in the narrowed buffer."
   (let ((point (point))
-	(case-fold-search t)
-	(regexp (concat "^" (regexp-quote header) ":[ \t]*"))
-	value)
+        (case-fold-search t)
+        (regexp (concat "^" (regexp-quote header) ":[ \t]*"))
+        value)
     (goto-char (point-min))
     (while (and (not value)
-		(re-search-forward regexp nil t repeat))
+                (re-search-forward regexp nil t repeat))
       (mhc-header-goto-end)
       (setq value (buffer-substring-no-properties (match-end 0) (1- (point)))))
     (goto-char point)
@@ -124,7 +125,7 @@ If REGEXP, HEADER is a regular expression."
   (save-excursion
     (goto-char (point-min))
     (if (re-search-forward "^-*$" nil t)
-	(delete-region (match-beginning 0) (match-end 0)))))
+        (delete-region (match-beginning 0) (match-end 0)))))
 
 
 
@@ -138,7 +139,7 @@ If REGEXP, HEADER is a regular expression."
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
 ;; are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright
 ;;    notice, this list of conditions and the following disclaimer.
 ;; 2. Redistributions in binary form must reproduce the above copyright
@@ -147,7 +148,7 @@ If REGEXP, HEADER is a regular expression."
 ;; 3. Neither the name of the team nor the names of its contributors
 ;;    may be used to endorse or promote products derived from this software
 ;;    without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ;; LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS

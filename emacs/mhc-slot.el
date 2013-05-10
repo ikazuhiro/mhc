@@ -1,4 +1,4 @@
-;;; -*- mode: Emacs-Lisp; coding: euc-japan -*-
+;;; -*- mode: Emacs-Lisp; coding: utf-8 -*-
 
 ;; Author:  Yoshinari Nomura <nom@quickhack.net>,
 ;;          TSUCHIYA Masatoshi <tsuchiya@namazu.org>
@@ -67,23 +67,23 @@
 
 (defun mhc-slot/cache-live-p (slotinfo)
   (let* ((mtime (mhc-misc-get-mtime
-		 (mhc-slot-key-to-directory (mhc-slot/key slotinfo))))
-	 (cache (mhc-slot-mtime slotinfo))
-	 (mtime-ms (car mtime))
-	 (mtime-ls (car (cdr mtime)))
-	 (cache-ms (car cache))
-	 (cache-ls (car (cdr cache))))
+                 (mhc-slot-key-to-directory (mhc-slot/key slotinfo))))
+         (cache (mhc-slot-mtime slotinfo))
+         (mtime-ms (car mtime))
+         (mtime-ls (car (cdr mtime)))
+         (cache-ms (car cache))
+         (cache-ls (car (cdr cache))))
     (cond
      ((null mtime)
-      t)				; directory doesn't exist yet.
+      t)                                ; directory doesn't exist yet.
      ((null cache)
       nil)
      ((< cache-ms mtime-ms)
       nil)
      ((= cache-ms mtime-ms)
       (if (>= cache-ls mtime-ls)
-	  t				; t if same.
-	nil))
+          t                             ; t if same.
+        nil))
      (t t))))
 
 (defsubst mhc-slot/check-cache (key)
@@ -95,10 +95,10 @@
    (mhc-use-cache
     (let ((slotinfo (assoc key mhc-slot/cache)))
       (if slotinfo
-	  (if (mhc-slot/cache-live-p slotinfo)
-	      slotinfo
-	    (setq mhc-slot/cache (delq slotinfo mhc-slot/cache))
-	    nil))))))
+          (if (mhc-slot/cache-live-p slotinfo)
+              slotinfo
+            (setq mhc-slot/cache (delq slotinfo mhc-slot/cache))
+            nil))))))
 
 (defsubst mhc-slot/set-current-mtime (slotinfo)
   (or (eq mhc-use-cache 0)
@@ -109,11 +109,11 @@
 (defsubst mhc-slot/store-cache (slotinfo)
   (if mhc-use-cache
       (progn
-	(mhc-slot/set-current-mtime slotinfo)
-	(setq mhc-slot/cache
-	      (cons slotinfo
-		    (let ((x (assoc (mhc-slot/key slotinfo) mhc-slot/cache)))
-		      (if x (delq x mhc-slot/cache) mhc-slot/cache))))))
+        (mhc-slot/set-current-mtime slotinfo)
+        (setq mhc-slot/cache
+              (cons slotinfo
+                    (let ((x (assoc (mhc-slot/key slotinfo) mhc-slot/cache)))
+                      (if x (delq x mhc-slot/cache) mhc-slot/cache))))))
   slotinfo)
 
 (defun mhc-slot-destruct-cache (directory)
@@ -130,51 +130,51 @@
 (defun mhc-slot/add-file (key record)
   (let (slot x)
     (if (setq slot (mhc-slot/check-cache key))
-	(progn
-	  (mhc-slot/set-records
-	   slot
-	   (cons record
-		 (if (setq x (assoc (mhc-record-name record) (mhc-slot-records slot)))
-		     (delq x (mhc-slot-records slot))
-		   (mhc-slot-records slot))))
-	  (mhc-slot/set-current-mtime slot)))))
+        (progn
+          (mhc-slot/set-records
+           slot
+           (cons record
+                 (if (setq x (assoc (mhc-record-name record) (mhc-slot-records slot)))
+                     (delq x (mhc-slot-records slot))
+                   (mhc-slot-records slot))))
+          (mhc-slot/set-current-mtime slot)))))
 
 (defun mhc-slot/remove-file (key record)
   (let (slot x)
     (if (setq slot (mhc-slot/check-cache key))
-	(progn
-	  (mhc-slot/set-records
-	   slot
-	   (if (setq x (assoc (mhc-record-name record) (mhc-slot-records slot)))
-	       (delq x (mhc-slot-records slot))
-	     (message "Internal Warning: there is no information about specified file in cache.")
-	     (mhc-slot-records slot)))
-	  (mhc-slot/set-current-mtime slot)))))
+        (progn
+          (mhc-slot/set-records
+           slot
+           (if (setq x (assoc (mhc-record-name record) (mhc-slot-records slot)))
+               (delq x (mhc-slot-records slot))
+             (message "Internal Warning: there is no information about specified file in cache.")
+             (mhc-slot-records slot)))
+          (mhc-slot/set-current-mtime slot)))))
 
 
 ;; Functions to manipulate slot key:
 
 (defsubst mhc-slot-key-to-directory (key) "\
-ªÿƒÍ§µ§Ï§ø KEY ::= (YEAR . MONTH) §À¬–±˛§π§Î≈¨≈ˆ§ •«•£•Ï•Ø•»•Í§Ú ÷§π
-§ø§¿§∑ (nil . nil) §¨ªÿƒÍ§µ§Ï§øæÏπÁ§œ intersect/ §Ú ÷§π"
+ÊåáÂÆö„Åï„Çå„Åü KEY ::= (YEAR . MONTH) „Å´ÂØæÂøú„Åô„ÇãÈÅ©ÂΩì„Å™„Éá„Ç£„É¨„ÇØ„Éà„É™„ÇíËøî„Åô
+„Åü„Å†„Åó (nil . nil) „ÅåÊåáÂÆö„Åï„Çå„ÅüÂ†¥Âêà„ÅØ intersect/ „ÇíËøî„Åô"
   (file-name-as-directory
    (expand-file-name (if (equal key '(nil . nil))
-			 "intersect"
-		       (format "%04d/%02d" (car key) (cdr key)))
-		     (mhc-summary-folder-to-path mhc-base-folder))))
+                         "intersect"
+                       (format "%04d/%02d" (car key) (cdr key)))
+                     (mhc-summary-folder-to-path mhc-base-folder))))
 
 (defsubst mhc-slot-directory-to-key (directory)
-  "mhc-slot-month-to-directory §Œµ’¥ÿøÙ"
+  "mhc-slot-month-to-directory „ÅÆÈÄÜÈñ¢Êï∞"
   (setq directory (expand-file-name directory))
   (let ((base (regexp-quote (mhc-summary-folder-to-path mhc-base-folder))))
     (cond
      ((string-match (concat "^" base "/intersect/?$")
-		    directory)
+                    directory)
       (cons nil nil))
      ((string-match (concat "^" base "/\\([0-9][0-9][0-9][0-9]\\)/\\(0[1-9]\\|1[012]\\)/?$")
-		    directory)
+                    directory)
       (cons (string-to-number (match-string 1 directory))
-	    (string-to-number (match-string 2 directory))))
+            (string-to-number (match-string 2 directory))))
      (t
       (error "Illegal argument: directory=%s" directory)))))
 
@@ -184,45 +184,45 @@
 (defun mhc-slot-get-month-schedule (key)
   (or (mhc-slot/check-cache key)
       (let* ((slotinfo (mhc-slot/new key))
-	     (directory (mhc-slot-key-to-directory key))
-	     (entries (if (file-directory-p directory)
-			  (directory-files directory nil nil t)))
-	     records filename)
-	(while entries
-	  (and (not (string-match "[^0-9]" (car entries)))
-	       (file-regular-p (setq filename (expand-file-name (car entries) directory)))
-	       (setq records (cons (mhc-parse-file filename)
-				   records)))
-	  (setq entries (cdr entries)))
-	(mhc-slot/set-records slotinfo records)
-	(mhc-slot/store-cache slotinfo))))
+             (directory (mhc-slot-key-to-directory key))
+             (entries (if (file-directory-p directory)
+                          (directory-files directory nil nil t)))
+             records filename)
+        (while entries
+          (and (not (string-match "[^0-9]" (car entries)))
+               (file-regular-p (setq filename (expand-file-name (car entries) directory)))
+               (setq records (cons (mhc-parse-file filename)
+                                   records)))
+          (setq entries (cdr entries)))
+        (mhc-slot/set-records slotinfo records)
+        (mhc-slot/store-cache slotinfo))))
 
 (defun mhc-slot-get-constant-schedule ()
   (let ((mhc-use-cache 0))
     (or (mhc-slot/check-cache (cons nil 'constant-schedule))
-	(if (file-readable-p mhc-schedule-file)
-	    (let ((slotinfo (mhc-slot/new (cons nil 'constant-schedule)))
-		  records)
-	      (save-excursion
-		(set-buffer (mhc-get-buffer-create " *mhc-parse-file*"))
-		(delete-region (point-min) (point-max))
-		(mhc-insert-file-contents-as-coding-system
-		 mhc-default-coding-system
-		 (expand-file-name mhc-schedule-file))
-		(goto-char (point-min))
-		(while (not (eobp))
-		  (if (eq (following-char) ?#)
-		      (delete-region (point) (progn (forward-line 1) (point)))
-		    (forward-line 1)))
-		(goto-char (point-min))
-		(while (progn (skip-chars-forward " \t\n") (not (eobp)))
-		  (delete-region (point-min) (point))
-		  (mhc-header-narrowing
-		    (setq records
-			  (cons (mhc-parse-buffer) records))
-		    (delete-region (point-min) (point-max)))))
-	      (mhc-slot/set-records slotinfo (nreverse records))
-	      (mhc-slot/store-cache slotinfo))))))
+        (if (file-readable-p mhc-schedule-file)
+            (let ((slotinfo (mhc-slot/new (cons nil 'constant-schedule)))
+                  records)
+              (save-excursion
+                (set-buffer (mhc-get-buffer-create " *mhc-parse-file*"))
+                (delete-region (point-min) (point-max))
+                (mhc-insert-file-contents-as-coding-system
+                 mhc-default-coding-system
+                 (expand-file-name mhc-schedule-file))
+                (goto-char (point-min))
+                (while (not (eobp))
+                  (if (eq (following-char) ?#)
+                      (delete-region (point) (progn (forward-line 1) (point)))
+                    (forward-line 1)))
+                (goto-char (point-min))
+                (while (progn (skip-chars-forward " \t\n") (not (eobp)))
+                  (delete-region (point-min) (point))
+                  (mhc-header-narrowing
+                    (setq records
+                          (cons (mhc-parse-buffer) records))
+                    (delete-region (point-min) (point-max)))))
+              (mhc-slot/set-records slotinfo (nreverse records))
+              (mhc-slot/store-cache slotinfo))))))
 
 (defun mhc-slot-get-intersect-schedule ()
   (mhc-slot-get-month-schedule '(nil . nil)))
@@ -239,7 +239,7 @@
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
 ;; are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright
 ;;    notice, this list of conditions and the following disclaimer.
 ;; 2. Redistributions in binary form must reproduce the above copyright
@@ -248,7 +248,7 @@
 ;; 3. Neither the name of the team nor the names of its contributors
 ;;    may be used to endorse or promote products derived from this software
 ;;    without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ;; LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS

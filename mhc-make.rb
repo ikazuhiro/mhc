@@ -43,15 +43,15 @@ module MhcMake
       make_system("make clean")
     else
       Dir .foreach('.'){|src_file|
-	if src_file =~ /\.in$/ or src_file == 'Makefile' or 
-	    src_file == 'make.rb'
+        if src_file =~ /\.in$/ or src_file == 'Makefile' or
+            src_file == 'make.rb'
 
-	  dst_file = src_file .sub(/\.in$/, '')
-	  if File .exist?(dst_file)
-	    File .delete(dst_file)
-	    print "removing: " + dst_file + "\n";
-	  end
-	end
+          dst_file = src_file .sub(/\.in$/, '')
+          if File .exist?(dst_file)
+            File .delete(dst_file)
+            print "removing: " + dst_file + "\n";
+          end
+        end
       }
     end
     process_subdirs()
@@ -86,27 +86,27 @@ module MhcMake
 
     Dir .foreach('.'){|entry|
       if entry !~ /^\./ and File .directory?(entry)
-	if File .exists?("#{entry}/make.rb")
-	  print "Making #{target} in #{File .expand_path(entry)}\n"
-	  cd = Dir .pwd()
-	  Dir .chdir(File .expand_path(entry))
-	  make_system('ruby', 'make.rb', *ARGV)
-	  Dir .chdir(cd)
+        if File .exists?("#{entry}/make.rb")
+          print "Making #{target} in #{File .expand_path(entry)}\n"
+          cd = Dir .pwd()
+          Dir .chdir(File .expand_path(entry))
+          make_system('ruby', 'make.rb', *ARGV)
+          Dir .chdir(cd)
 
-	elsif File .exists?("#{entry}/Makefile")
-	  print "Making #{target} in #{File .expand_path(entry)}\n"
-	  cd = Dir .pwd()
-	  Dir .chdir(File .expand_path(entry))
-	  make_system('make', *ARGV)
-	  Dir .chdir(cd)
+        elsif File .exists?("#{entry}/Makefile")
+          print "Making #{target} in #{File .expand_path(entry)}\n"
+          cd = Dir .pwd()
+          Dir .chdir(File .expand_path(entry))
+          make_system('make', *ARGV)
+          Dir .chdir(cd)
         end
       end
     }
-  end    
+  end
 
   def install
     if File .exists?('Makefile')
-      make_system("make", "install") 
+      make_system("make", "install")
     else
       INSTALL_FILES .each{|filename_mode_dir|
 	filename, mode, dir = filename_mode_dir .split(':')
@@ -121,19 +121,19 @@ module MhcMake
   def print_usage()
     print "Usage: make.rb [target]\ntarget can be none, install or clean.\n"
   end
-  
+
   def doit
     if (ARGV .size == 0)
       default()
     else
       case ARGV[0]
       when "install"
-	install()
+        install()
       when "clean"
-	clean()
+        clean()
       else
-	print_usage();
-	exit(1);
+        print_usage();
+        exit(1);
       end
     end
   end
@@ -162,16 +162,16 @@ class MhcConfigTable
       "=DIR   user executables go to  DIR",
       CONFIG["bindir"]],
 
-    ['--with-ruby', '@@MHC_RUBY_PATH@@', GetoptLong::REQUIRED_ARGUMENT, 
+    ['--with-ruby', '@@MHC_RUBY_PATH@@', GetoptLong::REQUIRED_ARGUMENT,
       "=PATH  absolute path of ruby executable",
       ''],
 
     ['--libdir', '@@MHC_LIBDIR@@', GetoptLong::REQUIRED_ARGUMENT,
       "=DIR   Ruby script libraries go to DIR",
       File::join(CONFIG["libdir"], "ruby",
-		 CONFIG["MAJOR"] + "." + CONFIG["MINOR"])],
+                 CONFIG["MAJOR"] + "." + CONFIG["MINOR"])],
 
-    ['--with-emacs', '@@MHC_EMACS_PATH@@', GetoptLong::REQUIRED_ARGUMENT, 
+    ['--with-emacs', '@@MHC_EMACS_PATH@@', GetoptLong::REQUIRED_ARGUMENT,
       "=PATH  absolute path of emacs/xemacs executable",
       ''],
 
@@ -184,7 +184,7 @@ class MhcConfigTable
       '=DIR   emacs lisp files as package go to DIR.',
       ''],
 
-    ['--with-emacs-addpath', '@@MHC_EMACS_ADD_PATH@@', 
+    ['--with-emacs-addpath', '@@MHC_EMACS_ADD_PATH@@',
       GetoptLong::REQUIRED_ARGUMENT,
       '=PATH  add colon separated dirs list, to `load-path\'',
       '']
@@ -205,12 +205,12 @@ class MhcConfigTable
       opt_name, opt_usage = ary[0], ary[-2]
 
       if opt_usage =~ /^(=\S+)\s+(.*)/
-	opt_name  += $1
-	opt_usage  = $2
+        opt_name  += $1
+        opt_usage  = $2
       end
 
       if (opt_name_max_length < opt_name .length)
-	opt_name_max_length = opt_name .length
+        opt_name_max_length = opt_name .length
       end
       opt_ary << [opt_name, opt_usage]
     }
@@ -275,12 +275,12 @@ class MhcConfigure
     parser .set_options(*@config_table .getopt_table)
     begin
       parser .each_option do |name, arg|
-	if name == '--help'
-	  usage()
-	  exit(0)
-	else
-	  @macros[@config_table .macro_name(name)] = (arg == '' ? '1' : arg)
-	end
+        if name == '--help'
+          usage()
+          exit(0)
+        else
+          @macros[@config_table .macro_name(name)] = (arg == '' ? '1' : arg)
+        end
       end
     rescue
       usage()
@@ -337,10 +337,10 @@ class MhcConfigure
       $CFLAGS  = "-I#{inc_path}"
 
       if have_header(header_file)
-	found_inc_path = inc_path
-	# avoiding ruby 1.4.3 bug.
-	$defs .push($defs .pop .sub!(/-DHAVE_PI-DLP_H/, '-DHAVE_PI_DLP_H'))
-	break
+        found_inc_path = inc_path
+        # avoiding ruby 1.4.3 bug.
+        $defs .push($defs .pop .sub!(/-DHAVE_PI-DLP_H/, '-DHAVE_PI_DLP_H'))
+        break
       end
     }
     $CFLAGS  = cflags
@@ -367,8 +367,8 @@ class MhcConfigure
       print "In #{lib_path} .. "
       $LDFLAGS = "-L#{lib_path}"
       if have_library(libname, funcname)
-	found_lib_path = lib_path
-	break
+        found_lib_path = lib_path
+        break
       end
     }
     $LDFLAGS = ldflags
@@ -390,7 +390,7 @@ class MhcConfigure
 
     if (!path) or path == '' or force
       if path = File .which(command)
-	@macros[macroname] = path
+        @macros[macroname] = path
       end
     end
 
@@ -447,7 +447,7 @@ end
 ## Redistribution and use in source and binary forms, with or without
 ## modification, are permitted provided that the following conditions
 ## are met:
-## 
+##
 ## 1. Redistributions of source code must retain the above copyright
 ##    notice, this list of conditions and the following disclaimer.
 ## 2. Redistributions in binary form must reproduce the above copyright
@@ -456,7 +456,7 @@ end
 ## 3. Neither the name of the team nor the names of its contributors
 ##    may be used to endorse or promote products derived from this software
 ##    without specific prior written permission.
-## 
+##
 ## THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ## AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS

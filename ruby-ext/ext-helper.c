@@ -41,7 +41,7 @@ VALUE TM2TIME(struct tm *tp)
   time_t sec;
 
   dprintf(("%d-%d-%d  %d:%d:%d\n", tp->tm_year, tp->tm_mon, tp->tm_mday,
-	 tp->tm_hour, tp->tm_min, tp->tm_sec));
+         tp->tm_hour, tp->tm_min, tp->tm_sec));
 
   /* check -- sometimes, mktime() takes long time with a messy tm */
   if ((0  <= tp->tm_sec  && tp->tm_sec  <= 60) &&
@@ -98,8 +98,8 @@ VALUE ary_copy(VALUE dst, VALUE src)
 /****************************************************************/
 
 /****************************************************************
-  "app.repeatType" ¤Î¤è¤¦¤Ê C ¹½Â¤ÂÎ¤Î»²¾ÈÌ¾¤«¤é¡¢
-  "@repeatType" ¤Î¤è¤¦¤Ê ruby ¤Î¥¤¥ó¥¹¥¿¥ó¥¹ÊÑ¿ôÌ¾¤òÆÀ¤ë¡£
+  "app.repeatType" ã®ã‚ˆã†ãª C æ§‹é€ ä½“ã®å‚ç…§åã‹ã‚‰ã€
+  "@repeatType" ã®ã‚ˆã†ãª ruby ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å¤‰æ•°åã‚’å¾—ã‚‹ã€‚
 ****************************************************************/
 char *iv_conv_name(char *name, char *ret)
 {
@@ -120,9 +120,9 @@ char *iv_conv_name(char *name, char *ret)
 }
 
 /****************************************************************
-  obj ¤Î ivname ¤È¤¤¤¦¥¤¥ó¥¹¥¿¥ó¥¹ÊÑ¿ô¤Ë *cval ¤òÂåÆþ¤¹¤ë
-  ivname ¤¬ NULL ¤Î¾ì¹ç¤Ï¡¢obj ¤òÇÛÎó¤È¤ß¤Ê¤·¡¢push ¤¹¤ë
-  cval ¤«¤é ruby VALUE ¤Ø¤ÎÊÑ´¹¥Ò¥ó¥È¤Ï fmt ¤ÇÍ¿¤¨¤ë¡£
+  obj ã® ivname ã¨ã„ã†ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å¤‰æ•°ã« *cval ã‚’ä»£å…¥ã™ã‚‹
+  ivname ãŒ NULL ã®å ´åˆã¯ã€obj ã‚’é…åˆ—ã¨ã¿ãªã—ã€push ã™ã‚‹
+  cval ã‹ã‚‰ ruby VALUE ã¸ã®å¤‰æ›ãƒ’ãƒ³ãƒˆã¯ fmt ã§ä¸Žãˆã‚‹ã€‚
 ****************************************************************/
 int cp_set1(VALUE obj, char *fmt, char *ivname, void *cval)
 {
@@ -182,10 +182,10 @@ int cp_set1(VALUE obj, char *fmt, char *ivname, void *cval)
 }
 
 /****************************************************************
-  ¿·¤·¤¯ ruby ÇÛÎó x ¤òºî¤ë¡£cval ¤ò C ¤ÎÇÛÎó(0ÈÖÌÜ¤ò»Ø¤¹¥Ý¥¤¥ó¥¿)
-  ¤À¤È»×¤Ã¤Æ cp_set1 ¤Çx ¤ËÂÐ¤·¤Æ¤É¤ó¤É¤ó push¡£
-  obj ¤Î ¥¤¥ó¥¹¥¿¥ó¥¹ÊÑ¿ô ivname ¤Ë x ¤ò¥»¥Ã¥È¡£
-  ivname ¤¬ NULL ¤Î¾ì¹ç¤Ï¡¢obj ¤òÇÛÎó¤È¤ß¤Ê¤· obj ¤Ë x ¤ò push¡£
+  æ–°ã—ã ruby é…åˆ— x ã‚’ä½œã‚‹ã€‚cval ã‚’ C ã®é…åˆ—(0ç•ªç›®ã‚’æŒ‡ã™ãƒã‚¤ãƒ³ã‚¿)
+  ã ã¨æ€ã£ã¦ cp_set1 ã§x ã«å¯¾ã—ã¦ã©ã‚“ã©ã‚“ pushã€‚
+  obj ã® ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å¤‰æ•° ivname ã« x ã‚’ã‚»ãƒƒãƒˆã€‚
+  ivname ãŒ NULL ã®å ´åˆã¯ã€obj ã‚’é…åˆ—ã¨ã¿ãªã— obj ã« x ã‚’ pushã€‚
 ****************************************************************/
 void cp_set2(VALUE obj, char *fmt, char *ivname, void *cval, int len)
 {
@@ -203,7 +203,7 @@ void cp_set2(VALUE obj, char *fmt, char *ivname, void *cval, int len)
 /****************************************************************/
 
 /****************************************************************
-****************************************************************/  
+****************************************************************/
 
 int cp_get1(VALUE obj, char *fmt, char *ivname, void *cval)
 {
@@ -221,9 +221,9 @@ int cp_get1(VALUE obj, char *fmt, char *ivname, void *cval)
     val = rb_iv_get(obj, at_name);
   }
 
-  dprintf(("converting name:%s class:%s\n", 
-	   at_name == NULL ? "???" : at_name,
-	   rb_class2name(CLASS_OF(val))));
+  dprintf(("converting name:%s class:%s\n",
+           at_name == NULL ? "???" : at_name,
+           rb_class2name(CLASS_OF(val))));
 
   switch (TYPE(val)){
   case T_TRUE:
@@ -300,7 +300,7 @@ void cp_get2(VALUE obj, char *fmt, char *ivname, void *cval, int len)
 ** Redistribution and use in source and binary forms, with or without
 ** modification, are permitted provided that the following conditions
 ** are met:
-** 
+**
 ** 1. Redistributions of source code must retain the above copyright
 **    notice, this list of conditions and the following disclaimer.
 ** 2. Redistributions in binary form must reproduce the above copyright
@@ -309,7 +309,7 @@ void cp_get2(VALUE obj, char *fmt, char *ivname, void *cval, int len)
 ** 3. Neither the name of the team nor the names of its contributors
 **    may be used to endorse or promote products derived from this software
 **    without specific prior written permission.
-** 
+**
 ** THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ** AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS

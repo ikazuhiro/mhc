@@ -1,11 +1,11 @@
-#!@@MHC_RUBY_PATH@@ -Ke
+#!@@MHC_RUBY_PATH@@
 # -*- ruby -*-
 
 ### mhc2ol -- copy articles from mhc to Outlook.
 ##
 ## Author:  MIYOSHI Masanori <miyoshi@quickhack.net>
 ##          Yoshinari Nomura <nom@quickhack.net>
-##          
+##
 ##
 ## Created: 2001/09/15
 ## Revised: $Date: 2006/10/27 00:53:10 $
@@ -28,19 +28,19 @@ module RepeatPattern
   class Period
     def initialize(sdate, edate, stime, etime)
       if stime
-	v = stime .to_a()
-	if v[0] >= 24
-	  stime = MhcTime .new(v[0] - 24, v[1])
-	  sdate = sdate .succ(1)
-	end
+        v = stime .to_a()
+        if v[0] >= 24
+          stime = MhcTime .new(v[0] - 24, v[1])
+          sdate = sdate .succ(1)
+        end
       end
 
       if etime
-	v = etime . to_a()
-	if v[0] >= 24
-	  etime = MhcTime .new(v[0] - 24, v[1])
-	  edate = edate .succ(1)
-	end
+        v = etime . to_a()
+        if v[0] >= 24
+          etime = MhcTime .new(v[0] - 24, v[1])
+          edate = edate .succ(1)
+        end
       end
 
       @sdate = sdate
@@ -55,9 +55,9 @@ module RepeatPattern
 
     def get_duration()
       if @edate .nil? || @sdate .nil?
-	60 * 24
+        60 * 24
       else
-	(@edate - @sdate + 1) * 60 * 24 # min
+        (@edate - @sdate + 1) * 60 * 24 # min
       end
     end
 
@@ -67,17 +67,17 @@ module RepeatPattern
 
     def get_sdatetime
       if @stime .nil?
-	Time .local(@sdate. y, @sdate. m, @sdate .d, 0, 0)
+        Time .local(@sdate. y, @sdate. m, @sdate .d, 0, 0)
       else
-	Time .local(@sdate. y, @sdate. m, @sdate .d, @stime .hh, @stime .mm)
+        Time .local(@sdate. y, @sdate. m, @sdate .d, @stime .hh, @stime .mm)
       end
     end
 
     def get_edatetime
       if @stime .nil?
-	Time .local(@edate. y, @edate. m, @edate .d, 0, 0)
+        Time .local(@edate. y, @edate. m, @edate .d, 0, 0)
       else
-	Time .local(@edate. y, @edate. m, @edate .d, @etime .hh, @etime .mm)
+        Time .local(@edate. y, @edate. m, @edate .d, @etime .hh, @etime .mm)
       end
     end
 
@@ -90,16 +90,16 @@ module RepeatPattern
       rp .PatternStartDate = Exporter .to_ol_date(@sdate) if @sdate
       rp .PatternEndDate = Exporter .to_ol_date(@edate) if @edate
       if @stime || @etime
-	rp .Duration = 0
-	rp .StartTime = @stime .to_s if @stime
-	rp .EndTime = @etime .to_s if @etime
+        rp .Duration = 0
+        rp .StartTime = @stime .to_s if @stime
+        rp .EndTime = @etime .to_s if @etime
       else
-	rp .Duration = 60 * 24
+        rp .Duration = 60 * 24
       end
       return rp
     end
   end
-  
+
   class NonRepeat < Period
     def initialize(sdate, stime, etime)
       super(sdate, sdate, stime, etime)
@@ -124,7 +124,7 @@ module RepeatPattern
       rp = get_recurrence(ol_appoint)
       mask = 0
       for i in 0..6
-	mask += (1 << i) if @dow[i]
+        mask += (1 << i) if @dow[i]
       end
       rp .RecurrenceType = OlConst::OlRecursWeekly
       rp .DayOfWeekMask = mask
@@ -246,14 +246,14 @@ class MhcScheduleItem
     ## First, treat X-SC-Day: field.
     while day_cp .length > 0
       if ((day_cp .length > 1 \
-	   && day_cp .length == day_cp .max - day_cp .min + 1) \
-	  && (time_b == nil && time_e == nil))
-	## repeat in a series of days -- make up as a daily.
-	dates << RepeatPattern::Daily .new(day_cp .min, day_cp .max,
-					   time_b, time_e, 1)
-	day_cp = []
+           && day_cp .length == day_cp .max - day_cp .min + 1) \
+          && (time_b == nil && time_e == nil))
+        ## repeat in a series of days -- make up as a daily.
+        dates << RepeatPattern::Daily .new(day_cp .min, day_cp .max,
+                                           time_b, time_e, 1)
+        day_cp = []
       else
-	dates << RepeatPattern::NonRepeat .new(day_cp .shift, time_b, time_e)
+        dates << RepeatPattern::NonRepeat .new(day_cp .shift, time_b, time_e)
       end
     end
 
@@ -262,71 +262,71 @@ class MhcScheduleItem
       ## weekly
       weeks = []
       for w in 0 .. 6
-	weeks << cond_wek .include?(MhcDate::W_LABEL[w]) ? true : false
+        weeks << cond_wek .include?(MhcDate::W_LABEL[w]) ? true : false
       end
       dates << RepeatPattern::Weekly .new(beg, fin, time_b, time_e, 1, weeks)
 
     elsif  cond_ord .length >= 1  &&
-	  !cond_ord .include?('5th') &&
-	   cond_wek .length >= 1  &&
-	   cond_num .length == 0  && 
-	   cond_mon .length == 0
+          !cond_ord .include?('5th') &&
+           cond_wek .length >= 1  &&
+           cond_num .length == 0  &&
+           cond_mon .length == 0
       ## monthly by day
       cond_ord .each{|ord_str|
-	cond_wek .each{|wek_str|
-	  ord = MhcDate::O_LABEL .index(ord_str .downcase())
-	  wek = MhcDate::W_LABEL .index(wek_str)
-	  sch2 = MhcScheduleItem .new .add_cond(ord_str) .add_cond(wek_str)
-	  beg2 = beg .dup
-	  while !sch2 .occur_on?(beg2) ## xxx Â¿Ê¬¤³¤ì¤ÏÉÔÍ×?
-	    beg2 .succ!
-	  end
-	  dates << RepeatPattern::MonthlyByDow .new(beg2, fin,
-						    time_b, time_e, 1,
-						    ord, wek)
-	}
+        cond_wek .each{|wek_str|
+          ord = MhcDate::O_LABEL .index(ord_str .downcase())
+          wek = MhcDate::W_LABEL .index(wek_str)
+          sch2 = MhcScheduleItem .new .add_cond(ord_str) .add_cond(wek_str)
+          beg2 = beg .dup
+          while !sch2 .occur_on?(beg2) ## xxx å¤šåˆ†ã“ã‚Œã¯ä¸è¦?
+            beg2 .succ!
+          end
+          dates << RepeatPattern::MonthlyByDow .new(beg2, fin,
+                                                    time_b, time_e, 1,
+                                                    ord, wek)
+        }
       }
     elsif cond_num .length == 1 &&
-	  cond_num .length == cond .length
+          cond_num .length == cond .length
       ## monthly by date
-      while !occur_on?(beg) ## xxx ¤³¤Ã¤Á¤ÏÉ¬Í×
-	beg .succ!
+      while !occur_on?(beg) ## xxx ã“ã£ã¡ã¯å¿…è¦
+        beg .succ!
       end
       dates << RepeatPattern::MonthlyByDate .new(beg, fin, time_b, time_e, 1)
 
     elsif cond_num .length == 1 &&
-	  cond_mon .length == 1 &&
-	  cond_wek .length == 0 &&
-	  cond_ord .length == 0
+          cond_mon .length == 1 &&
+          cond_wek .length == 0 &&
+          cond_ord .length == 0
       ## yearly by date
       y = beg .y
       m = MhcDate::M_LABEL .index(cond_mon[0]) + 1
       d = cond_num[0] .to_i
       date = MhcDate .new(y, m, d)
       if date < beg
-	date .y_succ! 
+        date .y_succ!
       end
-      ## 2/29 ¤Ï¤É¤¦¤¹¤ë?
+      ## 2/29 ã¯ã©ã†ã™ã‚‹?
       dates << RepeatPattern::Yearly .new(date, fin, time_b, time_e, 1)
 
     elsif cond_ord .length == 1  &&
-	  cond_ord[0] != '5th'   &&
-	  cond_wek .length == 1  &&
-	  cond_num .length == 0  && 
-	  cond_mon .length == 1
+          cond_ord[0] != '5th'   &&
+          cond_wek .length == 1  &&
+          cond_num .length == 0  &&
+          cond_mon .length == 1
       ## yearly by day
       ord = MhcDate::O_LABEL .index(cond_ord[0])
       wek = MhcDate::W_LABEL .index(cond_wek[0])
       m   = MhcDate::M_LABEL .index(cond_mon[0]) + 1
       date = MhcDate .new(beg .y, m, 1)
-      if date .m < beg .m 
-	date .y_succ!
+      if date .m < beg .m
+        date .y_succ!
       end
       while !occur_on?(date)
-	date .succ!
+        date .succ!
       end
       dates << RepeatPattern::YearlyNth .new(date, fin, time_b, time_e,
-					     ord, wek)
+                                             ord, wek)
 
     elsif cond .empty?
       ## do nothing
@@ -369,15 +369,15 @@ class Exporter
     @last_sync_infos = []
     if @@flag_timestamp
       begin
-	fp = open(@@sync_file, 'r')
-	@last_sync_infos = Marshal .load(fp)
+        fp = open(@@sync_file, 'r')
+        @last_sync_infos = Marshal .load(fp)
       rescue
       ensure
-	fp .close() if fp
+        fp .close() if fp
       end
     else
       begin
-	File .delete(@@sync_file)
+        File .delete(@@sync_file)
       rescue
       end
     end
@@ -393,7 +393,7 @@ class Exporter
     begin
       ap = @ol_name_space .GetItemFromID(id, @ol_calendar.StoreID)
       if ap.Parent.DefaultItemType != OlConst::OlAppointmentItem
-	ap = nil
+        ap = nil
       end
     rescue
     end
@@ -406,7 +406,7 @@ class Exporter
     begin
       tsk = @ol_name_space .GetItemFromID(id, @ol_tasks.StoreID)
       if tsk.Parent.DefaultItemType != OlConst::OlTaskItem
-	tsk = nil
+        tsk = nil
       end
     rescue
     end
@@ -421,8 +421,8 @@ class Exporter
       last_modified_time = info[1]
       appoint = get_ol_appointment(entry_id)
       if appoint == nil || appoint .LastModificationTime != last_modified_time
-	is_update = false
-	break
+        is_update = false
+        break
       end
       is_update = true
     end
@@ -435,14 +435,14 @@ class Exporter
       entry_id = info[0]
       appoint = get_ol_appointment(entry_id)
       if appoint
-	print "deleting ", appoint .Subject, "\n" if @@flag_verbose
-	appoint .delete()
+        print "deleting ", appoint .Subject, "\n" if @@flag_verbose
+        appoint .delete()
       end
       entry_id = info[2]
       task = get_ol_task(entry_id) if entry_id
       if task
-	print "deleting ", task .Subject, "\n" if @@flag_verbose
-	task .delete()
+        print "deleting ", task .Subject, "\n" if @@flag_verbose
+        task .delete()
       end
     end
   end
@@ -460,10 +460,10 @@ class Exporter
       print "Subject:", MhcKconv::todisp(sch .subject()), "\n" if @@flag_verbose
       appoint .Subject = MhcKconv::todisp(sch .subject())
       appoint .Location = MhcKconv::todisp(sch .location()) if sch.location()
-	
+
       print "Time: ", sch .time_as_string(), "\n" if @@flag_verbose
       print "Path: ", sch .path(), "\n" if @@flag_verbose
-	
+
       stime, etime = period .get_time()
       sdate += " " + stime .to_s if sdate && stime
       etime_tmp = if etime then etime else stime end
@@ -475,32 +475,32 @@ class Exporter
       appoint .End = edate if edate
       # If any time is not specified, the appointment is a kind of AllDayEvent.
       if !stime && !etime
-	appoint .AllDayEvent = true
-	appoint .Duration = period .get_duration()
+        appoint .AllDayEvent = true
+        appoint .Duration = period .get_duration()
       end
 
       cat_string = sch .category_as_string()
       if @@flag_additional_category
-	cat_string = @@mhc_category_name + "," + cat_string
+        cat_string = @@mhc_category_name + "," + cat_string
       end
       appoint .Categories = cat_string
       case @@flag_export_part
       when 'all'
- 	appoint .Body = MhcKconv::todisp(sch .dump())
+        appoint .Body = MhcKconv::todisp(sch .dump())
       when 'body_only'
- 	appoint .Body = MhcKconv::todisp(sch .dump_without_header())	
+        appoint .Body = MhcKconv::todisp(sch .dump_without_header())
       end
 
       # a reminder is valid for a future schedule.
       if sch .alarm() != nil then
-	if period .get_sdatetime >= Time .now && $flag_disable_passed_sch
-	  appoint .ReminderSet = true
-	  appoint .ReminderMinutesBeforeStart = sch .alarm() / 60
-	else
-	  appoint .ReminderSet = false
-	end
+        if period .get_sdatetime >= Time .now && $flag_disable_passed_sch
+          appoint .ReminderSet = true
+          appoint .ReminderMinutesBeforeStart = sch .alarm() / 60
+        else
+          appoint .ReminderSet = false
+        end
       else
-	appoint .ReminderSet = false
+        appoint .ReminderSet = false
       end
 
       # handle recurrence.
@@ -513,45 +513,45 @@ class Exporter
       appoint .Sensitivity = OlConst::OlPrivate if cats .include?('private')
       cat_string = cats .join(',')
       if @@flag_additional_category
-	cat_string = @@mhc_category_name + "," + cat_string
+        cat_string = @@mhc_category_name + "," + cat_string
       end
       appoint .Categories = cat_string
       case @@flag_export_part
       when 'all'
- 	appoint .Body = MhcKconv::todisp(sch .dump())
+        appoint .Body = MhcKconv::todisp(sch .dump())
       when 'body_only'
- 	appoint .Body = MhcKconv::todisp(sch .dump_without_header())	
+        appoint .Body = MhcKconv::todisp(sch .dump_without_header())
       end
       appoint .Save() if !$flag_separation  || !todo_p
 
       # Copy TODO
       if todo_p
-	task = @outlook .CreateItem(OlConst::OlTaskItem)
+        task = @outlook .CreateItem(OlConst::OlTaskItem)
         sdate, edate = sch .duration
         task .StartDate = Exporter .to_ol_date(sdate) || appoint .Start
-	task .DueDate = Exporter .to_ol_date(edate) || task .StartDate
+        task .DueDate = Exporter .to_ol_date(edate) || task .StartDate
 
         if done_p
-	  task .Complete = true
-	  task .DateCompleted = appoint .End
+          task .Complete = true
+          task .DateCompleted = appoint .End
         end
-	if !sch .priority || sch .priority < 50
-	  task .Importance = OlConst::OlImportanceLow
-	elsif sch .priority < 80
-	  task .Importance = OlConst::OlImportanceNormal
-	else
-	  task .Importance = OlConst::OlImportanceHigh
-	end
+        if !sch .priority || sch .priority < 50
+          task .Importance = OlConst::OlImportanceLow
+        elsif sch .priority < 80
+          task .Importance = OlConst::OlImportanceNormal
+        else
+          task .Importance = OlConst::OlImportanceHigh
+        end
 
         task .Categories = appoint .Categories
         task .Sensitivity = appoint .Sensitivity
         task .Subject = appoint .Subject
         task .Body = appoint .Body
-	task .ReminderSet = false
+        task .ReminderSet = false
         task .Save()
         print " - And set it to Task\n" if @@flag_verbose
 
-	ol_info << [appoint .EntryID, appoint .LastModificationTime, task .EntryID]
+        ol_info << [appoint .EntryID, appoint .LastModificationTime, task .EntryID]
       else
         ol_info << [appoint .EntryID, appoint .LastModificationTime, nil]
       end
@@ -562,43 +562,43 @@ class Exporter
 
   def sync_from_outlook(sch, last_sync_info)
 
-    ## OutlookÂ¦¤Ç¤Î¹¹¿·ÆâÍÆ¤òmhc¤Ë¼è¤ê¹þ¤à.  ¼è¤ê¹þ¤àÆâÍÆ¤Ï¾ì½ê
-    ## (Location), ´ü¸Â(Day), »þ´Ö(Time), ´°Î»¥Õ¥é¥°(TODO/DONE), Í¥Àè
-    ## ½ç°Ì(Priority), ´ü´Ö(Duration) ¤È¤¹¤ë.  Ê¬Îà(Category)¤ÏÊÑ´¹¥ë¡¼
-    ## ¥ë¤¬ÄêµÁ¤Ç¤­¤Ê¤¤¤È¤Þ¤º¤¤¥Ï¥º.
+    ## Outlookå´ã§ã®æ›´æ–°å†…å®¹ã‚’mhcã«å–ã‚Šè¾¼ã‚€.  å–ã‚Šè¾¼ã‚€å†…å®¹ã¯å ´æ‰€
+    ## (Location), æœŸé™(Day), æ™‚é–“(Time), å®Œäº†ãƒ•ãƒ©ã‚°(TODO/DONE), å„ªå…ˆ
+    ## é †ä½(Priority), æœŸé–“(Duration) ã¨ã™ã‚‹.  åˆ†é¡ž(Category)ã¯å¤‰æ›ãƒ«ãƒ¼
+    ## ãƒ«ãŒå®šç¾©ã§ããªã„ã¨ã¾ãšã„ãƒã‚º.
     entry_id = last_sync_info[0]
     appoint = get_ol_appointment(entry_id) if entry_id
     entry_id = last_sync_info[2]
     task = get_ol_task(entry_id) if entry_id
     cats = sch .category_as_string() .split(' ')
 
-    # ol_appoint¤«¤é ¾ì½ê, ´ü¸Â, »þ´Ö ¤ò¼è¤ê¹þ¤à.
+    # ol_appointã‹ã‚‰ å ´æ‰€, æœŸé™, æ™‚é–“ ã‚’å–ã‚Šè¾¼ã‚€.
     if appoint
       sch.set_location(MhcKconv::toeuc(appoint .Location))
-      # ´ü¸Â/»þ¹ï: ¤É¤¦¤·¤è¤¦¡© appoint .Start / .End
+      # æœŸé™/æ™‚åˆ»: ã©ã†ã—ã‚ˆã†ï¼Ÿ appoint .Start / .End
     end
 
-    # ol_task¤«¤é ´ü´Ö, ´°Î»¥Õ¥é¥°, Í¥Àè½ç°Ì ¤ò¼è¤ê¹þ¤à
+    # ol_taskã‹ã‚‰ æœŸé–“, å®Œäº†ãƒ•ãƒ©ã‚°, å„ªå…ˆé †ä½ ã‚’å–ã‚Šè¾¼ã‚€
     if task
-      # ´ü´Ö: .StartDate, .DueDate
-      # ´°Î»¥Õ¥é¥°: Complete, DateCompleted
+      # æœŸé–“: .StartDate, .DueDate
+      # å®Œäº†ãƒ•ãƒ©ã‚°: Complete, DateCompleted
       if task .Complete
-	if ! cats .include?('done')
-	  # º£²ó´°Î»¤·¤¿»Å»ö.  ºî¶È´ü´Ö¤òBody¤ËËä¤á¹þ¤à
-	  sch .description = sch .duration + sch .description
-	  sch .set_duration( nil , nil)
-	  cats .delete('todo')	# ºï½ü
-	  cats .add('done')	# ÄÉ²Ã
-	end
+        if ! cats .include?('done')
+          # ä»Šå›žå®Œäº†ã—ãŸä»•äº‹.  ä½œæ¥­æœŸé–“ã‚’Bodyã«åŸ‹ã‚è¾¼ã‚€
+          sch .description = sch .duration + sch .description
+          sch .set_duration( nil , nil)
+          cats .delete('todo')  # å‰Šé™¤
+          cats .add('done')     # è¿½åŠ 
+        end
       end
-      # Í¥Àè½ç°Ì: .Importance
+      # å„ªå…ˆé †ä½: .Importance
     end
 
-    # ´ü´ÖÊÑ¹¹¤Ï ol_task, ol_appoint ¤ÎÊÑ¹¹¤ò¥Þ¡¼¥¸¤¹¤ëÉ¬Í×¤¢¤ê?  ´ðËÜ
-    # Åª¤Ë¸åÍ¥Àè¤Ç¼è¤ê¹þ¤à.
+    # æœŸé–“å¤‰æ›´ã¯ ol_task, ol_appoint ã®å¤‰æ›´ã‚’ãƒžãƒ¼ã‚¸ã™ã‚‹å¿…è¦ã‚ã‚Š?  åŸºæœ¬
+    # çš„ã«å¾Œå„ªå…ˆã§å–ã‚Šè¾¼ã‚€.
     sch .add_sch
 
-    # ¹¹¿·¤µ¤ì¤¿last_sync_info¤òÊÖ¤¹
+    # æ›´æ–°ã•ã‚ŒãŸlast_sync_infoã‚’è¿”ã™
     last_sync_info
   end
   private :sync_from_outlook
@@ -610,35 +610,35 @@ class Exporter
     else
       file = MhcScheduleDB::DEF_RCFILE
       rec_id = (sch .subject() + sch .category_as_string()\
-		+ sch .cond_as_string() + "@dot.schedule")
+                + sch .cond_as_string() + "@dot.schedule")
     end
     sync_info = [rec_id,  File .mtime(file)]
 
     # check if schedules are up-to-date.
     is_update = false
     last_sync_info = @last_sync_infos .assoc(rec_id)
-  
+
     if last_sync_info
-      ## Á°²ó¤Îsync¾ðÊó¤¬¤¢¤ë¾ì¹ç
+      ## å‰å›žã®syncæƒ…å ±ãŒã‚ã‚‹å ´åˆ
       @last_sync_infos .delete(last_sync_info)
       mhc_last_modified_time = last_sync_info[1]
       ol_last_sync_infos = last_sync_info[2]
-      ## mhcÂ¦¤¬¹¹¿·¤µ¤ì¤Æ¤¤¤ë¤«¡©
+      ## mhcå´ãŒæ›´æ–°ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
       mhc_is_modified = (File .mtime(file) != mhc_last_modified_time)
-      ## (mhcÌ¤¹¹¿·¤Î¤È¤­)OutlookÂ¦¤¬¹¹¿·¤µ¤ì¤Æ¤¤¤ë¤«¡©
+      ## (mhcæœªæ›´æ–°ã®ã¨ã)Outlookå´ãŒæ›´æ–°ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
       is_update = ol_is_update?(ol_last_sync_infos) unless mhc_is_modified
-      ## mhc¹¹¿·ºÑ¤ß ¤Þ¤¿¤Ï mhcÌ¤¹¹¿·¤«¤ÄOutlookÌ¤¹¹¿·¤Î¤È¤­
-      ## ¢ª Outlook¥¨¥ó¥È¥ê¤òºï½ü¤¹¤ë(mhc¥¨¥ó¥È¥ê¤òºÆÅÙÄó¶¡¤¹¤ë).
+      ## mhcæ›´æ–°æ¸ˆã¿ ã¾ãŸã¯ mhcæœªæ›´æ–°ã‹ã¤Outlookæœªæ›´æ–°ã®ã¨ã
+      ## â†’ Outlookã‚¨ãƒ³ãƒˆãƒªã‚’å‰Šé™¤ã™ã‚‹(mhcã‚¨ãƒ³ãƒˆãƒªã‚’å†åº¦æä¾›ã™ã‚‹).
       delete_ol_appointments(ol_last_sync_infos) unless is_update
     end
     if is_update
-      ## mhcÌ¤¹¹¿·¤«¤ÄOutlook¹¹¿·ºÑ¤ß.  Outlook¥¨¥ó¥È¥ê¤Ï»Ä¤·¤Æ¤¢¤ë.
+      ## mhcæœªæ›´æ–°ã‹ã¤Outlookæ›´æ–°æ¸ˆã¿.  Outlookã‚¨ãƒ³ãƒˆãƒªã¯æ®‹ã—ã¦ã‚ã‚‹.
       sync_info << ol_last_sync_infos
-      #TODO: Outlook¤Ë¤â¤È¤Å¤¤¤Æmhc¤ò¹¹¿·¤¹¤ë
+      #TODO: Outlookã«ã‚‚ã¨ã¥ã„ã¦mhcã‚’æ›´æ–°ã™ã‚‹
 #      sync_info << sync_with_outlook(sch, last_sync_info)
       print "copying to Outlook is skipped!\n" if @@flag_verbose
     else
-      ## ¾åµ­°Ê³°.  Outlook¥¨¥ó¥È¥ê¤Ï¤â¤È¤â¤È¤Ê¤¤¤«ºï½üºÑ¤ß.
+      ## ä¸Šè¨˜ä»¥å¤–.  Outlookã‚¨ãƒ³ãƒˆãƒªã¯ã‚‚ã¨ã‚‚ã¨ãªã„ã‹å‰Šé™¤æ¸ˆã¿.
       sync_info << setup_ol_appointments(periods, sch)
       print "\n"  if @@flag_verbose
     end
@@ -653,30 +653,30 @@ class Exporter
       next unless @category_regexp .match(sch .category_as_string())
       sch_count += 1
       print "adding ", MhcKconv::todisp(sch .subject), "\n" if @@flag_verbose
-  
-      if periods = sch .to_outlook()
-	if @@flag_verbose
-	  print "    converted into #{periods .length} Outlook article(s)."
-	end
 
-	if !$flag_noharm
-	  print " sending to Outlook ...\n    " if @@flag_verbose
-	  sync_info = send_to_outlook(periods, sch)
-	  if ! sync_info .nil?
-	    @sync_infos << sync_info
-	    sent += 1
-	    print "."
-	  else
-	    print MhcKconv::todisp("(#{sch .subject}) write_error\n")
-	  end
-	else
-	  print " not sent.\n" if @@flag_verbose
-	end
+      if periods = sch .to_outlook()
+        if @@flag_verbose
+          print "    converted into #{periods .length} Outlook article(s)."
+        end
+
+        if !$flag_noharm
+          print " sending to Outlook ...\n    " if @@flag_verbose
+          sync_info = send_to_outlook(periods, sch)
+          if ! sync_info .nil?
+            @sync_infos << sync_info
+            sent += 1
+            print "."
+          else
+            print MhcKconv::todisp("(#{sch .subject}) write_error\n")
+          end
+        else
+          print " not sent.\n" if @@flag_verbose
+        end
       else
-	print "failed to convert."
-	print MhcKconv::todisp("  subject: #{sch .subject}\n")
-	print "  first occured: #{sch .occur_min}\n"
-	print "  path: #{file}\n"
+        print "failed to convert."
+        print MhcKconv::todisp("  subject: #{sch .subject}\n")
+        print "  first occured: #{sch .occur_min}\n"
+        print "  path: #{file}\n"
       end
       print "\n"  if @@flag_verbose
     }
@@ -688,12 +688,12 @@ class Exporter
   def delete_unmanaged_schedules()
     if !@@flag_noharm
       for table in @last_sync_infos
-	ol_infos = table[2]
-	for info in ol_infos
-	  entry_id = info[0]
-	  appoint = get_ol_appointment(entry_id)
-	  appoint .delete() if appoint
-	end
+        ol_infos = table[2]
+        for info in ol_infos
+          entry_id = info[0]
+          appoint = get_ol_appointment(entry_id)
+          appoint .delete() if appoint
+        end
       end
     end
   end
@@ -701,11 +701,11 @@ class Exporter
   def write_sync_info()
     if !@@flag_noharm
       begin
-	fp = open(@@sync_file, 'w')
-	Marshal .dump(@sync_infos, fp)
+        fp = open(@@sync_file, 'w')
+        Marshal .dump(@sync_infos, fp)
       rescue
       ensure
-	fp .close() if fp
+        fp .close() if fp
       end
     end
   end
@@ -717,12 +717,12 @@ class Exporter
       items = @ol_calendar .items()
       index = items .Count
       while index > 0 do
-	cats = items. Item(index) .Categories
-	unless @@flag_discreet && !cats .include?(@@mhc_category_name)
-	  items .Remove(index)
-	end
-	index -= 1
-	print "."
+        cats = items. Item(index) .Categories
+        unless @@flag_discreet && !cats .include?(@@mhc_category_name)
+          items .Remove(index)
+        end
+        index -= 1
+        print "."
       end
       print ".. done.\n"
 
@@ -731,12 +731,12 @@ class Exporter
       items = @ol_tasks .items()
       index = items .Count
       while index > 0 do
-	cats = items. Item(index) .Categories
-	unless @@flag_discreet && !cats .include?(@@mhc_category_name)
-	  items .Remove(index)
-	end
-	index -= 1
-	print "."
+        cats = items. Item(index) .Categories
+        unless @@flag_discreet && !cats .include?(@@mhc_category_name)
+          items .Remove(index)
+        end
+        index -= 1
+        print "."
       end
       print ".. done.\n"
     end
@@ -813,7 +813,7 @@ while ARGV .length > 0
     $flag_install = true
   when '-d'
     $flag_discreet = true
-  when '-H' 
+  when '-H'
     $flag_export_part = 'body_only'
   when '-n'
     $flag_noharm  = true
@@ -844,13 +844,13 @@ $flag_to   = MhcDate .new .m_succ!(+3) if !$flag_to
 
 
 usage() unless (($flag_append && !$flag_install \
-		 && !$flag_discreet && !$flag_timestamp) \
-		||(!$flag_append && $flag_install \
-		   && !$flag_discreet && !$flag_timestamp) \
-		|| (!$flag_append && !$flag_install \
-		    && $flag_discreet && !$flag_timestamp) \
-		|| (!$flag_append && !$flag_install \
-		    && !$flag_discreet && $flag_timestamp))
+                 && !$flag_discreet && !$flag_timestamp) \
+                ||(!$flag_append && $flag_install \
+                   && !$flag_discreet && !$flag_timestamp) \
+                || (!$flag_append && !$flag_install \
+                    && $flag_discreet && !$flag_timestamp) \
+                || (!$flag_append && !$flag_install \
+                    && !$flag_discreet && $flag_timestamp))
 
 ##
 ## Initialize Outlook OLE Automation object
@@ -901,7 +901,7 @@ exit 0
 ## Redistribution and use in source and binary forms, with or without
 ## modification, are permitted provided that the following conditions
 ## are met:
-## 
+##
 ## 1. Redistributions of source code must retain the above copyright
 ##    notice, this list of conditions and the following disclaimer.
 ## 2. Redistributions in binary form must reproduce the above copyright
@@ -910,7 +910,7 @@ exit 0
 ## 3. Neither the name of the team nor the names of its contributors
 ##    may be used to endorse or promote products derived from this software
 ##    without specific prior written permission.
-## 
+##
 ## THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ## AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS

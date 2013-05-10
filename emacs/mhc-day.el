@@ -1,4 +1,4 @@
-;;; -*- mode: Emacs-Lisp; coding: euc-japan -*-
+;;; -*- mode: Emacs-Lisp; coding: utf-8 -*-
 
 ;; Author:  Yoshinari Nomura <nom@quickhack.net>,
 ;;          TSUCHIYA Masatoshi <tsuchiya@namazu.org>
@@ -35,12 +35,12 @@
 (defun mhc-day-new (date year month day-of-month &optional day-of-week holiday schedules)
   "Constructor of MHC-DAY structure."
   (cons date
-	(vector year
-		month
-		day-of-month
-		(or day-of-week (mhc-date-ww date))
-		holiday
-		schedules)))
+        (vector year
+                month
+                day-of-month
+                (or day-of-week (mhc-date-ww date))
+                holiday
+                schedules)))
 
 (defmacro mhc-day/key (dayinfo)
   `(car ,dayinfo))
@@ -70,15 +70,15 @@
 (defun mhc-day-day-of-week-as-string (dayinfo)
   "Return three letter code of the day of week."
   (aref ["Sun" "Mon" "Tue" "Wed" "Thu" "Fri" "Sat"]
-	(mhc-day-day-of-week dayinfo)))
+        (mhc-day-day-of-week dayinfo)))
 
 (defun mhc-day-busy-p (dayinfo)
   (let ((schedules (mhc-day-schedules dayinfo)))
     (catch 'busy
       (while schedules
-	(or (mhc-schedule-in-category-p (car schedules) "holiday")
-	    (throw 'busy t))
-	(setq schedules (cdr schedules))))))
+        (or (mhc-schedule-in-category-p (car schedules) "holiday")
+            (throw 'busy t))
+        (setq schedules (cdr schedules))))))
 
 
 
@@ -103,10 +103,10 @@ This special form converts DAY, as the number of days since
 "
   (let ((tempvar (make-symbol "decode-time")))
     `(let* ((,tempvar (mhc-date-to-list , day))
-	    (day-of-month (nth 2 ,tempvar))
-	    (month (nth 1 ,tempvar))
-	    (year (nth 0 ,tempvar))
-	    (day-of-week (nth 3 ,tempvar)))
+            (day-of-month (nth 2 ,tempvar))
+            (month (nth 1 ,tempvar))
+            (year (nth 0 ,tempvar))
+            (day-of-week (nth 3 ,tempvar)))
        ,@form)))
 (put 'mhc-day-let 'lisp-indent-function 1)
 (put 'mhc-day-let 'edebug-form-spec '(form body))
@@ -123,7 +123,7 @@ This special form converts DAY, as the number of days since
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
 ;; are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright
 ;;    notice, this list of conditions and the following disclaimer.
 ;; 2. Redistributions in binary form must reproduce the above copyright
@@ -132,7 +132,7 @@ This special form converts DAY, as the number of days since
 ;; 3. Neither the name of the team nor the names of its contributors
 ;;    may be used to endorse or promote products derived from this software
 ;;    without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ;; LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS

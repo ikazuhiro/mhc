@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # -*- ruby -*-
 
 ### mhc-gtk.rb
@@ -97,7 +98,7 @@ STYLE_ARRAY = [
 ################################################################
 
 ################################################################
-## input alarm 
+## input alarm
 class GtkAlarmEntry < Gtk::HBox
   UNIT_LABEL  = ['minute', 'hour', 'day']
   UNIT_INSEC  = {'minute' => 60, 'hour' => 60 * 60, 'day' => 60 * 60 * 24}
@@ -122,11 +123,11 @@ class GtkAlarmEntry < Gtk::HBox
 
     @btn .signal_connect('toggled'){
       if @btn .active?
-	have_paticular_value(false)
-	p .call(nil)
+        have_paticular_value(false)
+        p .call(nil)
       else
-	have_paticular_value(true)
-	p .call(dump)
+        have_paticular_value(true)
+        p .call(dump)
       end
     }
     pack_start(@hbx, false, false, 0)
@@ -143,9 +144,9 @@ class GtkAlarmEntry < Gtk::HBox
     UNIT_LABEL .reverse .each{|unit|
       in_sec =  UNIT_INSEC[unit]
       if sec > in_sec
-	@num        .set_value(sec / in_sec)
-	@item[unit] .set_active(true)
-	return self
+        @num        .set_value(sec / in_sec)
+        @item[unit] .set_active(true)
+        return self
       end
     }
     @num .set_value(0)
@@ -175,9 +176,9 @@ class GtkAlarmEntry < Gtk::HBox
     UNIT_LABEL .each{|unit|
       item = Gtk::RadioMenuItem::new(group, unit)
       item .signal_connect('activate', unit){|w, unit|
-	@unit = unit
-	@omenu .set_history(UNIT_LABEL .index(unit))
-	p .call(dump) if p
+        @unit = unit
+        @omenu .set_history(UNIT_LABEL .index(unit))
+        p .call(dump) if p
       }
       group = item .group
       menu .append(item)
@@ -270,12 +271,12 @@ class GtkTimeRangeEdit < Gtk::VBox
 
     @btn .signal_connect('toggled'){
       if @btn .active?
-	have_paticular_value(false)
-	p .call(nil, nil)
+        have_paticular_value(false)
+        p .call(nil, nil)
       else
-	have_paticular_value(true)
-	@hbx .set_sensitive(true)
-	p .call(@b .dump, @e .dump)
+        have_paticular_value(true)
+        @hbx .set_sensitive(true)
+        p .call(@b .dump, @e .dump)
       end
     }
   end
@@ -283,11 +284,11 @@ class GtkTimeRangeEdit < Gtk::VBox
   def set_value(b, e)
     if b
       have_paticular_value(true)
-      @b .set_value(b) 
+      @b .set_value(b)
       if e
-	@e .set_value(e)
+        @e .set_value(e)
       else
-	@e .set_value(b)
+        @e .set_value(b)
       end
     else
       have_paticular_value(false)
@@ -310,7 +311,7 @@ class GtkTimeRangeEdit < Gtk::VBox
 end
 
 ################################################################
-## Input Date 
+## Input Date
 
 class GtkDateEdit < Gtk::Table
   #FILL = Gtk::FILL | Gtk::EXPAND | Gtk::SHRINK
@@ -326,7 +327,7 @@ class GtkDateEdit < Gtk::Table
 
     [@y, @m, @d] .each{|box|
       box .entry .signal_connect('changed'){
-	p .call
+        p .call
       }
     }
     y_lbl = Gtk::Label .new('Year:') .set_alignment(0, 0.5)
@@ -381,13 +382,13 @@ class GtkDateRangeEdit < Gtk::VBox
 
     @btn .signal_connect('toggled'){
       if @btn .active?
-	have_paticular_value(false)
-	#@hbx .set_sensitive(false)
-	p .call(nil, nil)
+        have_paticular_value(false)
+        #@hbx .set_sensitive(false)
+        p .call(nil, nil)
       else
-	have_paticular_value(true)
-	#@hbx .set_sensitive(true)
-	p .call(@b .dump, @e .dump)
+        have_paticular_value(true)
+        #@hbx .set_sensitive(true)
+        p .call(@b .dump, @e .dump)
       end
     }
     #have_paticular_value(false)
@@ -401,11 +402,11 @@ class GtkDateRangeEdit < Gtk::VBox
   def set_value(b, e)
     if b
       have_paticular_value(true)
-      @b .set_value(b) 
+      @b .set_value(b)
       if e
-	@e .set_value(e)
+        @e .set_value(e)
       else
-	@e .set_value(b)
+        @e .set_value(b)
       end
     else
       have_paticular_value(false)
@@ -439,7 +440,7 @@ class GtkDayBook < Gtk::VBox
     if need_clist
       @lst = Gtk::ListStore.new(String, String)
       @lsv = Gtk::TreeView.new(@lst).set_headers_visible(false) \
-		.set_rules_hint(true)
+                .set_rules_hint(true)
       @lsv.append_column(Gtk::TreeViewColumn.new("Time",
                                                  Gtk::CellRendererText.new,
                                                  :text => 0) \
@@ -498,12 +499,12 @@ class GtkDayBook < Gtk::VBox
     if c .is_a?(String)
       case c
       when 'today'
-	@btn .set_relief(Gtk::RELIEF_NORMAL)
-	return self
+        @btn .set_relief(Gtk::RELIEF_NORMAL)
+        return self
       when 'busy'
-	c = @btn .child .style .dup .set_font_desc(FONT2)
+        c = @btn .child .style .dup .set_font_desc(FONT2)
       else
-	c = STYLE_HASH[c]
+        c = STYLE_HASH[c]
       end
     end
     @btn .set_style(c)
@@ -521,7 +522,7 @@ class GtkDayBook < Gtk::VBox
       @btn .signal_connect('clicked', p)
     when 'day-lst-clicked'
       if @lst
-        @lsv .signal_connect('row-activated'){|w,path,t| 
+        @lsv .signal_connect('row-activated'){|w,path,t|
           p .call(self, path.indices[0].to_i)
         }
       end
@@ -541,15 +542,15 @@ class GtkCalendar < Gtk::VBox
   FILL = Gtk::FILL | Gtk::SHRINK | Gtk::EXPAND
   NONE = Gtk::SHRINK
   if ENV['LANG'] =~ /^ja/i
-    WEEK_L = ['Æü', '·î', '²Ð', '¿å', 'ÌÚ', '¶â', 'ÅÚ']
-    WEEK_S = ['Æü', '·î', '²Ð', '¿å', 'ÌÚ', '¶â', 'ÅÚ']
+    WEEK_L = ['æ—¥', 'æœˆ', 'ç«', 'æ°´', 'æœ¨', 'é‡‘', 'åœŸ']
+    WEEK_S = ['æ—¥', 'æœˆ', 'ç«', 'æ°´', 'æœ¨', 'é‡‘', 'åœŸ']
   else
     WEEK_L = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     WEEK_S = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
   end
 
   def initialize(date, buttons = nil,
-		 need_title = false, is_small = false, need_clist = true)
+                 need_title = false, is_small = false, need_clist = true)
     super(false, 0)
 
     week_label = is_small ? WEEK_S : WEEK_L
@@ -561,7 +562,7 @@ class GtkCalendar < Gtk::VBox
     @m_tbl = Gtk::Table .new(6, 7, true)
     w_tbl  = Gtk::Table .new(1, 7, true)
     @title  = Gtk::Label .new(@date .ym_js) if need_title
-    
+
     ## add week label
     for w in 0 .. 6
       wlabel = Gtk::Label .new(MhcKconv::todisp(week_label[w]))
@@ -576,10 +577,10 @@ class GtkCalendar < Gtk::VBox
       @m_tbl .attach(@dList[i], x, x + 1, y, y + 1, FILL, FILL, 0, 0)
 
       @dList[i] .signal_connect('day-btn-clicked'){
-	@SignalConduit .signal_emit('day-btn-clicked', pos_to_date(i))
+        @SignalConduit .signal_emit('day-btn-clicked', pos_to_date(i))
       }
       @dList[i] .signal_connect('day-lst-clicked'){|w, r|
-	@SignalConduit .signal_emit('day-lst-clicked', w, pos_to_d(i), r)
+        @SignalConduit .signal_emit('day-lst-clicked', w, pos_to_d(i), r)
       }
     }
     pack_start(@title, false, false, 0) if need_title
@@ -597,11 +598,11 @@ class GtkCalendar < Gtk::VBox
 
     for i in 0 .. 41
       if on?(i)
-	dd = pos_to_date(i)
-	@dList[i] .set_date(dd, true) \
-        	.set_tip(MhcKconv::todisp("#{dd .d}Æü")) .show
+        dd = pos_to_date(i)
+        @dList[i] .set_date(dd, true) \
+                .set_tip(MhcKconv::todisp("#{dd .d}æ—¥")) .show
       else
-	@dList[i] .hide
+        @dList[i] .hide
       end
     end
     @title .set_text(@date .ym_js) if @title
@@ -650,7 +651,7 @@ class GtkCalendar < Gtk::VBox
   def pos_to_date(p)
     return MhcDate .new(@date .y, @date .m, p - @offset)
   end
-    
+
   def on?(p)
     d = p - @offset
     return (d > 0 and d <= @date .m_days)
@@ -740,7 +741,7 @@ class GtkToplevel < Gtk::Window
   def pop_position
     if @pos
       print "pop_position #{@pos[0]}, #{@pos[1]}\n" if @pos && $DEBUG
-      self .move(@pos[0], @pos[1]) 
+      self .move(@pos[0], @pos[1])
     end
   end
 
@@ -760,7 +761,7 @@ class GtkToplevel < Gtk::Window
     n .grab_default
     n .signal_connect('clicked'){top .destroy}
     hbx .pack_start(n, true, true, 0)
-    
+
     vbx .pack_start(Gtk::Label .new('Exit GtkCalendar?'))
     vbx .pack_start(hbx, false, false, 0)
 
@@ -909,7 +910,7 @@ class GtkNumericCombo < Gtk::Combo
       s = self .entry .text
       i = s .to_i
       if (s !~ /^\d*$/) || (i != 0 &&  (i < @min || i > @max))
- 	set_number(i)
+        set_number(i)
       end
   end
 
@@ -1032,16 +1033,16 @@ class GtkToggleTable < Gtk::Table
 
     for y in 0 .. ys - 1
       for x in 0 .. xs - 1
-	lbl = label[xs * y + x]
-	if lbl
-	  b = Gtk::ToggleButton .new(lbl .to_s)
-	  b .unset_flags(CAN_FOCUS) .set_border_width(0)
-	  @symbols << b
-	  b .signal_connect('toggled'){|w|
-	    p .call(w)
-	  }
-	  self .attach(b, x, x + 1, y, y + 1, FILL, FILL, 0, 0)
-	end
+        lbl = label[xs * y + x]
+        if lbl
+          b = Gtk::ToggleButton .new(lbl .to_s)
+          b .unset_flags(CAN_FOCUS) .set_border_width(0)
+          @symbols << b
+          b .signal_connect('toggled'){|w|
+            p .call(w)
+          }
+          self .attach(b, x, x + 1, y, y + 1, FILL, FILL, 0, 0)
+        end
       end
     end
   end
@@ -1056,7 +1057,7 @@ class GtkToggleTable < Gtk::Table
     ret = []
     @symbols .each{|b|
       if b .active?
-	ret << b .child .text
+        ret << b .child .text
       end
     }
     return ret .join(' ')
@@ -1078,7 +1079,7 @@ class GtkButtonBar < Gtk::HBox
       name, tip = *xpm_tip
       path = XPM_PATH + '/' + name + '.xpm'
       if !File .exists?(path)
-	path = File .dirname($0) + '/xpm/' + name + '.xpm'
+        path = File .dirname($0) + '/xpm/' + name + '.xpm'
       end
       w = TOP .window
       s = TOP .style .bg(Gtk::STATE_NORMAL)
@@ -1109,7 +1110,7 @@ end
 ## Redistribution and use in source and binary forms, with or without
 ## modification, are permitted provided that the following conditions
 ## are met:
-## 
+##
 ## 1. Redistributions of source code must retain the above copyright
 ##    notice, this list of conditions and the following disclaimer.
 ## 2. Redistributions in binary form must reproduce the above copyright
@@ -1118,7 +1119,7 @@ end
 ## 3. Neither the name of the team nor the names of its contributors
 ##    may be used to endorse or promote products derived from this software
 ##    without specific prior written permission.
-## 
+##
 ## THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ## AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS

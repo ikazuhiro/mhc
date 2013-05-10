@@ -1,4 +1,4 @@
-;;; -*- mode: Emacs-Lisp; coding: euc-japan -*-
+;;; -*- mode: Emacs-Lisp; coding: utf-8 -*-
 
 ;; Author:  Yoshinari Nomura <nom@quickhack.net>,
 ;;          TSUCHIYA Masatoshi <tsuchiya@namazu.org>
@@ -22,7 +22,7 @@
     "Like `insert-file-contents', q.v., but CODING-SYSTEM the first arg will
 be applied to `coding-system-for-read'."
     (let ((coding-system-for-read coding-system)
-	  (file-coding-system-for-read coding-system))
+          (file-coding-system-for-read coding-system))
       (insert-file-contents filename visit beg end replace))))
 
 
@@ -34,11 +34,11 @@ be applied to `coding-system-for-read'."
     "Like `write-region', q.v., but CODING-SYSTEM the first arg will be
 applied to `coding-system-for-write'."
     (let ((coding-system-for-write coding-system)
-	  (file-coding-system coding-system))
+          (file-coding-system coding-system))
       (write-region start end filename append visit))))
 
 (if (and (fboundp 'regexp-opt)
-	 (not (featurep 'xemacs)))
+         (not (featurep 'xemacs)))
     (defalias 'mhc-regexp-opt 'regexp-opt)
   (defun mhc-regexp-opt (strings &optional paren)
     "Return a regexp to match a string in STRINGS.
@@ -64,7 +64,7 @@ is enclosed by at least one regexp grouping construct."
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
 ;; are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright
 ;;    notice, this list of conditions and the following disclaimer.
 ;; 2. Redistributions in binary form must reproduce the above copyright
@@ -73,7 +73,7 @@ is enclosed by at least one regexp grouping construct."
 ;; 3. Neither the name of the team nor the names of its contributors
 ;;    may be used to endorse or promote products derived from this software
 ;;    without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ;; LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS

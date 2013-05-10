@@ -1,4 +1,4 @@
-;;; -*- mode: Emacs-Lisp; coding: euc-japan -*-
+;;; -*- mode: Emacs-Lisp; coding: utf-8 -*-
 
 ;; Author:  Yoshinari Nomura <nom@quickhack.net>
 ;; Created: 2000/07/18
@@ -21,16 +21,16 @@
       (require 'eword-decode))
   (error))
 (if (and (featurep 'mime-edit)
-	 (featurep 'eword-decode))
+         (featurep 'eword-decode))
     (require 'mhc-mime))
 
 ;;; Customize variables:
 
 (defcustom mhc-cmail-dummy-file (cond
-				 ((file-readable-p "nul")
-				  "nul")
-				 ((file-readable-p "/dev/null")
-				  "/dev/null"))
+                                 ((file-readable-p "nul")
+                                  "nul")
+                                 ((file-readable-p "/dev/null")
+                                  "/dev/null"))
   "*Null file name (Ex. \"/dev/null\")."
   :group 'mhc
   :type 'file)
@@ -67,7 +67,7 @@
   (save-excursion
     (beginning-of-line)
     (if (looking-at mhc-cmail/summary-filename-regex)
-	(buffer-substring-no-properties (match-beginning 1) (match-end 1)))))
+        (buffer-substring-no-properties (match-beginning 1) (match-end 1)))))
 
 (defun mhc-cmail-summary-display-article ()
   "Display the article on the current."
@@ -109,10 +109,10 @@
     (mhc-get-buffer-create (mhc-cmail/date-to-buffer date))))
   (kill-all-local-variables)
   (setq inhibit-read-only t
-	buffer-read-only nil
-	selective-display t
-	selective-display-ellipses nil
-	indent-tabs-mode nil)
+        buffer-read-only nil
+        selective-display t
+        selective-display-ellipses nil
+        indent-tabs-mode nil)
   (widen)
   (delete-region (point-min) (point-max)))
 
@@ -130,12 +130,12 @@
   (setq *cmail-disp-thread nil)
   (let ((cmail-highlight-mode  nil))
     (cmail-summary-mode)
-    ;; moved code partially from cmail-mode-line-update 
+    ;; moved code partially from cmail-mode-line-update
     (setq mode-line-buffer-identification
-	  (format "cmail: << %s >>" cmail-current-folder)))
+          (format "cmail: << %s >>" cmail-current-folder)))
   (setq selective-display t
-	selective-display-ellipses nil
-	indent-tabs-mode nil)
+        selective-display-ellipses nil
+        indent-tabs-mode nil)
   (make-local-variable 'cmail-highlight-mode)
   (setq cmail-highlight-mode nil)
   (delete-other-windows))
@@ -143,19 +143,19 @@
 ;; override cmail functions.
 
 (defun cmail-n-page (nth)
-  "NTHÈÖÌÜ¤Î¥á¥¤¥ë¤ÎÀèÆ¬¤Î¥Ý¥¤¥ó¥¿¤ÎÃÍ¤òÊÖ¤¹. ¥Ý¥¤¥ó¥¿¤â°ÜÆ°¤¹¤ë."
+  "NTHç•ªç›®ã®ãƒ¡ã‚¤ãƒ«ã®å…ˆé ­ã®ãƒã‚¤ãƒ³ã‚¿ã®å€¤ã‚’è¿”ã™. ãƒã‚¤ãƒ³ã‚¿ã‚‚ç§»å‹•ã™ã‚‹."
   (if (not (integerp nth))
       (progn
- 	(mhc-insert-file-contents-as-coding-system
-	 *cmail-file-coding-system nth)
-	(goto-char (point-min)))
+        (mhc-insert-file-contents-as-coding-system
+         *cmail-file-coding-system nth)
+        (goto-char (point-min)))
     (cmail-rebuild-index)
     (goto-char (nth nth *cmail-pagelist))))
 
 ;; cmail-get-page-number-from-summary now gets an absolute file name
 ;; which is in a trail of  line. \r path-name.
 (defun cmail-get-page-number-from-summary (&optional no-err)
-  "¥µ¥Þ¥ê¤«¤é¥«¡¼¥½¥ë°ÌÃÖ¤Îmail¤Î¥Ú¡¼¥¸ÈÖ¹æ¤ò½¦¤¦."
+  "ã‚µãƒžãƒªã‹ã‚‰ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã®mailã®ãƒšãƒ¼ã‚¸ç•ªå·ã‚’æ‹¾ã†."
   (cmail-fixcp)
   (save-excursion
     (beginning-of-line)
@@ -178,7 +178,7 @@
 ;; if not, it includes an MH style file into mail-buffer.
 ;;
 (defun cmail-show-contents (page-or-path &optional all-headers)
-  "FOLDER¤ÎPAGEÈÖÌÜ¤Î¥á¥¤¥ë¤òÉ½¼¨¤¹¤ë."
+  "FOLDERã®PAGEç•ªç›®ã®ãƒ¡ã‚¤ãƒ«ã‚’è¡¨ç¤ºã™ã‚‹."
   (interactive (list (cmail-get-page-number-from-summary)))
   (if (integerp page-or-path)
       (cmail-show-contents-orig page-or-path all-headers)
@@ -204,55 +204,55 @@
 ;; diffs are only 2 lines: use (equal page) instead of (=  page).
 ;; page may be an absolute filename of MH style file.
 (defun cmail-read-contents (page)
-  "FOLDER¤ÎPAGEÈÖÌÜ¤Î¥á¥¤¥ë¤òÉ½¼¨¡¦¥¹¥¯¥í¡¼¥ë¤µ¤»¤ë.
-½ª¤ê¤Þ¤ÇÆÉ¤à¤È¼¡¤Î¥á¥¤¥ë¤òÉ½¼¨¤¹¤ë."
+  "FOLDERã®PAGEç•ªç›®ã®ãƒ¡ã‚¤ãƒ«ã‚’è¡¨ç¤ºãƒ»ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã•ã›ã‚‹.
+çµ‚ã‚Šã¾ã§èª­ã‚€ã¨æ¬¡ã®ãƒ¡ã‚¤ãƒ«ã‚’è¡¨ç¤ºã™ã‚‹."
   (interactive (list (cmail-get-page-number-from-summary)))
   (let ((disp (get-buffer-window *cmail-mail-buffer)))
     (if (equal page 0)
-	(progn
-	  (setq *cmail-current-folder "")
-	  (setq *cmail-current-page 0)
-	  (cmail-error-resource 'read-contents-1)))
+        (progn
+          (setq *cmail-current-folder "")
+          (setq *cmail-current-page 0)
+          (cmail-error-resource 'read-contents-1)))
     (cmail-select-buffer *cmail-mail-buffer)
     (cmail-select-buffer *cmail-summary-buffer)
     (if (or (null disp)
-	    (not (string= cmail-current-folder *cmail-current-folder))
-	    (not (equal page *cmail-current-page)))
-	  (cmail-show-contents page)
+            (not (string= cmail-current-folder *cmail-current-folder))
+            (not (equal page *cmail-current-page)))
+          (cmail-show-contents page)
       (let* ((win (get-buffer-window *cmail-mail-buffer))
-	     (wh (window-height win))
-	     (mbll (save-excursion
-		     (set-buffer *cmail-mail-buffer)
-		     (count-lines (window-start win) (point-max))))
-	     (cp (/ wh 2))
-	   (swin (get-buffer-window *cmail-summary-buffer))
-	   (swh (window-height swin))
-	   (scp (/ swh 2))
-	   (ccp (count-lines (point-min) (point)))
-	   (sll (- swh (count-lines (window-start swin) (point-max)))))
-	(if (or (>= mbll wh)
-		(not (save-window-excursion
-		       (select-window (get-buffer-window *cmail-mail-buffer))
-		       (pos-visible-in-window-p (point-max)))))
-	    (cmail-scroll-up nil win)
-	  (set-buffer *cmail-mail-buffer)
-	  (goto-char (point-max))
-	  (widen)
-	  (if (/= (point) (point-max))
-	      (progn
-		(forward-line 2)
-		(cmail-narrow-to-page))
-	    (cmail-narrow-to-page)
-	    (set-buffer *cmail-summary-buffer)
-	    (let ((p (point)))
-	      (if (and (< sll 2) (>= ccp scp))
-		  (scroll-up 1))
-	      (and (= p (point))
-		   (forward-line 1)))
-	    (if (eobp)
-		(cmail-message-resource 'read-contents-2)
-	      (cmail-show-contents (cmail-get-page-number-from-summary)))))
-	(set-buffer *cmail-summary-buffer)))
+             (wh (window-height win))
+             (mbll (save-excursion
+                     (set-buffer *cmail-mail-buffer)
+                     (count-lines (window-start win) (point-max))))
+             (cp (/ wh 2))
+           (swin (get-buffer-window *cmail-summary-buffer))
+           (swh (window-height swin))
+           (scp (/ swh 2))
+           (ccp (count-lines (point-min) (point)))
+           (sll (- swh (count-lines (window-start swin) (point-max)))))
+        (if (or (>= mbll wh)
+                (not (save-window-excursion
+                       (select-window (get-buffer-window *cmail-mail-buffer))
+                       (pos-visible-in-window-p (point-max)))))
+            (cmail-scroll-up nil win)
+          (set-buffer *cmail-mail-buffer)
+          (goto-char (point-max))
+          (widen)
+          (if (/= (point) (point-max))
+              (progn
+                (forward-line 2)
+                (cmail-narrow-to-page))
+            (cmail-narrow-to-page)
+            (set-buffer *cmail-summary-buffer)
+            (let ((p (point)))
+              (if (and (< sll 2) (>= ccp scp))
+                  (scroll-up 1))
+              (and (= p (point))
+                   (forward-line 1)))
+            (if (eobp)
+                (cmail-message-resource 'read-contents-2)
+              (cmail-show-contents (cmail-get-page-number-from-summary)))))
+        (set-buffer *cmail-summary-buffer)))
     (cmail-fixcp)))
 
 (defun mhc-cmail-draft-setup-new ()
@@ -279,9 +279,9 @@
   (save-excursion
     (goto-char (point-min))
     (if (re-search-forward (concat "^"
-				   (regexp-quote mail-header-separator)
-				   "$") nil t)
-	(delete-region (match-beginning 0) (match-end 0)))))
+                                   (regexp-quote mail-header-separator)
+                                   "$") nil t)
+        (delete-region (match-beginning 0) (match-end 0)))))
 
 (defun mhc-cmail-goto-message (&optional view)
   "Go to a view position on summary buffer."
@@ -324,7 +324,7 @@
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
 ;; are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright
 ;;    notice, this list of conditions and the following disclaimer.
 ;; 2. Redistributions in binary form must reproduce the above copyright
@@ -333,7 +333,7 @@
 ;; 3. Neither the name of the team nor the names of its contributors
 ;;    may be used to endorse or promote products derived from this software
 ;;    without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ;; LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS

@@ -1,4 +1,4 @@
-;;; -*- mode: Emacs-Lisp; coding: euc-japan -*-
+;;; -*- mode: Emacs-Lisp; coding: utf-8 -*-
 
 ;; Author:  Yoshinari Nomura <nom@quickhack.net>,
 ;;          TSUCHIYA Masatoshi <tsuchiya@namazu.org>
@@ -14,38 +14,38 @@
 
 ;;; About Backend:
 
-;; ¤³¤Î¥é¥¤¥Ö¥é¥ê¤Ï¡¢¼Âºİ¤Ë¥Õ¥¡¥¤¥ë¤òÁàºî¤¹¤ë¥Ğ¥Ã¥¯¥¨¥ó¥É¤ò¸Æ¤Ó½Ğ¤¹¤³
-;; ¤È¤Ë¤è¤Ã¤ÆÆ°ºî¤¹¤ë¡£¥Ğ¥Ã¥¯¥¨¥ó¥É¤Ï¡¢°Ê²¼¤Î¤è¤¦¤Ê¥á¥½¥Ã¥É¤òÄó¶¡¤¹¤ë
-;; ¤³¤È¤¬´üÂÔ¤µ¤ì¤Æ¤¤¤ë¡£
+;; ã“ã®ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã¯ã€å®Ÿéš›ã«ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ“ä½œã™ã‚‹ãƒãƒƒã‚¯ã‚¨ãƒ³ãƒ‰ã‚’å‘¼ã³å‡ºã™ã“
+;; ã¨ã«ã‚ˆã£ã¦å‹•ä½œã™ã‚‹ã€‚ãƒãƒƒã‚¯ã‚¨ãƒ³ãƒ‰ã¯ã€ä»¥ä¸‹ã®ã‚ˆã†ãªãƒ¡ã‚½ãƒƒãƒ‰ã‚’æä¾›ã™ã‚‹
+;; ã“ã¨ãŒæœŸå¾…ã•ã‚Œã¦ã„ã‚‹ã€‚
 ;;
 ;;     (mhc-foo/init)
-;;          ¥Í¥Ã¥È¥ï¡¼¥¯¤Î¾õÂÖ¤Ë°ÍÂ¸¤·¤Ê¤¤½é´ü²½½èÍı¤ò¹Ô¤¦´Ø¿ô
+;;          ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã®çŠ¶æ…‹ã«ä¾å­˜ã—ãªã„åˆæœŸåŒ–å‡¦ç†ã‚’è¡Œã†é–¢æ•°
 ;;
 ;;     (mhc-foo/exit)
-;;          ¥Í¥Ã¥È¥ï¡¼¥¯¤Î¾õÂÖ¤Ë°ÍÂ¸¤·¤Ê¤¤½ªÎ»½èÍı¤ò¹Ô¤¦´Ø¿ô
+;;          ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã®çŠ¶æ…‹ã«ä¾å­˜ã—ãªã„çµ‚äº†å‡¦ç†ã‚’è¡Œã†é–¢æ•°
 ;;
 ;;     (mhc-foo/open &optional OFFLINE)
-;;          ¥Í¥Ã¥È¥ï¡¼¥¯¤Î¾õÂÖ¤Ë°ÍÂ¸¤¹¤ë½é´ü²½½èÍı¤ò¹Ô¤¦´Ø¿ô
+;;          ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã®çŠ¶æ…‹ã«ä¾å­˜ã™ã‚‹åˆæœŸåŒ–å‡¦ç†ã‚’è¡Œã†é–¢æ•°
 ;;
 ;;     (mhc-foo/close &optional OFFLINE)
-;;          ¥Í¥Ã¥È¥ï¡¼¥¯¤Î¾õÂÖ¤Ë°ÍÂ¸¤¹¤ë½ªÎ»½èÍı¤ò¹Ô¤¦´Ø¿ô
+;;          ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã®çŠ¶æ…‹ã«ä¾å­˜ã™ã‚‹çµ‚äº†å‡¦ç†ã‚’è¡Œã†é–¢æ•°
 ;;
 ;;     (mhc-foo/sync)
-;;	    ¥¹¥±¥¸¥å¡¼¥ë¥Õ¥¡¥¤¥ë¤ÎÆ±´ü¤ò¼è¤ë´Ø¿ô
+;;          ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ã®åŒæœŸã‚’å–ã‚‹é–¢æ•°
 ;;
 ;;     (mhc-foo/add FILENAME &optional OFFLINE)
-;;	    ¥Õ¥¡¥¤¥ë¤òÄÉ²Ã¤òÄÌÃÎ¤¹¤ë´Ø¿ô
-;;          (¥Õ¥¡¥¤¥ë¤Î¼ÂÂÎ¤ÏÄÉ²Ã¤µ¤ì¤¿¸å¤Ë¸Æ¤Ó½Ğ¤µ¤ì¤ë)
+;;          ãƒ•ã‚¡ã‚¤ãƒ«ã‚’è¿½åŠ ã‚’é€šçŸ¥ã™ã‚‹é–¢æ•°
+;;          (ãƒ•ã‚¡ã‚¤ãƒ«ã®å®Ÿä½“ã¯è¿½åŠ ã•ã‚ŒãŸå¾Œã«å‘¼ã³å‡ºã•ã‚Œã‚‹)
 ;;
 ;;     (mhc-foo/modify FILENAME &optional  OFFLINE)
-;;	    ¥Õ¥¡¥¤¥ë¤ÎÊÑ¹¹¤òÄÌÃÎ¤¹¤ë´Ø¿ô
-;;          (¥Õ¥¡¥¤¥ë¤Î¼ÂÂÎ¤¬ÊÑ¹¹¤µ¤ì¤¿¸å¤Ë¸Æ¤Ó½Ğ¤µ¤ì¤ë)
+;;          ãƒ•ã‚¡ã‚¤ãƒ«ã®å¤‰æ›´ã‚’é€šçŸ¥ã™ã‚‹é–¢æ•°
+;;          (ãƒ•ã‚¡ã‚¤ãƒ«ã®å®Ÿä½“ãŒå¤‰æ›´ã•ã‚ŒãŸå¾Œã«å‘¼ã³å‡ºã•ã‚Œã‚‹)
 ;;
 ;;     (mhc-foo/remove FILENAME &optional OFFLINE)
-;;	    ¥Õ¥¡¥¤¥ë¤òºï½ü¤¹¤ë´Ø¿ô
-;;          (¥Õ¥¡¥¤¥ë¤Î¼ÂÂÎ¤Ï *ºï½ü¤µ¤ì¤º¤Ë* ¸Æ¤Ó½Ğ¤µ¤ì¤ë)
+;;          ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ã™ã‚‹é–¢æ•°
+;;          (ãƒ•ã‚¡ã‚¤ãƒ«ã®å®Ÿä½“ã¯ *å‰Šé™¤ã•ã‚Œãšã«* å‘¼ã³å‡ºã•ã‚Œã‚‹)
 ;;
-;; ¤³¤ì¤é¤Î¥á¥½¥Ã¥É¤òÅ¬ÀÚ¤ËÄêµÁ¤·¡¢¹¹¤Ë°Ê²¼¤Î¤è¤¦¤ÊÀë¸À¤òÉÕ¤±²Ã¤¨¤ë¡£
+;; ã“ã‚Œã‚‰ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’é©åˆ‡ã«å®šç¾©ã—ã€æ›´ã«ä»¥ä¸‹ã®ã‚ˆã†ãªå®£è¨€ã‚’ä»˜ã‘åŠ ãˆã‚‹ã€‚
 ;;
 ;;     (provide 'mhc-foo)
 ;;     (put 'mhc-foo 'init   'mhc-foo/init)
@@ -57,11 +57,11 @@
 ;;     (put 'mhc-foo 'modify 'mhc-foo/modify)
 ;;     (put 'mhc-foo 'remove 'mhc-foo/remove)
 ;;
-;; ¥á¥½¥Ã¥É¤Î´Ø¿ôÌ¾¤ÏÇ¤°Õ¤ËÁª¤Ö¤³¤È¤¬¤Ç¤­¤ë¡£
+;; ãƒ¡ã‚½ãƒƒãƒ‰ã®é–¢æ•°åã¯ä»»æ„ã«é¸ã¶ã“ã¨ãŒã§ãã‚‹ã€‚
 ;;
-;; ¤Ş¤¿¡¢¥á¥½¥Ã¥É¤ÎÄêµÁ¤Ï¾ÊÎ¬¤¹¤ë¤³¤È¤¬¤Ç¤­¤ë¡£¾ÊÎ¬¤µ¤ì¤¿¥á¥½¥Ã¥É¤Ï¡¢
-;; ´Ø¿ô mhc-file/true ¤Ë¤è¤Ã¤ÆÃÖ´¹¤µ¤ì¡¢¤½¤Î½èÍı¤Ï¾ï¤ËÀ®¸ù¤·¤¿¤â¤Î¤È¸«
-;; ¤Ê¤µ¤ì¤ë¡£
+;; ã¾ãŸã€ãƒ¡ã‚½ãƒƒãƒ‰ã®å®šç¾©ã¯çœç•¥ã™ã‚‹ã“ã¨ãŒã§ãã‚‹ã€‚çœç•¥ã•ã‚ŒãŸãƒ¡ã‚½ãƒƒãƒ‰ã¯ã€
+;; é–¢æ•° mhc-file/true ã«ã‚ˆã£ã¦ç½®æ›ã•ã‚Œã€ãã®å‡¦ç†ã¯å¸¸ã«æˆåŠŸã—ãŸã‚‚ã®ã¨è¦‹
+;; ãªã•ã‚Œã‚‹ã€‚
 
 
 ;;; Definition
@@ -74,14 +74,14 @@
   "*Variable to specify the method to control schdule files."
   :group 'mhc
   :type '(radio (const :tag "Backup and remove" mhc-sync)
-		(const :tag "CVS" mhc-cvs)
-		(symbol :tag "Other")))
+                (const :tag "CVS" mhc-cvs)
+                (symbol :tag "Other")))
 
 (defcustom mhc-file-sync-enable-offline nil
   "*If non-nil, enable mhc-file-sync when status is offline."
   :group 'mhc
   :type '(radio (const :tag "Disable when offline" nil)
-		(const :tag "Enable when offline" t)))
+                (const :tag "Enable when offline" t)))
 
 ;;; Internal Variables
 (defvar mhc-file/offline (not mhc-default-network-status)
@@ -99,17 +99,17 @@
 ;; To suprress byte compile warnings.
 (eval-when-compile
   (mapcar (lambda (s)
-	    (let ((f (intern (concat "mhc-file/" (symbol-name s)))))
-	      (or (fboundp f) (fset f 'mhc-file/true))))
-	  mhc-file/backend-method-list))
+            (let ((f (intern (concat "mhc-file/" (symbol-name s)))))
+              (or (fboundp f) (fset f 'mhc-file/true))))
+          mhc-file/backend-method-list))
 
 (defun mhc-file-setup (&optional method)
   "Initialize backend to manipulate files."
   (require (or method mhc-file-method))
   (mapcar (lambda (s)
-	    (fset (intern (concat "mhc-file/" (symbol-name s)))
-		  (or (get mhc-file-method s) 'mhc-file/true)))
-	  mhc-file/backend-method-list)
+            (fset (intern (concat "mhc-file/" (symbol-name s)))
+                  (or (get mhc-file-method s) 'mhc-file/true)))
+          mhc-file/backend-method-list)
   (and (mhc-file/init)
        (mhc-file/open mhc-file/offline)))
 
@@ -130,23 +130,23 @@
   "Strings to describe MHC network status."
   :group 'mhc
   :type '(choice
-	  (const :tag "Long format" (" mhc[offline]" . " mhc[ONLINE]"))
-	  (const :tag "Short format" (" Mhc" . " MHC"))
-	  (cons :tag "User definition"
-		(string :tag "String for offline")
-		(string :tag "String for online")))
+          (const :tag "Long format" (" mhc[offline]" . " mhc[ONLINE]"))
+          (const :tag "Short format" (" Mhc" . " MHC"))
+          (cons :tag "User definition"
+                (string :tag "String for offline")
+                (string :tag "String for online")))
   :set (lambda (symbol value)
-	 (set-default symbol value)
-	 (if (assq 'mhc-mode minor-mode-alist)
-	     (setcdr (assq 'mhc-mode minor-mode-alist) (list (mhc-file-line-status))))
-	 (force-mode-line-update)))
+         (set-default symbol value)
+         (if (assq 'mhc-mode minor-mode-alist)
+             (setcdr (assq 'mhc-mode minor-mode-alist) (list (mhc-file-line-status))))
+         (force-mode-line-update)))
 
 (defun mhc-file-line-status ()
   "Return status string for mode line."
   (if mhc-show-network-status
       (if mhc-file/offline
-	  (car mhc-file-line-status-strings)
-	(cdr mhc-file-line-status-strings))))
+          (car mhc-file-line-status-strings)
+        (cdr mhc-file-line-status-strings))))
 
 (defun mhc-file-toggle-offline (&optional full set-to no-sync)
   "*Toggle line status of file manipulation backend."
@@ -154,14 +154,14 @@
   (let ((previous mhc-file/offline))
     (setq mhc-file/offline set-to)
     (if (assq 'mhc-mode minor-mode-alist)
-	(setcdr (assq 'mhc-mode minor-mode-alist)
-		(list (mhc-file-line-status))))
+        (setcdr (assq 'mhc-mode minor-mode-alist)
+                (list (mhc-file-line-status))))
     (if mhc-file/offline
-	(message "mhc-file is offline.")
+        (message "mhc-file is offline.")
       (if (and (not no-sync)
-	       previous
-	       (y-or-n-p "Sync schedule files right now ? "))
-	  (mhc-file-sync full))
+               previous
+               (y-or-n-p "Sync schedule files right now ? "))
+          (mhc-file-sync full))
       (message "mhc-file is online."))))
 
 
@@ -180,11 +180,11 @@
   (if (file-directory-p dirname)
       t
     (if (mhc-file-make-directory
-	 (directory-file-name (file-name-directory (directory-file-name dirname))))
-	(progn
-	  (make-directory (directory-file-name dirname))
-	  (mhc-file-add (file-name-as-directory dirname))
-	  t))))
+         (directory-file-name (file-name-directory (directory-file-name dirname))))
+        (progn
+          (make-directory (directory-file-name dirname))
+          (mhc-file-add (file-name-as-directory dirname))
+          t))))
 
 
 
@@ -198,7 +198,7 @@
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
 ;; are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright
 ;;    notice, this list of conditions and the following disclaimer.
 ;; 2. Redistributions in binary form must reproduce the above copyright
@@ -207,7 +207,7 @@
 ;; 3. Neither the name of the team nor the names of its contributors
 ;;    may be used to endorse or promote products derived from this software
 ;;    without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ;; LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS

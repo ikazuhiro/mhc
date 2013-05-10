@@ -1,4 +1,4 @@
-;;; -*- mode: Emacs-Lisp; coding: euc-japan -*-
+;;; -*- mode: Emacs-Lisp; coding: utf-8 -*-
 
 ;; Author:  Yoshinari Nomura <nom@quickhack.net>,
 ;;          TSUCHIYA Masatoshi <tsuchiya@namazu.org>
@@ -77,13 +77,13 @@
   "*Language of the summary."
   :group 'mhc
   :type '(choice (const :tag "English" english)
-		 (const :tag "Japanese" japanese)))
+                 (const :tag "Japanese" japanese)))
 
 (defcustom mhc-summary-use-cw nil
   "*If non-nil, insert `Calendar week number' instead of `Monday'."
   :group 'mhc
   :type '(choice (const :tag "Use" t)
-		 (const :tag "No" nil)))
+                 (const :tag "No" nil)))
 
 (defcustom mhc-use-week-separator t
   "*If non-nil insert separator in summary buffer."
@@ -99,8 +99,8 @@
   "*Insert separator in summary buffer for wide scope."
   :group 'mhc
   :type '(choice (const :tag "Insert (full width)" t)
-		 (integer :tag "Insert (number of width)")
-		 (const :tag "Not use" nil)))
+                 (integer :tag "Insert (number of width)")
+                 (const :tag "Not use" nil)))
 
 (defcustom mhc-summary-month-separator ?=
   "*Character of the separator as 'mhc-use-month-separator'."
@@ -109,6 +109,11 @@
 
 (defcustom mhc-summary-string-conflict "[C]"
   "*String which indicates conflicts in summary buffer."
+  :group 'mhc
+  :type 'string)
+
+(defcustom mhc-summary-string-recurrence "[R]"
+  "*String which indicates recurrences in summary buffer."
   :group 'mhc
   :type 'string)
 
@@ -147,7 +152,7 @@
 
 (defcustom mhc-summary-line-format
   (if (eq mhc-summary-language 'japanese)
-      "%M%·î%D%Æü%(%ÍË%) %b%e %c%i%s %p%l"
+      "%M%æœˆ%D%æ—¥%(%æ›œ%) %b%e %c%i%s %p%l"
     "%M%/%D%S%W %b%e %c%i%s %p%l")
   "*A format string for summary line of MHC.
 It may include any of the following format specifications
@@ -170,10 +175,10 @@ which are replaced by the given information:
 %) A right parenthesis character if first line of the day.
 %S A space with face.
 
-%Ç¯ The 'Ç¯' of the line if first line of the day.
-%·î The '·î' of the line if first line of the day.
-%Æü The 'Æü' of the line if first line of the day.
-%ÍË The japaneses weekday name of the line if first line of the day.
+%å¹´ The 'å¹´' of the line if first line of the day.
+%æœˆ The 'æœˆ' of the line if first line of the day.
+%æ—¥ The 'æ—¥' of the line if first line of the day.
+%æ›œ The japaneses weekday name of the line if first line of the day.
 "
   :group 'mhc
   :type 'string)
@@ -196,9 +201,9 @@ which are replaced by the given information:
 
 (defcustom mhc-overdue-todo-line-format
   (concat (if (eq mhc-summary-language 'japanese)
-	      "             "
-	    "          ")
-	  "%T  %p %c%i%s %l%d")
+              "             "
+            "          ")
+          "%T  %p %c%i%s %l%d")
   "*A format string for summary overdue todo line of MHC.
 It may include any of the following format specifications
 which are replaced by the given information:
@@ -219,35 +224,35 @@ which are replaced by the given information:
   "Variable to specify position of TODO list."
   :group 'mhc
   :type '(radio (const :tag "Bottom" 'bottom)
-		(const :tag "Top" 'top))
-;;		(const :tag "Above of vertical calender" 'above)
-;;		(const :tag "Below of vertical calender" 'below))
+                (const :tag "Top" 'top))
+;;              (const :tag "Above of vertical calender" 'above)
+;;              (const :tag "Below of vertical calender" 'below))
   )
 
 (defcustom mhc-todo-string-remaining-day
-  (if (eq mhc-summary-language 'japanese) "(¤¢¤È %d Æü)" "(%d days to go)")
+  (if (eq mhc-summary-language 'japanese) "(ã‚ã¨ %d æ—¥)" "(%d days to go)")
   "*String format which is displayed in TODO entry.
 '%d' is replaced with remaining days."
   :group 'mhc
   :type 'string)
 
 (defcustom mhc-todo-string-deadline-day
-    (if (eq mhc-summary-language 'japanese) "(¡ºÀÚÆü)" "(due this date)")
+    (if (eq mhc-summary-language 'japanese) "(ã€†åˆ‡æ—¥)" "(due this date)")
   "*String which indicates deadline day in TODO."
   :group 'mhc
   :type 'string)
 
 (defcustom mhc-todo-string-excess-day
-    (if (eq mhc-summary-language 'japanese) "(%d ÆüÄ¶²á)" "(%d days overdue)")
+    (if (eq mhc-summary-language 'japanese) "(%d æ—¥è¶…éŽ)" "(%d days overdue)")
   "*String format which is displayed in TODO entry.
 '%d' is replaced with excess days."
   :group 'mhc
   :type 'string)
 
 (defcustom mhc-todo-string-heading
-      (if (eq mhc-summary-language 'japanese) 
-	  "TODO(s) at %04dÇ¯%02d·î%02dÆü"
-	"TODO(s) at %04d/%02d/%02d")
+      (if (eq mhc-summary-language 'japanese)
+          "TODO(s) at %04då¹´%02dæœˆ%02dæ—¥"
+        "TODO(s) at %04d/%02d/%02d")
   "*String which is displayed as heading of TODO.
 First %d is replaced with year, second one is replaced with month,
 third one is replaced with day of month."
@@ -261,13 +266,13 @@ third one is replaced with day of month."
 
 
 (defcustom mhc-todo-string-done
-  (if (eq mhc-summary-language 'japanese) "¢£" "[X]")
+  (if (eq mhc-summary-language 'japanese) "â– " "[X]")
   "*String which indicates done TODO."
   :group 'mhc
   :type 'string)
 
 (defcustom mhc-todo-string-not-done
-  (if (eq mhc-summary-language 'japanese) "¢¢" "[ ]")
+  (if (eq mhc-summary-language 'japanese) "â–¡" "[ ]")
   "*String which indicates not-done TODO."
   :group 'mhc
   :type 'string)
@@ -312,6 +317,7 @@ which are replaced by the given information:
 (defvar mhc-tmp-begin    nil "begin time.")
 (defvar mhc-tmp-end      nil "end time.")
 (defvar mhc-tmp-conflict nil "non-nil if conflicted schedule.")
+(defvar mhc-tmp-recurrence nil "non-nil if recurrence schedule.")
 (defvar mhc-tmp-first    nil "non-nil if first schedule.")
 (defvar mhc-tmp-private  nil "non-nil if private display mode.")
 (defvar mhc-tmp-priority nil "a priority of the schedule.")
@@ -330,62 +336,70 @@ which are replaced by the given information:
 
 (defvar mhc-summary-line-format-alist
   '((?Y (mhc-summary/line-year-string)
-	'face mhc-tmp-day-face)
+        'face mhc-tmp-day-face)
     (?/ (if mhc-tmp-first "/" " ")
-	'face mhc-tmp-day-face)
+        'face mhc-tmp-day-face)
     (?S " " 'face mhc-tmp-day-face)
     (?M (mhc-summary/line-month-string)
-	'face mhc-tmp-day-face)
+        'face mhc-tmp-day-face)
     (?D (mhc-summary/line-day-string)
-	'face mhc-tmp-day-face)
+        'face mhc-tmp-day-face)
     (?W (mhc-summary/line-day-of-week-string)
-	'face mhc-tmp-day-face)
+        'face mhc-tmp-day-face)
     (?b (if (null mhc-tmp-begin)
-	    (make-string 5 ? )
-	  (format "%02d:%02d" (/ mhc-tmp-begin 60) (% mhc-tmp-begin 60)))
-	'face 'mhc-summary-face-time)
+            (make-string 5 ? )
+          (format "%02d:%02d" (/ mhc-tmp-begin 60) (% mhc-tmp-begin 60)))
+        'face 'mhc-summary-face-time)
     (?e (if (null mhc-tmp-end)
-	    (make-string 6 ? )
-	  (format "-%02d:%02d" (/ mhc-tmp-end 60) (% mhc-tmp-end 60)))
-	'face 'mhc-summary-face-time)
+            (make-string 6 ? )
+          (format "-%02d:%02d" (/ mhc-tmp-end 60) (% mhc-tmp-end 60)))
+        'face 'mhc-summary-face-time)
     (?c (if mhc-tmp-conflict
-	    (if (and (mhc-use-icon-p) (mhc-icon-exists-p "conflict"))
-		t
-	      mhc-summary-string-conflict))
-	(if (and (mhc-use-icon-p) (mhc-icon-exists-p "conflict"))
-	    'icon 'face)
-	(if (and (mhc-use-icon-p) (mhc-icon-exists-p "conflict"))
-	    (list "conflict") 'mhc-summary-face-conflict))
+            (if (and (mhc-use-icon-p) (mhc-icon-exists-p "conflict"))
+                t
+              mhc-summary-string-conflict))
+        (if (and (mhc-use-icon-p) (mhc-icon-exists-p "conflict"))
+            'icon 'face)
+        (if (and (mhc-use-icon-p) (mhc-icon-exists-p "conflict"))
+            (list "conflict") 'mhc-summary-face-conflict))
+    (?r (if (and mhc-tmp-recurrence (not (string= "" mhc-tmp-recurrence)))
+            (if (and (mhc-use-icon-p) (mhc-icon-exists-p "recurrence"))
+                t
+              mhc-summary-string-recurrence))
+        (if (and (mhc-use-icon-p) (mhc-icon-exists-p "recurrence"))
+            'icon 'face)
+        (if (and (mhc-use-icon-p) (mhc-icon-exists-p "recurrence"))
+            (list "recurrence") 'mhc-summary-face-recurrence))
     (?p (if mhc-tmp-priority
-	    (format "[%d]" mhc-tmp-priority))
-	'face (cond 
-	       ((null mhc-tmp-priority) nil)
-	       ((>= mhc-tmp-priority 80) 'mhc-summary-face-sunday)
-	       ((>= mhc-tmp-priority 50) 'mhc-summary-face-saturday)))
+            (format "[%d]" mhc-tmp-priority))
+        'face (cond
+               ((null mhc-tmp-priority) nil)
+               ((>= mhc-tmp-priority 80) 'mhc-summary-face-sunday)
+               ((>= mhc-tmp-priority 50) 'mhc-summary-face-saturday)))
     (?i (not mhc-tmp-private) 'icon
-	(if (mhc-schedule-in-category-p mhc-tmp-schedule "done")
-	    (delete "todo"
-		    (copy-sequence (mhc-schedule-categories mhc-tmp-schedule)))
-	  (mhc-schedule-categories mhc-tmp-schedule)))
+        (if (mhc-schedule-in-category-p mhc-tmp-schedule "done")
+            (delete "todo"
+                    (copy-sequence (mhc-schedule-categories mhc-tmp-schedule)))
+          (mhc-schedule-categories mhc-tmp-schedule)))
     (?s (mhc-summary/line-subject-string)
-	'face 
-	(if mhc-tmp-private (mhc-face-category-to-face "Private")
-	  (mhc-face-category-to-face 
-	   (car (mhc-schedule-categories mhc-tmp-schedule)))))
+        'face
+        (if mhc-tmp-private (mhc-face-category-to-face "Private")
+          (mhc-face-category-to-face
+           (car (mhc-schedule-categories mhc-tmp-schedule)))))
     (?l (mhc-summary/line-location-string)
-	'face 'mhc-summary-face-location)
+        'face 'mhc-summary-face-location)
     (?\( (if mhc-tmp-first "(" " ")
-	 'face mhc-tmp-day-face)
+         'face mhc-tmp-day-face)
     (?\) (if mhc-tmp-first ")" " ")
-	 'face mhc-tmp-day-face)
-    (?Ç¯ (if mhc-tmp-first "Ç¯" (make-string 2 ? ))
-	 'face mhc-tmp-day-face)
-    (?·î (if mhc-tmp-first "·î" (make-string 2 ? ))
-	 'face mhc-tmp-day-face)
-    (?Æü (if mhc-tmp-first "Æü" (make-string 2 ? ))
-	 'face mhc-tmp-day-face)
-    (?ÍË (mhc-summary/line-day-of-week-ja-string)
-	 'face mhc-tmp-day-face))
+         'face mhc-tmp-day-face)
+    (?å¹´ (if mhc-tmp-first "å¹´" (make-string 2 ? ))
+         'face mhc-tmp-day-face)
+    (?æœˆ (if mhc-tmp-first "æœˆ" (make-string 2 ? ))
+         'face mhc-tmp-day-face)
+    (?æ—¥ (if mhc-tmp-first "æ—¥" (make-string 2 ? ))
+         'face mhc-tmp-day-face)
+    (?æ›œ (mhc-summary/line-day-of-week-ja-string)
+         'face mhc-tmp-day-face))
   "An alist of format specifications that can appear in summary lines.
 Each element is a list of following:
 \(SPEC STRING-EXP PROP-TYPE PROP-VALUE\)
@@ -399,44 +413,44 @@ PROP-VALUE is the property value correspond to PROP-TYPE.
 (defvar mhc-todo-line-format-alist
   '((?T "TODO" 'face 'mhc-category-face-todo)
     (?i (not mhc-tmp-private) 'icon
-	(delete "todo"
-		(delete "done"
-			(copy-sequence
-			 (mhc-schedule-categories mhc-tmp-schedule)))))
+        (delete "todo"
+                (delete "done"
+                        (copy-sequence
+                         (mhc-schedule-categories mhc-tmp-schedule)))))
     (?c (if (and (mhc-use-icon-p)
-		 (mhc-icon-exists-p "todo")
-		 (mhc-icon-exists-p "done"))
-	    t
-	  (if (mhc-schedule-in-category-p mhc-tmp-schedule "done")
-	      mhc-todo-string-done
-	    mhc-todo-string-not-done))
-	(if (and (mhc-use-icon-p)
-		 (mhc-icon-exists-p "todo")
-		 (mhc-icon-exists-p "done"))
-	    'icon 'face)
-	(if (and (mhc-use-icon-p)
-		 (mhc-icon-exists-p "todo")
-		 (mhc-icon-exists-p "done"))
-	    (list 
-	     (if (mhc-schedule-in-category-p mhc-tmp-schedule "done")
-		 "done" "todo"))
-	  'mhc-summary-face-sunday))
+                 (mhc-icon-exists-p "todo")
+                 (mhc-icon-exists-p "done"))
+            t
+          (if (mhc-schedule-in-category-p mhc-tmp-schedule "done")
+              mhc-todo-string-done
+            mhc-todo-string-not-done))
+        (if (and (mhc-use-icon-p)
+                 (mhc-icon-exists-p "todo")
+                 (mhc-icon-exists-p "done"))
+            'icon 'face)
+        (if (and (mhc-use-icon-p)
+                 (mhc-icon-exists-p "todo")
+                 (mhc-icon-exists-p "done"))
+            (list
+             (if (mhc-schedule-in-category-p mhc-tmp-schedule "done")
+                 "done" "todo"))
+          'mhc-summary-face-sunday))
     (?s (mhc-summary/line-subject-string)
-	'face
-	(mhc-face-category-to-face 
-	 (car (mhc-schedule-categories mhc-tmp-schedule))))
+        'face
+        (mhc-face-category-to-face
+         (car (mhc-schedule-categories mhc-tmp-schedule))))
     (?l (mhc-summary/line-location-string)
-	'face 'mhc-summary-face-location)
+        'face 'mhc-summary-face-location)
     (?p (if mhc-tmp-priority
-	    (format "%5s" (format "[%d]" mhc-tmp-priority))
-	  "     ")
-	'face (cond 
-	       ((null mhc-tmp-priority) nil)
-	       ((>= mhc-tmp-priority 80) 'mhc-summary-face-sunday)
-	       ((>= mhc-tmp-priority 50) 'mhc-summary-face-saturday)))
+            (format "%5s" (format "[%d]" mhc-tmp-priority))
+          "     ")
+        'face (cond
+               ((null mhc-tmp-priority) nil)
+               ((>= mhc-tmp-priority 80) 'mhc-summary-face-sunday)
+               ((>= mhc-tmp-priority 50) 'mhc-summary-face-saturday)))
     (?d (unless (mhc-schedule-in-category-p mhc-tmp-schedule "done")
-	  (mhc-todo/line-deadline-string))
-	'face (mhc-todo/line-deadline-face)))
+          (mhc-todo/line-deadline-string))
+        'face (mhc-todo/line-deadline-face)))
   "An alist of format specifications that can appear in todo lines.
 Each element is a list of following:
 \(SPEC STRING-EXP PROP-TYPE PROP-VALUE\)
@@ -449,23 +463,23 @@ PROP-VALUE is the property value correspond to PROP-TYPE.
 
 (defvar mhc-memo-line-format-alist
   '((?i (not mhc-tmp-private) 'icon
-	(if (mhc-schedule-in-category-p mhc-tmp-schedule "done")
-	    (delete "todo"
-		    (copy-sequence (mhc-schedule-categories mhc-tmp-schedule)))
-	  (mhc-schedule-categories mhc-tmp-schedule)))
+        (if (mhc-schedule-in-category-p mhc-tmp-schedule "done")
+            (delete "todo"
+                    (copy-sequence (mhc-schedule-categories mhc-tmp-schedule)))
+          (mhc-schedule-categories mhc-tmp-schedule)))
     (?s (mhc-summary/line-subject-string)
-	'face
-	(mhc-face-category-to-face 
-	 (car (mhc-schedule-categories mhc-tmp-schedule))))
+        'face
+        (mhc-face-category-to-face
+         (car (mhc-schedule-categories mhc-tmp-schedule))))
     (?l (mhc-summary/line-location-string)
-	'face 'mhc-summary-face-location)
+        'face 'mhc-summary-face-location)
     (?p (if mhc-tmp-priority
-	    (format "%5s" (format "[%d]" mhc-tmp-priority))
-	  "     ")
-	'face (cond 
-	       ((null mhc-tmp-priority) nil)
-	       ((>= mhc-tmp-priority 80) 'mhc-summary-face-sunday)
-	       ((>= mhc-tmp-priority 50) 'mhc-summary-face-saturday))))
+            (format "%5s" (format "[%d]" mhc-tmp-priority))
+          "     ")
+        'face (cond
+               ((null mhc-tmp-priority) nil)
+               ((>= mhc-tmp-priority 80) 'mhc-summary-face-sunday)
+               ((>= mhc-tmp-priority 50) 'mhc-summary-face-saturday))))
   "An alist of format specifications that can appear in memo lines.
 Each element is a list of following:
 \(SPEC STRING-EXP PROP-TYPE PROP-VALUE\)
@@ -498,7 +512,7 @@ PROP-VALUE is the property value correspond to PROP-TYPE.
 (defsubst mhc-get-function  (operation)
   "Return appropriate function to do OPERATION."
   (or (get (require (intern (concat "mhc-" (symbol-name mhc-mailer-package))))
-	   operation)
+           operation)
       'mhc-summary/true))
 
 (defsubst mhc-highlight-message (&optional for-draft)
@@ -531,24 +545,24 @@ If optional argument FOR-DRAFT is non-nil, Hilight message as draft message."
   (funcall (mhc-summary-get-function 'generate-summary-buffer mailer) date))
 
 (defsubst mhc-summary-insert-contents (mhc-tmp-schedule
-				       mhc-tmp-private
-				       inserter
-				       &optional mailer)
+                                       mhc-tmp-private
+                                       inserter
+                                       &optional mailer)
   (if (eq 'direct mailer)
       (let ((mhc-use-icon nil))
-	(mhc-summary-line-insert)
-	(insert "\n"))
+        (mhc-summary-line-insert)
+        (insert "\n"))
     (funcall (mhc-summary-get-function 'insert-summary-contents mailer)
-	     inserter)))
+             inserter)))
 
 (defsubst mhc-summary-search-date (date)
   "Search day in the current buffer."
   (let (dayinfo)
     (goto-char (point-min))
     (while (and (not (eobp))
-		(or (null (setq dayinfo
-				(get-text-property (point) 'mhc-dayinfo)))
-		    (not (eq (mhc-day-date dayinfo) date))))
+                (or (null (setq dayinfo
+                                (get-text-property (point) 'mhc-dayinfo)))
+                    (not (eq (mhc-day-date dayinfo) date))))
       (goto-char (next-single-property-change (point) 'mhc-dayinfo)))))
 
 (defsubst mhc-summary-mode-setup (date &optional mailer)
@@ -559,116 +573,117 @@ If optional argument FOR-DRAFT is non-nil, Hilight message as draft message."
   "Return record on current line."
   (let ((filename (mhc-summary-filename mailer)))
     (if filename
-	(let ((key (mhc-slot-directory-to-key 
-		    (directory-file-name (file-name-directory filename)))))
-	  (assoc filename (mhc-slot-records (mhc-slot-get-month-schedule key)))))))
+        (let ((key (mhc-slot-directory-to-key
+                    (directory-file-name (file-name-directory filename)))))
+          (assoc filename (mhc-slot-records (mhc-slot-get-month-schedule key)))))))
 
 (defun mhc-summary-folder-to-path (folder &optional msg)
   (let ((fld
-	 (if (eq (string-to-char folder) ?+)
-	     (substring mhc-base-folder 1) folder)))
+         (if (eq (string-to-char folder) ?+)
+             (substring mhc-base-folder 1) folder)))
     (if msg
-	(format "%s/%s/%s" mhc-mail-path fld msg)
+        (format "%s/%s/%s" mhc-mail-path fld msg)
       (format "%s/%s" mhc-mail-path fld))))
 
 
 ;;; Codes:
 (defsubst mhc-summary/make-string (count character)
-  (make-string (max 4 count) character))	;; xxxx 4 ?
+  (make-string (max 4 count) character))        ;; xxxx 4 ?
 
 (defun mhc-summary/insert-separator (&optional wide str fixwidth)
   (let ((width (mhc-misc-get-width))
-	hr)
+        hr)
     (if wide
-	(if (stringp str)
-	    (let ((hr1 (make-string 4 mhc-summary-month-separator))	;; xxxx 4 ?
-		  hr2)
-	      (mhc-face-put hr1 'mhc-summary-face-month-separator)
-	      (mhc-face-put str 'mhc-summary-face-cw)
-	      (setq hr2 (mhc-summary/make-string (- width
-						    (if (numberp mhc-use-month-separator)
-							mhc-calendar-width 2)
-						    (length hr1) (length str))
-						 mhc-summary-month-separator))
-	      (mhc-face-put hr2 'mhc-summary-face-separator)
-	      (setq hr (concat hr1 str hr2)))
-	  (setq hr (mhc-summary/make-string
-		    (if (numberp mhc-use-month-separator)
-			mhc-use-month-separator
-		      (- width 2))
-		    mhc-summary-month-separator))
-	  (mhc-face-put hr 'mhc-summary-face-month-separator))
+        (if (stringp str)
+            (let ((hr1 (make-string 4 mhc-summary-month-separator))     ;; xxxx 4 ?
+                  hr2)
+              (mhc-face-put hr1 'mhc-summary-face-month-separator)
+              (mhc-face-put str 'mhc-summary-face-cw)
+              (setq hr2 (mhc-summary/make-string (- width
+                                                    (if (numberp mhc-use-month-separator)
+                                                        mhc-calendar-width 2)
+                                                    (length hr1) (length str))
+                                                 mhc-summary-month-separator))
+              (mhc-face-put hr2 'mhc-summary-face-separator)
+              (setq hr (concat hr1 str hr2)))
+          (setq hr (mhc-summary/make-string
+                    (if (numberp mhc-use-month-separator)
+                        mhc-use-month-separator
+                      (- width 2))
+                    mhc-summary-month-separator))
+          (mhc-face-put hr 'mhc-summary-face-month-separator))
       (if (stringp str)
-	  (let ((hr1 (make-string 4 mhc-summary-separator))	;; xxxx 4 ?
-		hr2)
-	    (mhc-face-put hr1 'mhc-summary-face-separator)
-	    (mhc-face-put str 'mhc-summary-face-cw)
-	    (setq hr2 (mhc-summary/make-string (- width mhc-calendar-width
-						  (length hr1) (length str))
-					       mhc-summary-separator))
-	    (mhc-face-put hr2 'mhc-summary-face-separator)
-	    (setq hr (concat hr1 str hr2)))
-	(if fixwidth
-	    (setq hr (mhc-summary/make-string fixwidth mhc-summary-separator))
-	  (setq hr (mhc-summary/make-string (- width mhc-calendar-width)
-					    mhc-summary-separator)))
-	(mhc-face-put hr 'mhc-summary-face-separator)))
+          (let ((hr1 (make-string 4 mhc-summary-separator))     ;; xxxx 4 ?
+                hr2)
+            (mhc-face-put hr1 'mhc-summary-face-separator)
+            (mhc-face-put str 'mhc-summary-face-cw)
+            (setq hr2 (mhc-summary/make-string (- width mhc-calendar-width
+                                                  (length hr1) (length str))
+                                               mhc-summary-separator))
+            (mhc-face-put hr2 'mhc-summary-face-separator)
+            (setq hr (concat hr1 str hr2)))
+        (if fixwidth
+            (setq hr (mhc-summary/make-string fixwidth mhc-summary-separator))
+          (setq hr (mhc-summary/make-string (- width mhc-calendar-width)
+                                            mhc-summary-separator)))
+        (mhc-face-put hr 'mhc-summary-face-separator)))
     (insert hr "\n")))
 
 (defvar mhc-summary/today nil)
 
 (defun mhc-summary/insert-dayinfo (mhc-tmp-dayinfo mailer category-predicate secret)
   (let ((time-max -1)
-	(schedules (mhc-day-schedules mhc-tmp-dayinfo))
-	(mhc-tmp-first t)
-	mhc-tmp-begin mhc-tmp-end
-	mhc-tmp-location mhc-tmp-schedule
-	mhc-tmp-conflict mhc-tmp-priority
-	next-begin displayed)
+        (schedules (mhc-day-schedules mhc-tmp-dayinfo))
+        (mhc-tmp-first t)
+        mhc-tmp-begin mhc-tmp-end
+        mhc-tmp-location mhc-tmp-schedule
+        mhc-tmp-conflict mhc-tmp-recurrence mhc-tmp-priority
+        next-begin displayed)
     (if schedules
-	(progn
-	  (while schedules
-	    (if (and (if mhc-summary-display-todo
-			 t
-		       (not (mhc-schedule-in-category-p
-			     (car schedules) "todo")))
-		     (funcall category-predicate (car schedules)))
-		(progn
-		  (setq mhc-tmp-begin (mhc-schedule-time-begin (car schedules))
-			mhc-tmp-end (mhc-schedule-time-end (car schedules))
-			mhc-tmp-priority (mhc-schedule-priority
-					  (car schedules))
-			next-begin (if (car (cdr schedules))
-				       (mhc-schedule-time-begin
-					(car (cdr schedules))))
-			mhc-tmp-conflict (or (and mhc-tmp-end next-begin
-						  (< next-begin mhc-tmp-end))
-					     (and mhc-tmp-begin time-max 
-						  (< mhc-tmp-begin time-max))))
-		  (if mhc-tmp-end (setq time-max (max mhc-tmp-end time-max)))
-		  (setq displayed t)
-		  (mhc-summary-insert-contents
-		   (car schedules)
-		   (and secret
-			(mhc-schedule-in-category-p
-			 (car schedules) mhc-category-as-private))
-		   'mhc-summary-line-insert
-		   mailer)
-		  (setq mhc-tmp-first nil)))
-	    (setq schedules (cdr schedules)))
-	  (if (not displayed)
-	      (mhc-summary-insert-contents nil secret
-					   'mhc-summary-line-insert
-					   mailer)))
+        (progn
+          (while schedules
+            (if (and (if mhc-summary-display-todo
+                         t
+                       (not (mhc-schedule-in-category-p
+                             (car schedules) "todo")))
+                     (funcall category-predicate (car schedules)))
+                (progn
+                  (setq mhc-tmp-begin (mhc-schedule-time-begin (car schedules))
+                        mhc-tmp-end (mhc-schedule-time-end (car schedules))
+                        mhc-tmp-priority (mhc-schedule-priority
+                                          (car schedules))
+                        next-begin (if (car (cdr schedules))
+                                       (mhc-schedule-time-begin
+                                        (car (cdr schedules))))
+                        mhc-tmp-conflict (or (and mhc-tmp-end next-begin
+                                                  (< next-begin mhc-tmp-end))
+                                             (and mhc-tmp-begin time-max
+                                                  (< mhc-tmp-begin time-max)))
+                        mhc-tmp-recurrence (mhc-schedule-recurrence-tag (car schedules)))
+                  (if mhc-tmp-end (setq time-max (max mhc-tmp-end time-max)))
+                  (setq displayed t)
+                  (mhc-summary-insert-contents
+                   (car schedules)
+                   (and secret
+                        (mhc-schedule-in-category-p
+                         (car schedules) mhc-category-as-private))
+                   'mhc-summary-line-insert
+                   mailer)
+                  (setq mhc-tmp-first nil)))
+            (setq schedules (cdr schedules)))
+          (if (not displayed)
+              (mhc-summary-insert-contents nil secret
+                                           'mhc-summary-line-insert
+                                           mailer)))
       (mhc-summary-insert-contents nil secret
-				   'mhc-summary-line-insert
-				   mailer))))
+                                   'mhc-summary-line-insert
+                                   mailer))))
 
 
 (defun mhc-summary-make-contents
   (from to mailer &optional category-predicate secret)
   (let ((dayinfo-list (mhc-db-scan from to))
-	todo-list overdue deadline mhc-tmp-day)
+        todo-list overdue deadline mhc-tmp-day)
     (setq mhc-summary/today (mhc-date-now))
     (while dayinfo-list
       (mhc-summary/insert-dayinfo
@@ -676,37 +691,37 @@ If optional argument FOR-DRAFT is non-nil, Hilight message as draft message."
        (or category-predicate mhc-default-category-predicate-sexp)
        secret)
       (when (and mhc-insert-overdue-todo
-		 (mhc-date= (mhc-day-date (car dayinfo-list)) mhc-summary/today))
-	(setq todo-list (mhc-db-scan-todo mhc-summary/today))
-	(while todo-list
-	  (setq deadline (mhc-schedule-todo-deadline (car todo-list)))
-	  (when (and deadline
-		     (if mhc-summary-display-todo
-			 (> (mhc-date- mhc-summary/today deadline) 0)
-		       (>= (mhc-date- mhc-summary/today deadline) 0))
-		     (not (mhc-schedule-in-category-p (car todo-list) "done")))
-	    (setq overdue (cons (car todo-list) overdue)))
-	  (setq todo-list (cdr todo-list)))
-	(setq mhc-tmp-day mhc-summary/today)
-	(setq overdue (nreverse overdue))
-	(while overdue
-	  (mhc-summary-insert-contents
-	   (car overdue)
-	   (and secret
-		(mhc-schedule-in-category-p (car overdue)
-					    mhc-category-as-private))
-	   'mhc-overdue-todo-line-insert
-	   mailer)
-	  (setq overdue (cdr overdue))))
+                 (mhc-date= (mhc-day-date (car dayinfo-list)) mhc-summary/today))
+        (setq todo-list (mhc-db-scan-todo mhc-summary/today))
+        (while todo-list
+          (setq deadline (mhc-schedule-todo-deadline (car todo-list)))
+          (when (and deadline
+                     (if mhc-summary-display-todo
+                         (> (mhc-date- mhc-summary/today deadline) 0)
+                       (>= (mhc-date- mhc-summary/today deadline) 0))
+                     (not (mhc-schedule-in-category-p (car todo-list) "done")))
+            (setq overdue (cons (car todo-list) overdue)))
+          (setq todo-list (cdr todo-list)))
+        (setq mhc-tmp-day mhc-summary/today)
+        (setq overdue (nreverse overdue))
+        (while overdue
+          (mhc-summary-insert-contents
+           (car overdue)
+           (and secret
+                (mhc-schedule-in-category-p (car overdue)
+                                            mhc-category-as-private))
+           'mhc-overdue-todo-line-insert
+           mailer)
+          (setq overdue (cdr overdue))))
       (and mhc-use-week-separator
-	   (eq (mhc-day-day-of-week (car dayinfo-list))
-	       (mhc-end-day-of-week))
-	   (> (length dayinfo-list) 1)
-	   (mhc-summary/insert-separator
-	    nil
-	    (when mhc-summary/cw-separator
-	      (format " CW %d " (mhc-date-cw
-				 (mhc-date++ (mhc-day-date (car dayinfo-list))))))))
+           (eq (mhc-day-day-of-week (car dayinfo-list))
+               (mhc-end-day-of-week))
+           (> (length dayinfo-list) 1)
+           (mhc-summary/insert-separator
+            nil
+            (when mhc-summary/cw-separator
+              (format " CW %d " (mhc-date-cw
+                                 (mhc-date++ (mhc-day-date (car dayinfo-list))))))))
       (setq dayinfo-list (cdr dayinfo-list)))))
 
 
@@ -720,43 +735,43 @@ If optional argument FOR-DRAFT is non-nil, Hilight message as draft message."
 (defun mhc-summary-make-todo-list
   (day mailer &optional category-predicate secret)
   (let ((schedules (mhc-db-scan-todo day))
-	(mhc-tmp-day day))
+        (mhc-tmp-day day))
     (if schedules
-	(progn
-	  (insert (mhc-day-let day
-		    (format mhc-todo-string-heading
-			    year month day-of-month))
-		  "\n")
-	  (while schedules
-	    (if (and (if (mhc-schedule-in-category-p (car schedules) "done")
-			 mhc-todo-display-done t)
-		     (funcall category-predicate (car schedules)))
-		(mhc-summary-insert-contents
-		 (car schedules)
-		 (and secret
-		      (mhc-schedule-in-category-p (car schedules)
-						  mhc-category-as-private))
-		 'mhc-todo-line-insert
-		 mailer))
-	    (setq schedules (cdr schedules)))))))
+        (progn
+          (insert (mhc-day-let day
+                    (format mhc-todo-string-heading
+                            year month day-of-month))
+                  "\n")
+          (while schedules
+            (if (and (if (mhc-schedule-in-category-p (car schedules) "done")
+                         mhc-todo-display-done t)
+                     (funcall category-predicate (car schedules)))
+                (mhc-summary-insert-contents
+                 (car schedules)
+                 (and secret
+                      (mhc-schedule-in-category-p (car schedules)
+                                                  mhc-category-as-private))
+                 'mhc-todo-line-insert
+                 mailer))
+            (setq schedules (cdr schedules)))))))
 
 
 (defun mhc-summary-make-memo-list
   (day mailer &optional category-predicate secret)
   (let ((schedules (mhc-db-scan-memo day))
-	(mhc-tmp-day day))
+        (mhc-tmp-day day))
     (when schedules
       (insert (format "%s\n" mhc-memo-string-heading))
       (while schedules
-	(when (funcall category-predicate (car schedules))
-	  (mhc-summary-insert-contents
-	   (car schedules)
-	   (and secret
-		(mhc-schedule-in-category-p (car schedules)
-					    mhc-category-as-private))
-	   'mhc-memo-line-insert
-	   mailer))
-	(setq schedules (cdr schedules))))))
+        (when (funcall category-predicate (car schedules))
+          (mhc-summary-insert-contents
+           (car schedules)
+           (and secret
+                (mhc-schedule-in-category-p (car schedules)
+                                            mhc-category-as-private))
+           'mhc-memo-line-insert
+           mailer))
+        (setq schedules (cdr schedules))))))
 
 
 (defun mhc-summary/line-year-string ()
@@ -780,18 +795,18 @@ If optional argument FOR-DRAFT is non-nil, Hilight message as draft message."
 (defun mhc-summary/line-day-of-week-string ()
   (if mhc-tmp-first
       (let ((week (mhc-day-day-of-week mhc-tmp-dayinfo)))
-	(if (and mhc-summary/cw-week (= week 1) )
-	    (format "%3s"
-		    (format "w%d" (mhc-date-cw (mhc-day-date mhc-tmp-dayinfo))))
-	  (aref ["Sun" "Mon" "Tue" "Wed" "Thu" "Fri" "Sat"] week)))
+        (if (and mhc-summary/cw-week (= week 1) )
+            (format "%3s"
+                    (format "w%d" (mhc-date-cw (mhc-day-date mhc-tmp-dayinfo))))
+          (aref ["Sun" "Mon" "Tue" "Wed" "Thu" "Fri" "Sat"] week)))
     (make-string 3 ? )))
 
 (defun mhc-summary/line-day-of-week-ja-string ()
   (if mhc-tmp-first
       (let ((week (mhc-day-day-of-week mhc-tmp-dayinfo)))
-	(if (and mhc-summary/cw-week(= week 1) )
-	    (format "%2d" (mhc-date-cw (mhc-day-date mhc-tmp-dayinfo)))
-	  (aref ["Æü" "·î" "²Ð" "¿å" "ÌÚ" "¶â" "ÅÚ"] week)))
+        (if (and mhc-summary/cw-week(= week 1) )
+            (format "%2d" (mhc-date-cw (mhc-day-date mhc-tmp-dayinfo)))
+          (aref ["æ—¥" "æœˆ" "ç«" "æ°´" "æœ¨" "é‡‘" "åœŸ"] week)))
     (make-string 2 ? )))
 
 
@@ -804,26 +819,26 @@ If optional argument FOR-DRAFT is non-nil, Hilight message as draft message."
 (defun mhc-summary/line-location-string ()
   (let ((location (mhc-schedule-location mhc-tmp-schedule)))
     (and (not mhc-tmp-private)
-	 location
-	 (> (length location) 0)
-	 (concat "[" location "]"))))
+         location
+         (> (length location) 0)
+         (concat "[" location "]"))))
 
 
 (defun mhc-todo/line-deadline-string ()
   (and mhc-tmp-deadline
        (if (mhc-date= mhc-tmp-deadline mhc-tmp-day)
-	   mhc-todo-string-deadline-day
-	 (let ((remaining (mhc-date- mhc-tmp-deadline mhc-tmp-day)))
-	   (if (> remaining 0)
-	       (format mhc-todo-string-remaining-day remaining)
-	     (format mhc-todo-string-excess-day (abs remaining)))))))
+           mhc-todo-string-deadline-day
+         (let ((remaining (mhc-date- mhc-tmp-deadline mhc-tmp-day)))
+           (if (> remaining 0)
+               (format mhc-todo-string-remaining-day remaining)
+             (format mhc-todo-string-excess-day (abs remaining)))))))
 
 
 (defun mhc-todo/line-deadline-face ()
   (and mhc-tmp-deadline
        (if (> (mhc-date- mhc-tmp-deadline mhc-tmp-day) 0)
-	   'mhc-summary-face-default
-	 'mhc-summary-face-sunday)))
+           'mhc-summary-face-default
+         'mhc-summary-face-sunday)))
 
 
 ;;; Line format parsing
@@ -833,40 +848,40 @@ If optional argument FOR-DRAFT is non-nil, Hilight message as draft message."
 
 (defun mhc-line-parse-format (format spec-alist)
   (let ((f (mhc-string-to-char-list format))
-	inserter entry)
+        inserter entry)
     (setq inserter (list 'let (list 'pos)))
     (while f
       (if (eq (car f) ?%)
-	  (progn
-	    (setq f (cdr f))
-	    (if (eq (car f) ?%)
-		(setq inserter (append inserter (list (list 'insert ?%))))
-	      (setq entry (assq (car f) spec-alist))
-	      (unless entry
-		(error "Unknown format spec %%%c" (car f)))
-	      (setq inserter
-		    (append inserter
-			    (list (list 'setq 'pos (list 'point)))
-			    (list (list 'mhc-line-insert
-					(nth 1 entry)))
-			    (and
-			     (nth 2 entry)
-			     (list
-			      (append (cond
-				       ((eq (eval (nth 2 entry)) 'face)
-					(list 'put-text-property
-					      'pos (list 'point)
-					      (list 'quote 'face)
-					      (nth 3 entry)))
-				       ((eq (eval (nth 2 entry)) 'icon)
-					(list 'if
-					      (nth 1 entry)
-					      (list
-					       'and
-					       (list 'mhc-use-icon-p)
-					       (list 'mhc-put-icon
-						     (nth 3 entry)))))))))))))
-	(setq inserter (append inserter (list (list 'insert (car f))))))
+          (progn
+            (setq f (cdr f))
+            (if (eq (car f) ?%)
+                (setq inserter (append inserter (list (list 'insert ?%))))
+              (setq entry (assq (car f) spec-alist))
+              (unless entry
+                (error "Unknown format spec %%%c" (car f)))
+              (setq inserter
+                    (append inserter
+                            (list (list 'setq 'pos (list 'point)))
+                            (list (list 'mhc-line-insert
+                                        (nth 1 entry)))
+                            (and
+                             (nth 2 entry)
+                             (list
+                              (append (cond
+                                       ((eq (eval (nth 2 entry)) 'face)
+                                        (list 'put-text-property
+                                              'pos (list 'point)
+                                              (list 'quote 'face)
+                                              (nth 3 entry)))
+                                       ((eq (eval (nth 2 entry)) 'icon)
+                                        (list 'if
+                                              (nth 1 entry)
+                                              (list
+                                               'and
+                                               (list 'mhc-use-icon-p)
+                                               (list 'mhc-put-icon
+                                                     (nth 3 entry)))))))))))))
+        (setq inserter (append inserter (list (list 'insert (car f))))))
       (setq f (cdr f)))
     inserter))
 
@@ -874,26 +889,26 @@ If optional argument FOR-DRAFT is non-nil, Hilight message as draft message."
 (defmacro mhc-line-inserter-setup (inserter format alist)
   (` (let (byte-compile-warnings)
        (setq (, inserter)
-	     (byte-compile
-	      (list 'lambda ()
-		    (mhc-line-parse-format (, format) (, alist)))))
+             (byte-compile
+              (list 'lambda ()
+                    (mhc-line-parse-format (, format) (, alist)))))
        (when (get-buffer "*Compile-Log*")
-	 (bury-buffer "*Compile-Log*"))
+         (bury-buffer "*Compile-Log*"))
        (when (get-buffer "*Compile-Log-Show*")
-	     (bury-buffer "*Compile-Log-Show*")))))
+             (bury-buffer "*Compile-Log-Show*")))))
 
 
 (defun mhc-summary-line-inserter-setup ()
   "Setup MHC summary and todo line inserter."
   (interactive)
   (if (and (interactive-p)
-	   (mhc-use-icon-p))
+           (mhc-use-icon-p))
       (call-interactively 'mhc-icon-setup))
   (setq mhc-summary/cw-separator (and mhc-summary-use-cw
-				      mhc-use-week-separator
-				      (eq mhc-start-day-of-week 1)))
+                                      mhc-use-week-separator
+                                      (eq mhc-start-day-of-week 1)))
   (setq mhc-summary/cw-week (and mhc-summary-use-cw
-				 (not mhc-summary/cw-separator)))
+                                 (not mhc-summary/cw-separator)))
   (mhc-line-inserter-setup
    mhc-summary/line-inserter
    mhc-summary-line-format
@@ -915,18 +930,18 @@ If optional argument FOR-DRAFT is non-nil, Hilight message as draft message."
 (defun mhc-summary-line-insert ()
   "Insert summary line."
   (let ((mhc-tmp-day-face (cond
-			   ((mhc-schedule-in-category-p
-			     mhc-tmp-schedule "holiday")
-			    'mhc-category-face-holiday)
-			   ((eq (mhc-day-day-of-week 
-				 mhc-tmp-dayinfo) 0)
-			    'mhc-summary-face-sunday)
-			   ((eq (mhc-day-day-of-week mhc-tmp-dayinfo) 6)
-			    'mhc-summary-face-saturday)
-			   (t 'mhc-summary-face-default)))
-	(pos (point)))
+                           ((mhc-schedule-in-category-p
+                             mhc-tmp-schedule "holiday")
+                            'mhc-category-face-holiday)
+                           ((eq (mhc-day-day-of-week
+                                 mhc-tmp-dayinfo) 0)
+                            'mhc-summary-face-sunday)
+                           ((eq (mhc-day-day-of-week mhc-tmp-dayinfo) 6)
+                            'mhc-summary-face-saturday)
+                           (t 'mhc-summary-face-default)))
+        (pos (point)))
     (if (mhc-date= (mhc-day-date mhc-tmp-dayinfo) (mhc-date-now))
-	(setq mhc-tmp-day-face (mhc-face-get-today-face mhc-tmp-day-face)))
+        (setq mhc-tmp-day-face (mhc-face-get-today-face mhc-tmp-day-face)))
     (funcall mhc-summary/line-inserter)
     (put-text-property pos (point) 'mhc-dayinfo mhc-tmp-dayinfo)))
 
@@ -934,13 +949,13 @@ If optional argument FOR-DRAFT is non-nil, Hilight message as draft message."
 (defun mhc-todo-line-insert ()
   "Insert todo line."
   (let ((mhc-tmp-deadline (mhc-schedule-todo-deadline mhc-tmp-schedule))
-	(mhc-tmp-priority (mhc-schedule-priority mhc-tmp-schedule)))
+        (mhc-tmp-priority (mhc-schedule-priority mhc-tmp-schedule)))
     (funcall mhc-todo/line-inserter)))
 
 (defun mhc-overdue-todo-line-insert ()
   "Insert overdue todo line."
   (let ((mhc-tmp-deadline (mhc-schedule-todo-deadline mhc-tmp-schedule))
-	(mhc-tmp-priority (mhc-schedule-priority mhc-tmp-schedule)))
+        (mhc-tmp-priority (mhc-schedule-priority mhc-tmp-schedule)))
     (funcall mhc-overdue-todo/line-inserter)))
 
 (defun mhc-memo-line-insert ()
@@ -959,7 +974,7 @@ If optional argument FOR-DRAFT is non-nil, Hilight message as draft message."
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
 ;; are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright
 ;;    notice, this list of conditions and the following disclaimer.
 ;; 2. Redistributions in binary form must reproduce the above copyright
@@ -968,7 +983,7 @@ If optional argument FOR-DRAFT is non-nil, Hilight message as draft message."
 ;; 3. Neither the name of the team nor the names of its contributors
 ;;    may be used to endorse or promote products derived from this software
 ;;    without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ;; LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS

@@ -1,4 +1,4 @@
-;;; -*- mode: Emacs-Lisp; coding: euc-japan -*-
+;;; -*- mode: Emacs-Lisp; coding: utf-8 -*-
 
 ;; Author:  TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 ;;          Hideyuki SHIRAI <shirai@quickhack.net>
@@ -77,7 +77,7 @@
   "*Calendar paper type."
   :group 'mhc
   :type '(radio (const :tag "Landscape" t)
-		(const :tag "Portrait" nil)))
+                (const :tag "Portrait" nil)))
 
 (defcustom mhc-ps-paper-fill-print nil
   "*Fill printing just in Landscape paper size."
@@ -190,7 +190,7 @@
             {
                 13 dict begin
                 /EUCFont EUCFont def
-                /UpperByte exch 16#80 add def       
+                /UpperByte exch 16#80 add def
                 % /FontName
                 /FontInfo \(EUC lower byte font\) readonly def
                 /PaintType 0 def
@@ -350,11 +350,11 @@ def
     /start startday def
     /day 2 1 roll def
     day start add 1 sub 7 mod daywidth mul
-    day start add 1 sub 7 div truncate dayheight neg mul 
+    day start add 1 sub 7 div truncate dayheight neg mul
     -5
     numevents day start add get -10 mul add
     numevents
-    day start add 
+    day start add
     numevents day start add get 1 add
     put
     add 2 add moveto
@@ -370,7 +370,7 @@ def
           0 0 0 0 0 0 0
           0 0 0 0 0 0 0
           0 0 0 0 0 0 0
-          0 0 0 0 0 0 0\] def 
+          0 0 0 0 0 0 0\] def
     eventfont findfont 9 scalefont setfont
     0 2 holidays length 2 sub { % for the \"Holidays\"
         dup
@@ -392,7 +392,7 @@ def
 
 /center {               % center string in given width
     /width exch def
-    /str exch def width str 
+    /str exch def width str
     stringwidth pop sub 2 div 0 rmoveto str show
 } def
 
@@ -422,7 +422,7 @@ def
         ifelse
         0 1 rowsused {
             gsave
-            daywidth 0 rlineto 
+            daywidth 0 rlineto
             0 dayheight neg rlineto
             daywidth neg 0 rlineto
             closepath stroke
@@ -479,7 +479,7 @@ def
             nsubmonth 0 eq {
                 0 1 lholidays length 1 sub {
                     lholidays exch get day eq {
-	                holidaymark
+                        holidaymark
                         exit
                     } if
                 } for
@@ -489,11 +489,11 @@ def
                         exit
                     } if
                 } for
-            } 
+            }
             {
                 0 1 nholidays length 1 sub {
                     nholidays exch get day eq {
-	                holidaymark
+                        holidaymark
                         exit
                     } if
                 } for
@@ -503,7 +503,7 @@ def
                         exit
                     } if
                 } for
-            } ifelse    
+            } ifelse
         } ifelse
         submonth 0 eq
         {
@@ -533,7 +533,7 @@ def
     daywidth 0 rlineto
     0 dayheight neg rlineto
     daywidth neg 0 rlineto
-    .9 setgray 
+    .9 setgray
     closepath fill
     grestore
 } def
@@ -572,7 +572,7 @@ def
     fillstart 1 start 1 sub {
         gsave
         .9 setgray
-        daywidth 0 rlineto 
+        daywidth 0 rlineto
         0 dayheight neg rlineto
         daywidth neg 0 rlineto
         closepath fill
@@ -595,7 +595,7 @@ def
         /day exch def
         gsave
         .9 setgray
-        daywidth 0 rlineto 
+        daywidth 0 rlineto
         0 dayheight neg rlineto
         daywidth neg 0 rlineto
         closepath fill
@@ -653,7 +653,7 @@ def
         daywidth days_week mul Cfootstring stringwidth pop sub 2 div
         bottomrow moveto
         Cfootstring show
-        
+
     } if
 
     0 -5 moveto
@@ -692,7 +692,7 @@ month 1 add 13 eq
 {
     /nmonth 1 def
     /nyear year 1 add def
-} 
+}
 {
     /nmonth month 1 add def
     /nyear year def
@@ -748,124 +748,124 @@ showpage
     ("@RFOOT@"     . "")
     ("@CFOOT@"     . "")
     ("@SCALE@"     . (cond
-		      ((and mhc-ps-paper-type
-			    (or (not mhc-ps-paper-fill-print)
-				(eq weeks 6)))
-		       "0.85 0.85")
-		      (mhc-ps-paper-type "1.0 1.0")
-		      (t "0.75 0.75")))
+                      ((and mhc-ps-paper-type
+                            (or (not mhc-ps-paper-fill-print)
+                                (eq weeks 6)))
+                       "0.85 0.85")
+                      (mhc-ps-paper-type "1.0 1.0")
+                      (t "0.75 0.75")))
     ("@ROTATE@"    . (if mhc-ps-paper-type "90" "0"))
     ("@TRANSLATE@" . (cond
-		      ((and mhc-ps-paper-type
-			    (or (not mhc-ps-paper-fill-print)
-				(eq weeks 6)))
-		       "140 -120")
-		      (mhc-ps-paper-type "50 -120")
-		      (t "50 900")))))
+                      ((and mhc-ps-paper-type
+                            (or (not mhc-ps-paper-fill-print)
+                                (eq weeks 6)))
+                       "140 -120")
+                      (mhc-ps-paper-type "50 -120")
+                      (t "50 900")))))
 
 (defun mhc-ps/weeks (date)
   (if (> (+ (mhc-date-dd (mhc-date-mm-last date))
-	    (mhc-date-ww (mhc-date-mm-first date)))
-	 35) 6 5))
+            (mhc-date-ww (mhc-date-mm-first date)))
+         35) 6 5))
 
 (defun mhc-ps/substring (str width)
   (let ((clist (mhc-string-to-char-list str))
-	cw (i 0) (w 0) (ow 0) (spc ?\ ))
+        cw (i 0) (w 0) (ow 0) (spc ?\ ))
     (catch 'loop
       (while clist
-	(setq w (+ w (char-width (car clist))))
-	(if (> w width) (throw 'loop nil))
-	(setq i (+ i (length (char-to-string (car clist)))))
-	(setq clist (cdr clist))))
+        (setq w (+ w (char-width (car clist))))
+        (if (> w width) (throw 'loop nil))
+        (setq i (+ i (length (char-to-string (car clist)))))
+        (setq clist (cdr clist))))
     (substring str 0 i)))
 
 (defun mhc-ps/compose-subject (time subject margin)
   (let ((mstr (make-string margin ?\ ))
-	pos str)
+        pos str)
     ;; Delete characters to emphasize subject.
     (and (string-match "^\\*+[ \t\r\f\n]*" subject)
-	 (setq pos (match-end 0))
-	 (string-match "[ \t\r\f\n]*\\*+$" subject)
-	 (setq subject (substring subject pos (match-beginning 0))))
+         (setq pos (match-end 0))
+         (string-match "[ \t\r\f\n]*\\*+$" subject)
+         (setq subject (substring subject pos (match-beginning 0))))
     (if time
-	(setq str (concat time " " subject))
+        (setq str (concat time " " subject))
       (setq str subject))
     (cond
      ((<= (string-width str) mhc-ps-string-width)
       (list str))
      (mhc-ps-truncate-lines
       (if (null time)
-	  (list
-	   (if (= (string-width
-		   (setq subject (mhc-ps/substring subject mhc-ps-string-width)))
-		  mhc-ps-string-width)
-	       (concat subject "$")
-	     subject))
-	(setq subject (concat mstr subject))
-	(if (= (string-width
-		(setq subject (mhc-ps/substring subject mhc-ps-string-width)))
-	       mhc-ps-string-width)
-	    (setq subject (concat subject "$")))
-	(list time subject)))
+          (list
+           (if (= (string-width
+                   (setq subject (mhc-ps/substring subject mhc-ps-string-width)))
+                  mhc-ps-string-width)
+               (concat subject "$")
+             subject))
+        (setq subject (concat mstr subject))
+        (if (= (string-width
+                (setq subject (mhc-ps/substring subject mhc-ps-string-width)))
+               mhc-ps-string-width)
+            (setq subject (concat subject "$")))
+        (list time subject)))
      (t
       (with-temp-buffer
-	(let ((fill-column mhc-ps-string-width)
-	      (left-margin 0)
-	      ret)
-	  (insert str)
-	  (fill-region (point-min) (point-max))
-	  (goto-char (point-min))
-	  (if (= (forward-line 1) 0)
-	      (let ((fill-column (- mhc-ps-string-width margin)))
-		(fill-region (point) (point-max))))
-	  (delete-region (goto-char (point-max))
-			 (progn (skip-chars-backward " \t\n") (point)))
-	  (goto-char (point-min))
-	  (setq ret (list (buffer-substring
-			   (point) (progn (end-of-line) (point)))))
-	  (forward-line 1)
-	  (while (not (eobp))
-	    (setq ret (cons
-		       (concat
-			mstr
-			(buffer-substring
-			 (point) (progn (end-of-line) (point))))
-		       ret))
-	    (forward-line 1))
-	  (nreverse ret)))))))
+        (let ((fill-column mhc-ps-string-width)
+              (left-margin 0)
+              ret)
+          (insert str)
+          (fill-region (point-min) (point-max))
+          (goto-char (point-min))
+          (if (= (forward-line 1) 0)
+              (let ((fill-column (- mhc-ps-string-width margin)))
+                (fill-region (point) (point-max))))
+          (delete-region (goto-char (point-max))
+                         (progn (skip-chars-backward " \t\n") (point)))
+          (goto-char (point-min))
+          (setq ret (list (buffer-substring
+                           (point) (progn (end-of-line) (point)))))
+          (forward-line 1)
+          (while (not (eobp))
+            (setq ret (cons
+                       (concat
+                        mstr
+                        (buffer-substring
+                         (point) (progn (end-of-line) (point))))
+                       ret))
+            (forward-line 1))
+          (nreverse ret)))))))
 
 (defun mhc-ps/encode-string (string)
   (let ((start 0) buf ch)
     (while (string-match "[()\\\\]" string start)
       (setq ch (aref string (match-beginning 0))
-	    buf (cons (if (eq ch ?\() "\\("
-			(if (eq ch ?\)) "\\)"
-			  "\\\\"))
-		      (cons (substring string start (match-beginning 0)) buf))
-	    start (match-end 0)))
+            buf (cons (if (eq ch ?\() "\\("
+                        (if (eq ch ?\)) "\\)"
+                          "\\\\"))
+                      (cons (substring string start (match-beginning 0)) buf))
+            start (match-end 0)))
     (eval (cons 'concat (nreverse (cons (substring string start) buf))))))
 
 
 (defun mhc-ps/schedule-to-string (dayinfo schedule)
   (let ((begin (mhc-schedule-time-begin schedule))
-	(end (mhc-schedule-time-end schedule))
-	(day (mhc-day-day-of-month dayinfo)))
+        (end (mhc-schedule-time-end schedule))
+        (day (mhc-day-day-of-month dayinfo)))
     (if (or begin end)
-	(mapconcat (lambda (str)
-		     (format "%d ( %s)" day (mhc-ps/encode-string str)))
-		   (mhc-ps/compose-subject
-		    (concat
-		     (if begin (mhc-time-to-string begin) "")
-		     (if end (concat "-" (mhc-time-to-string end)) ""))
-		    (mhc-schedule-subject-as-string schedule)
-		    mhc-ps-left-margin)
-		   " ")
+        (mapconcat (lambda (str)
+                     (format "%d ( %s)" day (mhc-ps/encode-string str)))
+                   (mhc-ps/compose-subject
+                    (concat
+                     (if begin (mhc-time-to-string begin) "")
+                     (if end (concat "-" (mhc-time-to-string end)) ""))
+                    (mhc-schedule-subject-as-string schedule)
+                    mhc-ps-left-margin)
+                   " ")
       (mapconcat (lambda (str)
-		   (format "%d ( %s)" day (mhc-ps/encode-string str)))
-		 (mhc-ps/compose-subject
-		  nil
-		  (mhc-schedule-subject-as-string schedule) mhc-ps-left-margin)
-		 " "))))
+                   (format "%d ( %s)" day (mhc-ps/encode-string str)))
+                 (mhc-ps/compose-subject
+                  nil
+                  (mhc-schedule-subject-as-string schedule) mhc-ps-left-margin)
+                 " "))))
 
 
 (defun mhc-ps/uniq-list (lst)
@@ -876,162 +876,162 @@ showpage
 
 (defun mhc-ps/make-contents (file year month &optional category-predicate)
   (let ((weeks (mhc-ps/weeks (mhc-date-new year month 1)))
-	(last-yymm (mhc-date-mm-- (mhc-date-new year month 1)))
-	(next-yymm (mhc-date-mm++ (mhc-date-new year month 1)))
-	schedules-buffer holidays-buffer
-	last-schedules-buffer last-holidays-buffer
-	next-schedules-buffer next-holidays-buffer)
+        (last-yymm (mhc-date-mm-- (mhc-date-new year month 1)))
+        (next-yymm (mhc-date-mm++ (mhc-date-new year month 1)))
+        schedules-buffer holidays-buffer
+        last-schedules-buffer last-holidays-buffer
+        next-schedules-buffer next-holidays-buffer)
     ;; this month
     (let ((dayinfo-list (mhc-db-scan-month year month)))
       (while dayinfo-list
-	(let ((schedules (mhc-day-schedules (car dayinfo-list))))
-	  (while schedules
-	    (when (funcall category-predicate (car schedules))
-	      (if (mhc-schedule-in-category-p (car schedules) "holiday")
-		  (setq holidays-buffer
-			(cons (mhc-ps/schedule-to-string
-			       (car dayinfo-list) (car schedules))
-			      holidays-buffer))
-		(setq schedules-buffer
-		      (cons (mhc-ps/schedule-to-string
-			     (car dayinfo-list) (car schedules))
-			    schedules-buffer))))
-	    (setq schedules (cdr schedules))))
-	(setq dayinfo-list (cdr dayinfo-list))))
+        (let ((schedules (mhc-day-schedules (car dayinfo-list))))
+          (while schedules
+            (when (funcall category-predicate (car schedules))
+              (if (mhc-schedule-in-category-p (car schedules) "holiday")
+                  (setq holidays-buffer
+                        (cons (mhc-ps/schedule-to-string
+                               (car dayinfo-list) (car schedules))
+                              holidays-buffer))
+                (setq schedules-buffer
+                      (cons (mhc-ps/schedule-to-string
+                             (car dayinfo-list) (car schedules))
+                            schedules-buffer))))
+            (setq schedules (cdr schedules))))
+        (setq dayinfo-list (cdr dayinfo-list))))
     ;; last month
     (let ((dayinfo-list (mhc-date-let last-yymm (mhc-db-scan-month yy mm))))
       (while dayinfo-list
-	(let ((schedules (mhc-day-schedules (car dayinfo-list))))
-	  (while schedules
-	    (when (funcall category-predicate (car schedules))
-	      (if (mhc-schedule-in-category-p (car schedules) "holiday")
-		  (setq last-holidays-buffer
-			(cons (number-to-string
-			       (mhc-day-day-of-month (car dayinfo-list)))
-			      last-holidays-buffer))
-		(setq last-schedules-buffer
-		      (cons (number-to-string(mhc-day-day-of-month (car dayinfo-list)))
-			    last-schedules-buffer))))
-	    (setq schedules (cdr schedules))))
-	(setq dayinfo-list (cdr dayinfo-list))))
+        (let ((schedules (mhc-day-schedules (car dayinfo-list))))
+          (while schedules
+            (when (funcall category-predicate (car schedules))
+              (if (mhc-schedule-in-category-p (car schedules) "holiday")
+                  (setq last-holidays-buffer
+                        (cons (number-to-string
+                               (mhc-day-day-of-month (car dayinfo-list)))
+                              last-holidays-buffer))
+                (setq last-schedules-buffer
+                      (cons (number-to-string(mhc-day-day-of-month (car dayinfo-list)))
+                            last-schedules-buffer))))
+            (setq schedules (cdr schedules))))
+        (setq dayinfo-list (cdr dayinfo-list))))
     ;; next month
     (let ((dayinfo-list (mhc-date-let next-yymm (mhc-db-scan-month yy mm))))
       (while dayinfo-list
-	(let ((schedules (mhc-day-schedules (car dayinfo-list))))
-	  (while schedules
-	    (when (funcall category-predicate (car schedules))
-	      (if (mhc-schedule-in-category-p (car schedules) "holiday")
-		  (setq next-holidays-buffer
-			(cons (number-to-string
-			       (mhc-day-day-of-month (car dayinfo-list)))
-			      next-holidays-buffer))
-		(setq next-schedules-buffer
-		      (cons (number-to-string
-			     (mhc-day-day-of-month (car dayinfo-list)))
-			    next-schedules-buffer))))
-	    (setq schedules (cdr schedules))))
-	(setq dayinfo-list (cdr dayinfo-list))))
+        (let ((schedules (mhc-day-schedules (car dayinfo-list))))
+          (while schedules
+            (when (funcall category-predicate (car schedules))
+              (if (mhc-schedule-in-category-p (car schedules) "holiday")
+                  (setq next-holidays-buffer
+                        (cons (number-to-string
+                               (mhc-day-day-of-month (car dayinfo-list)))
+                              next-holidays-buffer))
+                (setq next-schedules-buffer
+                      (cons (number-to-string
+                             (mhc-day-day-of-month (car dayinfo-list)))
+                            next-schedules-buffer))))
+            (setq schedules (cdr schedules))))
+        (setq dayinfo-list (cdr dayinfo-list))))
     (setq last-schedules-buffer (mhc-ps/uniq-list last-schedules-buffer)
-	  last-holidays-buffer (mhc-ps/uniq-list last-holidays-buffer)
-	  next-schedules-buffer (mhc-ps/uniq-list next-schedules-buffer)
-	  next-holidays-buffer (mhc-ps/uniq-list next-holidays-buffer))
+          last-holidays-buffer (mhc-ps/uniq-list last-holidays-buffer)
+          next-schedules-buffer (mhc-ps/uniq-list next-schedules-buffer)
+          next-holidays-buffer (mhc-ps/uniq-list next-holidays-buffer))
     (setq schedules-buffer
-	  (mapconcat 'identity (nreverse schedules-buffer) " ")
-	  holidays-buffer
-	  (mapconcat 'identity (nreverse holidays-buffer) " ")
-	  last-schedules-buffer
-	  (mapconcat 'identity (nreverse last-schedules-buffer) " ")
-	  last-holidays-buffer
-	  (mapconcat 'identity (nreverse last-holidays-buffer) " ")
-	  next-schedules-buffer
-	  (mapconcat 'identity (nreverse next-schedules-buffer) " ")
-	  next-holidays-buffer
-	  (mapconcat 'identity (nreverse next-holidays-buffer) " "))
+          (mapconcat 'identity (nreverse schedules-buffer) " ")
+          holidays-buffer
+          (mapconcat 'identity (nreverse holidays-buffer) " ")
+          last-schedules-buffer
+          (mapconcat 'identity (nreverse last-schedules-buffer) " ")
+          last-holidays-buffer
+          (mapconcat 'identity (nreverse last-holidays-buffer) " ")
+          next-schedules-buffer
+          (mapconcat 'identity (nreverse next-schedules-buffer) " ")
+          next-holidays-buffer
+          (mapconcat 'identity (nreverse next-holidays-buffer) " "))
     (with-temp-buffer
       (insert mhc-ps/string)
       (let ((case-fold-search nil)
-	    (alist mhc-ps/replace-table)
-	    key value)
-	(while alist
-	  (setq key   (car (car alist))
-		value (eval (cdr (car alist)))
-		alist (cdr alist))
-	  (goto-char (point-min))
-	  (while (search-forward key nil t)
-	    (delete-region (- (point) (length key)) (point))
-	    (insert value))))
+            (alist mhc-ps/replace-table)
+            key value)
+        (while alist
+          (setq key   (car (car alist))
+                value (eval (cdr (car alist)))
+                alist (cdr alist))
+          (goto-char (point-min))
+          (while (search-forward key nil t)
+            (delete-region (- (point) (length key)) (point))
+            (insert value))))
       (and file
-	  (mhc-write-region-as-coding-system
-	   mhc-ps-coding-system (point-min) (point-max) (expand-file-name file)
-	   nil 'nomsg))
+          (mhc-write-region-as-coding-system
+           mhc-ps-coding-system (point-min) (point-max) (expand-file-name file)
+           nil 'nomsg))
       (buffer-substring (point-min) (point-max)))))
 
 (defvar mhc-ps/process-file-alist '())
 
 (defun mhc-ps/process (command arguments file buffer year month
-			       category-predicate)
+                               category-predicate)
   (mhc-setup)
   (message "PostScript creating...")
   (let ((contents
-	 (mhc-ps/make-contents file year month category-predicate)))
+         (mhc-ps/make-contents file year month category-predicate)))
     (if (null contents)
-	(message "No PostScript create.")
+        (message "No PostScript create.")
       (cond
        ((stringp command)
-	(let ((process
-	       (apply (function start-process)
-		      (format "mhc-ps-%s" command)
-		      (mhc-get-buffer-create (format " *mhc-ps-%s*" command))
-		      command (append arguments (list (expand-file-name file))))))
-	  (set-process-coding-system
-	   process mhc-ps-coding-system mhc-ps-coding-system)
-	  (set-process-sentinel process 'mhc-ps/process-sentinel)
-	  (setq mhc-ps/process-file-alist
-		(cons (cons process (expand-file-name file))
-		      mhc-ps/process-file-alist))
-	  (message "PostScript creating...done")))
+        (let ((process
+               (apply (function start-process)
+                      (format "mhc-ps-%s" command)
+                      (mhc-get-buffer-create (format " *mhc-ps-%s*" command))
+                      command (append arguments (list (expand-file-name file))))))
+          (set-process-coding-system
+           process mhc-ps-coding-system mhc-ps-coding-system)
+          (set-process-sentinel process 'mhc-ps/process-sentinel)
+          (setq mhc-ps/process-file-alist
+                (cons (cons process (expand-file-name file))
+                      mhc-ps/process-file-alist))
+          (message "PostScript creating...done")))
        ((eq command 'save)
-	(message "PostScript saving (%s)...done" file))
+        (message "PostScript saving (%s)...done" file))
        ((eq command 'buffer)
-	(pop-to-buffer (get-buffer-create buffer))
-	(kill-new contents)
-	(let ((msg "Insert PostScript data ? (y or n) ")
-	      (char nil))
-	  (message msg)
-	  (while (null char)
-	    (setq char (read-char-exclusive))
-	    (if (or (eq ?y char) (eq ?\  char)
-		    (eq ?n char) (eq ?\177 char))
-		()
-	      (setq char nil)
-	      (message (concat "Please answer y or n. " msg))))
-	  (if (or (eq ?y char) (eq ?\  char))
-	      (save-excursion
-		(insert contents)
-		(message "PostScript insert to \"%s\"." buffer))
-	    (message "PostScript data to the latest kill in the kill ring."))))))))
+        (pop-to-buffer (get-buffer-create buffer))
+        (kill-new contents)
+        (let ((msg "Insert PostScript data ? (y or n) ")
+              (char nil))
+          (message msg)
+          (while (null char)
+            (setq char (read-char-exclusive))
+            (if (or (eq ?y char) (eq ?\  char)
+                    (eq ?n char) (eq ?\177 char))
+                ()
+              (setq char nil)
+              (message (concat "Please answer y or n. " msg))))
+          (if (or (eq ?y char) (eq ?\  char))
+              (save-excursion
+                (insert contents)
+                (message "PostScript insert to \"%s\"." buffer))
+            (message "PostScript data to the latest kill in the kill ring."))))))))
 
 
 (defun mhc-ps/process-sentinel (process event)
   (let ((al (assoc process mhc-ps/process-file-alist)))
     (and (cdr al) (file-writable-p (cdr al)) (delete-file (cdr al)))
     (setq mhc-ps/process-file-alist
-	  (delete al mhc-ps/process-file-alist))))
+          (delete al mhc-ps/process-file-alist))))
 
 ;;;###autoload
 (defun mhc-ps (&optional arg)
   "*Create PostScript calendar with selected method."
   (interactive "P")
   (let ((method 'preview)
-	(date (or (mhc-current-date-month) (mhc-calendar-get-date)))
-	year month char)
+        (date (or (mhc-current-date-month) (mhc-calendar-get-date)))
+        year month char)
     (if (or arg (null date))
-	(setq date (mhc-input-month "Month: " date)))
+        (setq date (mhc-input-month "Month: " date)))
     (setq year (mhc-date-yy date))
     (setq month (mhc-date-mm date))
     (message "pre(V)iew (default), (P)rint, (S)ave, (I)nsert buffer")
     (condition-case nil
-	(setq char (read-char))
+        (setq char (read-char))
       (error (setq char ?v)))
     (cond
      ((memq char '(?p ?P))
@@ -1040,8 +1040,8 @@ showpage
       (mhc-ps-save
        year month
        (expand-file-name
-	(mhc-date-format date "mhc%04d%02d.ps" yy mm)
-	(mhc-summary-folder-to-path mhc-base-folder))
+        (mhc-date-format date "mhc%04d%02d.ps" yy mm)
+        (mhc-summary-folder-to-path mhc-base-folder))
        mhc-default-category-predicate-sexp))
      ((memq char '(?i ?I))
       (mhc-ps-insert-buffer
@@ -1057,73 +1057,73 @@ showpage
   "*Preview PostScript calendar."
   (interactive
    (let* ((cdate (or (mhc-current-date-month) (mhc-calendar-get-date)))
-	  (date (mhc-input-month "Month: " cdate)))
+          (date (mhc-input-month "Month: " cdate)))
      (list
       (mhc-date-yy date)
       (mhc-date-mm date)
       mhc-default-category-predicate-sexp)))
   (mhc-ps/process mhc-ps-preview-command mhc-ps-preview-command-arguments
-		  (expand-file-name
-		   (format "mhc%04d%02d.ps" year month)
-		   (mhc-summary-folder-to-path mhc-base-folder))
-		  nil
-		  year month
-		  category-predicate))
+                  (expand-file-name
+                   (format "mhc%04d%02d.ps" year month)
+                   (mhc-summary-folder-to-path mhc-base-folder))
+                  nil
+                  year month
+                  category-predicate))
 
 ;;;###autoload
 (defun mhc-ps-print (year month &optional category-predicate)
   "*Print PostScript calendar."
   (interactive
    (let* ((cdate (or (mhc-current-date-month) (mhc-calendar-get-date)))
-	  (date (mhc-input-month "Month: " cdate)))
+          (date (mhc-input-month "Month: " cdate)))
      (list
       (mhc-date-yy date)
       (mhc-date-mm date)
       mhc-default-category-predicate-sexp)))
   (mhc-ps/process mhc-ps-print-command mhc-ps-print-command-arguments
-		  (expand-file-name
-		   (format "mhc%04d%02d.ps" year month)
-		   (mhc-summary-folder-to-path mhc-base-folder))
-		  nil
-		  year month
-		  category-predicate))
+                  (expand-file-name
+                   (format "mhc%04d%02d.ps" year month)
+                   (mhc-summary-folder-to-path mhc-base-folder))
+                  nil
+                  year month
+                  category-predicate))
 
 ;;;###autoload
 (defun mhc-ps-save (year month file &optional category-predicate)
   "*Save PostScript calendar."
   (interactive
    (let* ((cdate (or (mhc-current-date-month) (mhc-calendar-get-date)))
-	  (date (mhc-input-month "Month: " cdate))
-	  (default (expand-file-name
-		    (mhc-date-format date "mhc%04d%02d.ps" yy mm)
-		    (mhc-summary-folder-to-path mhc-base-folder)))
-	  (file (read-file-name "Save file: " default default)))
+          (date (mhc-input-month "Month: " cdate))
+          (default (expand-file-name
+                    (mhc-date-format date "mhc%04d%02d.ps" yy mm)
+                    (mhc-summary-folder-to-path mhc-base-folder)))
+          (file (read-file-name "Save file: " default default)))
      (list
       (mhc-date-yy date)
       (mhc-date-mm date)
       file
       mhc-default-category-predicate-sexp)))
   (mhc-ps/process 'save nil
-		  file nil
-		  year month
-		  category-predicate))
+                  file nil
+                  year month
+                  category-predicate))
 
 ;;;###autoload
 (defun mhc-ps-insert-buffer (year month buffer &optional category-predicate)
   "*Insert PostScript calendar."
   (interactive
    (let* ((cdate (or (mhc-current-date-month) (mhc-calendar-get-date)))
-	  (date (mhc-input-month "Month: " cdate))
-	  (buffer (read-buffer "Insert buffer: " "*mhc-postscript*")))
+          (date (mhc-input-month "Month: " cdate))
+          (buffer (read-buffer "Insert buffer: " "*mhc-postscript*")))
      (list
       (mhc-date-yy date)
       (mhc-date-mm date)
       buffer
       mhc-default-category-predicate-sexp)))
   (mhc-ps/process 'buffer nil
-		  nil buffer
-		  year month
-		  category-predicate))
+                  nil buffer
+                  year month
+                  category-predicate))
 
 
 (provide 'mhc-ps)
@@ -1144,7 +1144,7 @@ showpage
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
 ;; are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright
 ;;    notice, this list of conditions and the following disclaimer.
 ;; 2. Redistributions in binary form must reproduce the above copyright
@@ -1153,7 +1153,7 @@ showpage
 ;; 3. Neither the name of the team nor the names of its contributors
 ;;    may be used to endorse or promote products derived from this software
 ;;    without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS''
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 ;; LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
