@@ -168,8 +168,7 @@ class MhcConfigTable
 
     ['--libdir', '@@MHC_LIBDIR@@', GetoptLong::REQUIRED_ARGUMENT,
       "=DIR   Ruby script libraries go to DIR",
-      File::join(CONFIG["libdir"], "ruby",
-                 CONFIG["MAJOR"] + "." + CONFIG["MINOR"])],
+      File::join(CONFIG["libdir"], "ruby", CONFIG["ruby_version"])],
 
     ['--with-emacs', '@@MHC_EMACS_PATH@@', GetoptLong::REQUIRED_ARGUMENT,
       "=PATH  absolute path of emacs/xemacs executable",
