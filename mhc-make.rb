@@ -109,10 +109,9 @@ module MhcMake
       make_system("make", "install")
     else
       INSTALL_FILES .each{|filename_mode_dir|
-	filename, mode, dir = filename_mode_dir .split(':')
-	FileUtils .makedirs(dir) if ! File .directory?(dir)
-	FileUtils .install(filename, dir,
-                           {:mode => mode .oct, :verbose => true})
+        filename, mode, dir = filename_mode_dir .split(':')
+        FileUtils .makedirs(dir) if ! File .directory?(dir)
+        FileUtils .install(filename, dir, {:mode => mode .oct, :verbose => true})
       }
     end
     process_subdirs()
@@ -140,12 +139,7 @@ module MhcMake
 end
 
 class MhcConfigTable
-  if RUBY_VERSION[0..2] >= "1.9" 
-    include RbConfig
-  else
-    include Config
-  end
-
+  include RbConfig
   # ['--kcode', '@@MHC_KCODE@@', GetoptLong::OPTIONAL_ARGUMENT, usage, default]
 
   DEFAULT_CONFIG_TABLE = [
@@ -168,7 +162,7 @@ class MhcConfigTable
 
     ['--libdir', '@@MHC_LIBDIR@@', GetoptLong::REQUIRED_ARGUMENT,
       "=DIR   Ruby script libraries go to DIR",
-      File::join(CONFIG["libdir"], "ruby", CONFIG["ruby_version"])],
+      CONFIG["rubylibdir"]],
 
     ['--with-emacs', '@@MHC_EMACS_PATH@@', GetoptLong::REQUIRED_ARGUMENT,
       "=PATH  absolute path of emacs/xemacs executable",
@@ -241,11 +235,7 @@ class MhcConfigTable
 end
 
 class MhcConfigure
-  if RUBY_VERSION[0..2] >= "1.9" 
-    include RbConfig
-  else
-    include Config
-  end
+  include RbConfig
 
   def initialize(local_config_table = [])
     @macros = {}
@@ -258,7 +248,7 @@ class MhcConfigure
     @macros .update(@config_table .macro_hash)
 
     ## set useful macros.
-    @macros['@@MHC_RUBY_VERSION@@'] = 
+    @macros['@@MHC_RUBY_VERSION@@'] =
       RUBY_VERSION .split('.') .collect{|i| format("%02d", i)} .join('')
     @macros['@@MHC_TOPDIR@@'] = Dir .pwd
   end
@@ -422,10 +412,11 @@ class MhcConfigure
   end
 
   def replace_keywords1(src_file_name, dst_file_name, keywords, mode = nil)
-    src_file  = File .open(src_file_name, "rb") or die "#{$!}\n"
-    dst_file  = File .open(dst_file_name, "wb") or die "#{$!}\n"
+    src_file  = File .open(src_file_name, "r") or die "#{$!}\n"
+    dst_file  = File .open(dst_file_name, "w") or die "#{$!}\n"
 
     src_contents = src_file .gets(nil); src_file .close
+    src_contents .force_encoding("ASCII-8BIT") if RUBY_VERSION .to_f >= 1.9
     keywords .each{|key, val| src_contents .gsub!(key, val)}
 
     if src_contents =~ /(@@MHC_[a-z\d_]+@@)/in
@@ -433,8 +424,8 @@ class MhcConfigure
     end
 
     dst_file << src_contents
-    dst_file .close 
-    FileUtils .chmod(mode, dst_file_name) if mode
+    dst_file .close
+    File .chmod(mode, dst_file_name) if mode
   end
 
 end
